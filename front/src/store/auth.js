@@ -1,4 +1,4 @@
-import { login, refreshTokens } from '@/services/authServices';
+import { login, refreshTokens, signup } from '@/services/authServices';
 import { defineStore } from 'pinia';
 
 export const useAuthStore = defineStore('auth', {
@@ -12,6 +12,14 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(username, password) {
       const response = await login(username, password);
+      this.token = response.token;
+      this.refreshToken = response.refreshToken;
+      localStorage.setItem('accessToken', this.token);
+      localStorage.setItem('refreshToken', this.refreshToken);
+    },
+
+    async signup(username, password) {
+      const response = await signup(username, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
       localStorage.setItem('accessToken', this.token);

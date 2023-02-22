@@ -10,6 +10,7 @@
       </router-link>
     </div>
     <div class="navbar-content">
+      <div class="navbar-content-allusers">
       <div class="nav-link" v-for="menuItem in menuItems" :key="menuItem.name">
         <router-link custom :to="'/' + menuItem.route">
           <template v-slot="{ navigate }">
@@ -34,15 +35,28 @@
           </template>
         </router-link>
       </div>
-      <div class="nav-link" v-if="!authStore.token">
-        <router-link custom to="/login">
-          <template v-slot="{ navigate }">
-            <button @click="navigate" class="nav-button-menu">Log In </button>
-          </template>
-        </router-link>
-      </div>
-      <div class="nav-link" v-if="authStore.token">
-        <button @click="logOut()" class="nav-button-menu-logout">Log Out </button>
+    </div>
+      <div class="navbar-content-usersession">
+        <div class="nav-link" v-if="!authStore.token">
+          <router-link custom to="/login">
+            <template v-slot="{ navigate }">
+              <button @click="navigate" class="nav-button-menu-login">Log In </button>
+            </template>
+          </router-link>
+        </div>
+        <div class="nav-link" v-if="!authStore.token">
+          <router-link custom to="/signup">
+            <template v-slot="{ navigate }">
+              <button @click="navigate" class="nav-button-menu-login">Sing Up </button>
+            </template>
+          </router-link>
+        </div>
+        <div class="nav-link" v-if="authStore.token">
+          <button @click="logOut()" class="nav-button-menu-logout">Log Out </button>
+        </div>
+        <div class="nav-link" v-if="authStore.token">
+          <button @click="logOut()" class="nav-button-menu-logout"><v-icon name="co-account-logout" scale="0.8" title="Real Comics" /></button>
+        </div>
       </div>
     </div>
   </nav>

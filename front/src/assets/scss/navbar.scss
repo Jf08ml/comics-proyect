@@ -8,28 +8,43 @@ $font-color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1vh;
+    height: 50px;
     box-shadow: 0 4px 3px -2px #000000;
 
     .navbar-content {
         display: flex;
-        justify-content: space-around;
         align-items: center;
-        margin-inline-end: 20px;
-
+        width: 40vw;
+        height: 100%;
     }
 
     .navbar-brand {
         font-size: 1.5rem;
         font-weight: bold;
         margin-inline-start: 20px;
+        width: 30vw;
+    }}
 
+    .navbar-content-usersession {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: auto;
+        width: 35%;
+        font-size: 1rem;
+    }
+
+    .navbar-content-allusers {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: auto;
+        width: 50%;
+        font-size: 1rem;
     }
 
     .nav-link {
         font-size: 1rem;
-        margin-inline: 5px;
-
         button {
             height: 30px;
             font-family: $primary-font;
@@ -51,9 +66,10 @@ $font-color: #ffffff;
         left: 0;
         margin-top: 0px;
         min-width: 100%;
+        width: 10vw;
         background-color: white;
         border-radius: 5px;
-        border: 3px solid black;
+        border: 1px solid black;
         padding: 5px;
         z-index: 999;
     }
@@ -61,4 +77,3 @@ $font-color: #ffffff;
     .menu-overlay li {
         list-style: none;
     }
-}

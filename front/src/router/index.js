@@ -12,14 +12,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
   },
   {
+    path: '/signup',
+    name: 'signup',
+    component: () => import(/* webpackChunkName: "signup" */ '../views/RegisterView.vue')
+  },
+  {
     path: '/realcomics',
     name: 'realcomics',
-    component: () => import(/* webpackChunkName: "login" */ '../views/RealComicsView.vue')
+    component: () => import(/* webpackChunkName: "realcomics" */ '../views/RealComicsView.vue')
   },
   {
     path: '/aminatedcomics',
     name: 'aminatedcomics',
-    component: () => import(/* webpackChunkName: "login" */ '../views/AnimatedComicsView.vue')
+    component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/AnimatedComicsView.vue')
   }
 ]
 
