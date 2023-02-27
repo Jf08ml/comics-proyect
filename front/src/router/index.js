@@ -22,8 +22,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "realcomics" */ '../views/RealComicsView.vue')
   },
   {
-    path: '/aminatedcomics',
-    name: 'aminatedcomics',
+    path: '/animatedcomics',
+    name: 'animatedcomics',
     component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/AnimatedComicsView.vue')
   }
 ]

@@ -16,6 +16,9 @@ $font-color: #ffffff;
         align-items: center;
         width: 40vw;
         height: 100%;
+        @media screen and (max-width:900px) {
+            display:none;
+        }
     }
 
     .navbar-brand {
@@ -23,6 +26,12 @@ $font-color: #ffffff;
         font-weight: bold;
         margin-inline-start: 20px;
         width: 30vw;
+
+        @media screen and (max-width:600px) {
+            font-size: cal(#{$small-font-size} - 5px);
+            margin-inline-start: 0px;
+        }
+    
     }}
 
     .navbar-content-usersession {
