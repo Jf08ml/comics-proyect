@@ -52,13 +52,13 @@
             </template>
           </router-link>
         </div>
-        <div class="nav-link" v-if="authStore.token">
-          <button @click="logOut()" class="nav-button-menu-logout"><v-icon name="co-account-logout" scale="1.3"
-              title="Real Comics" /></button>
-          <router-link custom to="/perfil">
+        <div class="nav-link"  v-if="authStore.token">
+          <button @click="logOut()" class="nav-button-menu-logout" style="margin-inline: 5px;"><v-icon name="co-account-logout" scale="1.5"
+              title="Log Out" /></button>
+          <router-link custom to="/profile">
             <template v-slot="{ navigate }">
               <button @click="navigate" @mouseover="showMenuUser = true" class="nav-button-icone"><v-icon
-                  name="ri-account-pin-circle-fill" scale="1.5" title="Real Comics" color="white" /></button>
+                  name="ri-account-pin-circle-fill" scale="1.7" title="Profile" color="white" /></button>
             </template>
           </router-link>
         </div>
@@ -66,10 +66,10 @@
     </div>
 
     <div class="menu-hamburger">
-      <div class="nav-link" v-if="authStore.token">
-          <button @click="logOut()" class="nav-button-menu-logout"><v-icon name="co-account-logout" scale="1.3"
+      <div class="nav-link" v-if="authStore.token" style="margin-top: 3px;">
+          <button @click="logOut()" class="nav-button-menu-logout"><v-icon name="co-account-logout" scale="1.5"
               title="Real Comics" /></button>
-          <router-link custom to="/perfil">
+          <router-link custom to="/profile">
             <template v-slot="{ navigate }">
               <button @click="navigate" @mouseover="showMenuUser = true" class="nav-button-icone"><v-icon
                   name="ri-account-pin-circle-fill" scale="1.5" title="Real Comics" color="white" /></button>
@@ -157,7 +157,7 @@ const logOut = () => {
   localStorage.clear()
   authStore.token = null
   authStore.refreshToken = null
-  router.push("/login");
+  router.push("/");
 }
 
 
@@ -168,6 +168,9 @@ const logOut = () => {
   position: relative;
   display: flex;
   justify-content: center;
+  @media screen and (min-width: 900px) {
+      display: none;
+    }
 
   .hamburger-icon {
 

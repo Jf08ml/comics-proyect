@@ -10,16 +10,16 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: state => !!state.token,
   },
   actions: {
-    async login(username, password) {
-      const response = await login(username, password);
+    async login(email, password) {
+      const response = await login(email, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
       localStorage.setItem('accessToken', this.token);
       localStorage.setItem('refreshToken', this.refreshToken);
     },
 
-    async signup(username, password) {
-      const response = await signup(username, password);
+    async signup(email, password) {
+      const response = await signup(email, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
       localStorage.setItem('accessToken', this.token);

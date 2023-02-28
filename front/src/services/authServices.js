@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 // const BASE_URL = 'http://localhost:3000/api';
+// const BASE_URL_LOCAL = 'http://192.168.101.13:3000/api/'
 
-export async function login(username, password) {
+export async function login(email, password) {
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/login',
+      'http://192.168.101.13:3000/api/login',
       {
-        username, password
+        email, password
       },
       {
         headers: {
@@ -22,12 +23,12 @@ export async function login(username, password) {
   }
 }
 
-export async function signup(username, password) {
+export async function signup(email, password) {
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/signup',
+      'http://192.168.101.13:3000/api/signup',
       {
-        username, password
+        email, password
       },
       {
         headers: {
@@ -44,7 +45,7 @@ export async function signup(username, password) {
 
 export async function refreshToken(refreshToken) {
   try {
-    const response = await axios.post('http://localhost:3000/api/refresh-token', { refreshToken });
+    const response = await axios.post('http://192.168.101.13:3000/api/refresh-token', { refreshToken });
     return response.data;
   } catch (error) {
     console.error(error);

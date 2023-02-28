@@ -4,14 +4,14 @@ const User = require('../models/users');
 
 async function signup(req, res) {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
     }
 
-    const user = new User({ username, password });
+    const user = new User({ email, password });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
@@ -26,11 +26,11 @@ async function signup(req, res) {
 
 async function login(req, res) {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Non-existent user' });
     }
 
     const isMatch = await user.comparePassword(password);
