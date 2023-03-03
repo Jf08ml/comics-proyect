@@ -1,15 +1,15 @@
 <template>
-<di class="container">
-<div class="content">
+    <div class="container">
+        <div class="content">
+            <div class="navigation">
 
-</div>
-</di>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-
+import "@/assets/scss/profile/profile.scss";
 </script>
 
-<style>
-
-</style>
+<style></style>

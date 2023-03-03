@@ -1,12 +1,12 @@
 $bg-color: #b81f59;
 $font-color: #ffffff;
 
-
 .navbar {
     background-color: $bg-color;
     color: $font-color;
     display: flex;
     justify-content: space-between;
+    padding: 3px;
     align-items: center;
     height: 50px;
     box-shadow: 0 4px 3px -2px #000000;
@@ -62,6 +62,20 @@ $font-color: #ffffff;
             color: darken($font-color, 10%);
         }
     }
+    .nav-link-usersession {
+        font-size: 1rem;
+        box-shadow: 0px 0px 4px black;
+        border-radius: 5px;
+        padding: 4px;
+        button {
+            height: 30px;
+            font-family: $primary-font;
+        }
+
+        &:hover {
+            color: darken($font-color, 10%);
+        }
+    }
 
     .menu-wrapper {
         position: relative;
@@ -84,4 +98,62 @@ $font-color: #ffffff;
 
     .menu-overlay li {
         list-style: none;
+    }
+    .menu-hamburger {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        @media screen and (min-width: 900px) {
+            display: none;
+          }
+      
+        .hamburger-icon {
+      
+          cursor: pointer;
+          margin-inline: 10px;
+      
+          @media screen and (min-width: 900px) {
+            display: none;
+          }
+      
+          @media screen and (max-width: 900px) {
+            display: block;
+          }
+        }
+      
+        .menu {
+          display: none;
+      
+          &.menu-open {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 1px;
+            min-width: 100%;
+            width: 100vw;
+            background-color: white;
+            border: 1px solid black;
+            padding: 5px;
+            z-index: 999;
+            display: block;
+      
+            button {
+              background-color: transparent;
+              border: none;
+              margin: 5px;
+              cursor: pointer;
+            }
+      
+            button:active {
+              transform: scale(0.98);
+              box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+            }
+          }
+        }
+      }
+
+    .nav-link-mobile {
+        width: 100%; 
+        font-size: 20px; 
+        color: #b81f59;
     }

@@ -1,6 +1,6 @@
 <template>
 <div> 
-    <h1 style="color:white;">Animated Comics</h1>
+    <h1 style="color:white; text-align: center;">Animated Comics</h1>
 </div>
 </template>
 

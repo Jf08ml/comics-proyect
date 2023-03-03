@@ -14,10 +14,16 @@
     align-items: center;
     border: 1px solid white;
     border-radius: 10px;
-    width: 40vw;
+    width: 80vw;
     height: auto;
     box-shadow: 0 3px 3px 3px #000000;
     @media screen and (max-width:900px) {
         width: 70%;
     }
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
 }
