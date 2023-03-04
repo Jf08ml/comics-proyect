@@ -1,5 +1,5 @@
 <template class="container">
-  <div>
+  <div >
     <div>
       <NavigationBar />
     </div>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import NavigationBar from './layouts/NavigationBar.vue';
+import NavigationBar from './layouts/Navbar/NavigationBar.vue';
 
 </script>
 
