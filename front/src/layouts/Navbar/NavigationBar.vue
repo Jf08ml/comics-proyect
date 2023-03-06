@@ -4,12 +4,12 @@
       <NavbarIcone />
     </div>
     <div class="navbar-sections">
-      <div style="width: 60vw;">
-      <NavbarPublic />
-    </div>
-    <div style="width: 40vw;">
-      <NavbarUser />
-    </div>
+      <div class="navbar-sections-public">
+        <NavbarPublic />
+      </div>
+      <div class="navbar-sections-user">
+        <NavbarUser />
+      </div>
     </div>
     <div class="menu-hamburger">
       <NavbarMobile />
@@ -18,7 +18,7 @@
 </template>
   
 <script setup>
-import "@/assets/scss/navbar.scss";
+import "@/assets/scss/navbar/navbar.scss";
 
 
 import NavbarIcone from "./NavbarIcone.vue"

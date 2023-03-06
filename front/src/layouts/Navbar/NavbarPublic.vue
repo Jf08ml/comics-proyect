@@ -1,7 +1,7 @@
 <template>
     <div class="navbar-content-allusers">
         <div class="nav-link" v-for="menuItem in menuItems" :key="menuItem.name">
-            <router-link custom :to="'/' + menuItem.route">
+            <router-link custom :to="{name: menuItem.route}">
                 <template v-slot="{ navigate }">
                     <div class="menu-wrapper">
                         <button @click="navigate" @mouseover="menuItem.showMenu = true" class="nav-button-menu">
@@ -60,6 +60,7 @@ const menuItems = ref([
     ],
   },
 ]);
+
 </script>
 
 <style></style>

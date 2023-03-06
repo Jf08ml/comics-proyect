@@ -1,16 +1,7 @@
 <template>
     <div class="menu-hamburger">
-        <div class="nav-link" v-if="authStore.token" style="margin-top: 3px">
-            <button @click="logOut()" class="nav-button-menu-logout">
-                <v-icon name="co-account-logout" scale="1.5" title="Real Comics" />
-            </button>
-            <router-link custom to="/profile">
-                <template v-slot="{ navigate }">
-                    <button @click="navigate" @mouseover="showMenuUser = true" class="nav-button-icone">
-                        <v-icon name="ri-account-pin-circle-fill" scale="1.5" title="Real Comics" color="white" />
-                    </button>
-                </template>
-            </router-link>
+        <div class="nav-link-usersession" v-if="authStore.token">
+            <NavbarUserSession />
         </div>
         <div class="hamburger-icon" @click="toggleMenu">
             <v-icon v-if="!isOpen" name="ri-menu-fill" scale="2" title="Menu" color="white" />
@@ -79,20 +70,13 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/store/auth";
-import { useRouter } from "vue-router";
+import NavbarUserSession from "./NavbarUserSession.vue";
+
 
 const authStore = useAuthStore();
-const showMenuUser = ref(false);
 const isOpen = ref(false);
-const router = useRouter();
 
 
-const logOut = () => {
-  localStorage.clear();
-  authStore.token = null;
-  authStore.refreshToken = null;
-  router.push("/");
-};
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;

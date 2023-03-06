@@ -22,8 +22,8 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-const HOST = '192.168.101.13'
+// const HOST = '192.168.101.13'
 app.listen(PORT, () => {
-  // console.log(`Server listening on port ${PORT}`);
-  console.log(`Network listening at http://${HOST}:${PORT}/`);
+  console.log(`Server listening on port ${PORT}`);
+  // console.log(`Network listening at http://${HOST}:${PORT}/`);
 });
