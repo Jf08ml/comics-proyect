@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api';
-// const BASE_URL = 'http://192.168.101.13:3000/api/'
+// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://192.168.101.13:3000/api'
 
 export async function login(email, password) {
   try {
@@ -26,7 +26,7 @@ export async function login(email, password) {
 export async function signup(email, password) {
   try {
     const response = await axios.post(
-      `${BASE_URL}/singup`,
+      `${BASE_URL}/signup`,
       {
         email, password
       },
