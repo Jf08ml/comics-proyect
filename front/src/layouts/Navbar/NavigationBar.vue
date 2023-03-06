@@ -1,10 +1,16 @@
 <template>
   <nav class="navbar">
-    <NavbarIcone />
-    <NavbarPublic />
-    <NavbarUser />
-
-
+    <div>
+      <NavbarIcone />
+    </div>
+    <div class="navbar-sections">
+      <div style="width: 60vw;">
+      <NavbarPublic />
+    </div>
+    <div style="width: 40vw;">
+      <NavbarUser />
+    </div>
+    </div>
     <div class="menu-hamburger">
       <div class="nav-link" v-if="authStore.token" style="margin-top: 3px">
         <button @click="logOut()" class="nav-button-menu-logout">

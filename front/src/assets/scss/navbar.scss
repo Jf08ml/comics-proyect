@@ -10,14 +10,21 @@ $font-color: #ffffff;
     height: 7vh;
     box-shadow: 0 4px 3px -2px #000000;
 
+  .navbar-sections {
+    display: flex; 
+    align-items: center;
+    width: 40vw;
+    height: 100%;
+    @media screen and (max-width:900px) {
+      display:none;
+  }
+  }
+
     .navbar-content {
         display: flex;
         align-items: center;
         width: 40vw;
         height: 100vh;
-        @media screen and (max-width:900px) {
-            display:none;
-        }
     }
 
     .navbar-brand {
@@ -37,7 +44,6 @@ $font-color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: space-around;
-        width: 40%;
         font-size: 1rem;
     }
 
@@ -46,7 +52,6 @@ $font-color: #ffffff;
         align-items: center;
         justify-content: space-around;
         margin: auto;
-        width: 50%;
         font-size: 1rem;
     }
 
@@ -64,6 +69,7 @@ $font-color: #ffffff;
     .nav-link-usersession {
         font-size: 1rem;
         box-shadow: 0px 0px 4px black;
+        margin: auto;
         border-radius: 5px;
         padding: 4px;
         button {
