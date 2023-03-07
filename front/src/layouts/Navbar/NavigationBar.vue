@@ -25,12 +25,6 @@ import NavbarIcone from "./NavbarIcone.vue"
 import NavbarPublic from "./NavbarPublic.vue"
 import NavbarUser from './NavbarUser.vue'
 import NavbarMobile from './NavbarMobile.vue'
-
-
-
-
-
-
 </script>
 
 <style lang="scss" scoped></style>

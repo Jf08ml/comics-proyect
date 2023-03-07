@@ -1,6 +1,6 @@
 <template>
     <div class="navbar-content-usersession">
-        <div style="display: flex;" v-if="!authStore.token">
+        <div style="display: flex;" v-if="!authStore.isAuthenticated">
             <div class="nav-link" style="margin-inline: 5px;">
                 <router-link custom :to="{ name: 'login' }">
                     <template v-slot="{ navigate }">
@@ -20,7 +20,7 @@
                 </router-link>
             </div>
         </div>
-        <div class="nav-link-usersession" v-if="authStore.token">
+        <div class="nav-link-usersession" v-if="authStore.isAuthenticated">
             <NavbarUserSession />
         </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="menu-hamburger">
-        <div class="nav-link-usersession" v-if="authStore.token">
+        <div class="nav-link-usersession" v-if="authStore.isAuthenticated">
             <NavbarUserSession />
         </div>
         <div class="hamburger-icon" @click="toggleMenu">
