@@ -1,3 +1,16 @@
+.container-persona-data {
+    height: 100%; 
+    width: 100%;
+}
+
+.section-title {
+    height: 15%;
+}
+
+.section-content {
+    height: 85%;
+     width: 100%;
+}
 .form {
     width: 100%;
     margin:  auto;
@@ -12,10 +25,43 @@
         width: 100%;
     }
 
-    button {
-        background-color: #ed8bb2;
-        border: none;
-        height: 5vh;
-        box-shadow:  0px 0px 5px rgb(90, 87, 87);
+    input:focus {
+        border: 2px solid #a41c54;
+        outline: none;
     }
+
+    button {
+        background-color: #a41c54;
+        color: #e9b9cc;
+        border: grey;
+        border-radius: 5px;
+        width: 10vh;
+        height: 5vh;
+        box-shadow:  0px 0px 2px rgb(90, 87, 87);
+        cursor: pointer;
+        
+        &:hover {
+            color: white;
+            background-color:#ed8bb2;
+        }
+    }
+}
+
+.div-form {
+    display: flex; 
+    width: 80%;
+    margin-block: 5px;
+}
+
+.div-form-upload  {
+    display: grid; 
+    justify-content: center; 
+    width: 80%; 
+    border: 1px solid gray; 
+    border-radius: 10px;
+    margin-block: 10px;
+}
+
+.inputfile {
+    border: none;
 }

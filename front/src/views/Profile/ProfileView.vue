@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <div class="content">
+    <div class="container-profile">
+        <div class="content-profile">
             <div class="navigation">
                 <button :class="{active: currentComponent === PersonalData}" @click="currentComponent = PersonalData">Personal Data</button>
                 <button :class="{active: currentComponent === PaymentMethods}" @click="currentComponent = PaymentMethods">Payment Methods</button>

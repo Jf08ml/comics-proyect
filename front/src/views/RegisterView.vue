@@ -6,6 +6,9 @@
         </div>
         <div class="content-form">
           <form @submit.prevent="onSubmit">
+            <input v-model="nickname" placeholder="Nickname" type="text" required>
+            <p v-if="nickname == ''" style="color: red;">Este campo es requerido</p>
+
             <input v-model="email" placeholder="Email" type="text" required>
             <p v-if="email == ''" style="color: red;">Este campo es requerido</p>
   
@@ -32,6 +35,7 @@
   
   const email = ref('juanf@example.com');
   const password = ref('contraseña123');
+  const nickname = ref(null);
   const showMsgError = ref('')
   const onSubmit = async () => {
     try {
