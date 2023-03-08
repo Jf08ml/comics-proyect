@@ -1,22 +1,21 @@
-.container{
+.container {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     height: 90vh;
 }
 
 .content {
-    background:white;
+    background: white;
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid white;
-    border-radius: 10px;
     width: 80vw;
-    height: auto;
+    height: 80vh;
     box-shadow: 0 3px 3px 3px #000000;
+
     @media screen and (max-width:900px) {
         width: 70%;
     }
@@ -26,4 +25,39 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
+    align-items: center;
+    background-color: #ed8bb2;
+    height: 10%;
+    width: 100%;
+
+    button.active {
+        color: white;
+        background-color: #a41c54;
+    }
+
+    button {
+        height: 100%;
+        width: 100%;
+        font-family: $primary-font;
+        font-size: 15px;
+        color: #a41c54;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+
+        &:hover {
+            color: white;
+            background-color: #a41c54;
+        }
+    }
+
+}
+
+.profile-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
 }

@@ -15,30 +15,33 @@ export const useAuthStore = defineStore('auth', {
       const response = await login(email, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
-      Cookies.set('accessToken', this.token, { httpOnly: true, secure: true, sameSite: 'strict' });
-      Cookies.set('refreshToken', this.refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+      Cookies.set('accessToken', this.token, { sameSite: 'strict' });
+      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
     async signup(email, password) {
       const response = await signup(email, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
-      Cookies.set('accessToken', this.token, { httpOnly: true, secure: true, sameSite: 'strict' });
-      Cookies.set('refreshToken', this.refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+      Cookies.set('accessToken', this.token, { sameSite: 'strict' });
+      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
     async refreshToken() {
       const response = await refreshTokens(this.refreshToken);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
+      Cookies.set('accessToken', this.token, { sameSite: 'strict' });
+      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
     async logout() {
       this.token = null;
       this.refreshToken = null;
-      Cookies.remove('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
-      Cookies.remove('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
-      console.log("Cookies eliminadas:", Cookies.get());
+      Cookies.remove('accessToken', { sameSite: 'strict' });
+      Cookies.remove('refreshToken', { sameSite: 'strict' });
     },
+
   },
 });
+
