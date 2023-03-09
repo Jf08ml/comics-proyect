@@ -19,8 +19,8 @@ export const useAuthStore = defineStore('auth', {
       Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
-    async signup(email, password) {
-      const response = await signup(email, password);
+    async signup(nickname, email, password) {
+      const response = await signup(nickname, email, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
       Cookies.set('accessToken', this.token, { sameSite: 'strict' });

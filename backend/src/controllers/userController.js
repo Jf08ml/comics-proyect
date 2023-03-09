@@ -4,14 +4,19 @@ const User = require('../models/users');
 
 async function signup(req, res) {
   try {
-    const { email, password } = req.body;
+    const { nickname, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
-    const user = new User({ email, password });
+    const existingNick = await User.findOne({ nickname });
+    if (existingNick) {
+      return res.status(400).json({ message: 'Nickname already exists' });
+    }
+
+    const user = new User({ nickname, email, password });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });

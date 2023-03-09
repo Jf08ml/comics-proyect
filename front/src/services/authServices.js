@@ -23,12 +23,12 @@ export async function login(email, password) {
   }
 }
 
-export async function signup(email, password) {
+export async function signup(nickname, email, password) {
   try {
     const response = await axios.post(
       `${BASE_URL}/signup`,
       {
-        email, password
+        nickname, email, password
       },
       {
         headers: {

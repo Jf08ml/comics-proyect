@@ -7,7 +7,7 @@
                 <button :class="{active: currentComponent === ContentStatistics}" @click="currentComponent = ContentStatistics">Statitics</button>
                 <button :class="{active: currentComponent === ContentCreated}"  @click="currentComponent = ContentCreated">Content Created</button>
             </div>
-            <div class="profile-content">
+            <div class="navitagion-content">
                 <component :is="currentComponent" />
             </div>
         </div>

@@ -38,8 +38,9 @@
   const nickname = ref(null);
   const showMsgError = ref('')
   const onSubmit = async () => {
+    showMsgError.value = ''
     try {
-      await authStore.signup(email.value, password.value);
+      await authStore.signup(nickname.value, email.value, password.value);
       router.push("/realcomics");
     } catch (error) {
       if(error.message === 'Email already exists'){

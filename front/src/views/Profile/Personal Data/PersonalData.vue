@@ -1,10 +1,7 @@
 <template>
-    <div class="container-persona-data">
-        <div align="center" class="section-title">
-            <div>
-                <h3>Personal data</h3>
-                <span>Enter your data</span>
-            </div>
+    <div class="container-personal-data">
+        <div style="display:flex; justify-content: center; align-items: center;" class="section-title">
+                <p style="color: #b81f59">Section to modify personal data, account and password</p>
         </div>
         <div class="section-content">
             <form class="form" enctype="multipart/form-data">
@@ -27,6 +24,11 @@
                             title="Verificación" style="cursor: pointer" />
                     </label>
                     <input class="inputfile" type="file" id="imagen" name="imagen" aria-label="Archivo"/>
+                </div>
+                <span style="color: #b81f59; margin-top: 15px;">Change your password</span>
+                <div class="div-form">
+                    <input type="password" placeholder="Current password" />
+                    <input type="password" placeholder="New Password" />
                 </div>
                 <div>
                     <button>Save</button>

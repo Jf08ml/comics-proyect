@@ -1,4 +1,4 @@
-.container-persona-data {
+.container-personal-data {
     height: 100%; 
     width: 100%;
 }
@@ -14,21 +14,10 @@
 .form {
     width: 100%;
     margin:  auto;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    input {
-        border-radius: 8px;
-        margin: 15px;
-        width: 100%;
-    }
-
-    input:focus {
-        border: 2px solid #a41c54;
-        outline: none;
-    }
 
     button {
         background-color: #a41c54;

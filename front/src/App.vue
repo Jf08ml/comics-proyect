@@ -1,9 +1,9 @@
-<template class="container">
+<template>
   <div >
-    <div>
+    <div style="height: 10vh; width: 100vw;">
       <NavigationBar />
     </div>
-    <div>
+    <div style="height: 90vh; width: 100vw;">
       <router-view />
     </div>
   </div>
