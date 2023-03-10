@@ -8,7 +8,7 @@
         <form @submit.prevent="onSubmit">
 
           <div class="form-register-div-input-nick">
-            <input class="input-register-nick" :style="{border: '2px solid' + nicknameValid.color}" v-model="nickname" placeholder="Nickname" type="text" required
+            <input class="input-register-nick" :style="borderNicknameColor" v-model="nickname" placeholder="Nickname" type="text" required
               @input="validateNickname" @blur="validateInput('nickname')">
             <v-icon class="icon-register-nick" :name="nicknameValid.name" scale="1" :color="nicknameValid.color" />
             <!-- <v-icon v-if="showIconNicknameInvalid" class="icon-register-nick" name="bi-x-circle-fill" scale="1" color="red" /> -->
@@ -59,7 +59,8 @@ const showErrorInputPassword = ref('')
 const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
 
-const nicknameValid = { name: '', color: ''};
+const nicknameValid = { name: '', color: '' };
+const borderNicknameColor = ref('')
 
 const validateNickname = async () => {
   if (nickname.value.length >= 6) {
@@ -67,10 +68,12 @@ const validateNickname = async () => {
     if (response.value === true) {
       nicknameValid.name = 'bi-x-circle-fill';
       nicknameValid.color = 'red';
+      borderNicknameColor.value = 'border: 2px solid red';
     }
     if (response.value === false) {
       nicknameValid.name = 'bi-check-circle-fill';
       nicknameValid.color = '#afd85d';
+      borderNicknameColor.value = 'border: 2px solid #afd85d';
     }
   } else {
     nicknameValid.name = '';
