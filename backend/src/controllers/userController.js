@@ -78,8 +78,23 @@ async function refreshTokens(req, res) {
   }
 }
 
+async function searchNickname(req, res) {
+  const { nickname } = req.params;
+  try {
+    const existingNick = await User.findOne({ nickname });
+    if (existingNick) {
+      return res.status(200).json({ value: true, message: 'Nickname already exists' });
+    }
+    return res.status(200).json({ value: false, message: 'Nickname available' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error searching nickname' });
+  }
+}
+
 module.exports = {
   signup,
   login,
-  refreshTokens
+  refreshTokens,
+  searchNickname
 };

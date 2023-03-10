@@ -47,8 +47,25 @@ export async function refreshToken(refreshToken) {
   try {
     const response = await axios.post(`${BASE_URL}/refresh-token`, { refreshToken });
     return response.data;
-  } catch (error) { 
+  } catch (error) {
     console.error(error);
     throw new Error('Token refresh failed');
+  }
+}
+
+export async function searchNickname(nickname) {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/searchnickname/${nickname}`,
+      {
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error service');
   }
 }

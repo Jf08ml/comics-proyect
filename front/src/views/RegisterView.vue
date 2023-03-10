@@ -6,7 +6,10 @@
       </div>
       <div class="content-form">
         <form @submit.prevent="onSubmit">
-          <input v-model="nickname" placeholder="Nickname" type="text" required @blur="validateInput('nickname')">
+          <div class="input-group-addon">
+            <span><v-icon name="bi-check-circle-fill" scale="1" color="#afd85d" /></span>
+          <input v-model="nickname" :style="successNickname" placeholder="Nickname" type="text" required @input="validateNickname"  @blur="validateInput('nickname')">
+          </div>
           <p style="color: red;">{{ showErrorInputNickname }}</p>
 
           <input v-model="email" placeholder="Email" type="text" name="nickname" required @blur="validateInput('email')">
@@ -46,6 +49,21 @@ const showErrorInputEmail = ref(null);
 const showErrorInputPassword = ref(null)
 
 const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
+const successNickname = ref('');
+
+const validateNickname = async () => {
+  if(nickname.value.length >= 6) {
+    const response = await authStore.searchNickname(nickname.value); 
+    if(response.value === true) {
+      successNickname.value= 'border: 2px solid red';
+    }
+    if(response.value === false){
+      successNickname.value = 'border: 2px solid #afd85d';
+    }
+  } else {
+    successNickname.value = ''
+  }
+}
 
 const validateInput = (name) => {
   formMsgError.value = "";
@@ -61,7 +79,7 @@ const validateInput = (name) => {
       break;
     case 'email':
       if (!email.value || email.value == '') {
-        showErrorInputEmail.value = "Nickname is required";
+        showErrorInputEmail.value = "Email is required";
       } else if (!emailRegex.test(email.value)) {
         showErrorInputEmail.value = "Email must be valid";
       } else {
@@ -106,4 +124,5 @@ const onSubmit = async () => {
 };
 
 </script>
+
     

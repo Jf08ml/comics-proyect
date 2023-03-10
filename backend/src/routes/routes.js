@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/auth').verifyToken;
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
 router.post('/refresh-tokens', userController.refreshTokens);
+router.get('/searchnickname/:nickname', userController.searchNickname);
 router.get('/protected', authMiddleware, (req, res) => {
   res.json({ message: 'You are authorized to access this route.' });
 });

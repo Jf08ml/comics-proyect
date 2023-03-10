@@ -3,9 +3,9 @@ import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
-import { BiCaretRightFill, SiGitbook, CoAccountLogout, RiAccountPinCircleFill, FaPersonBooth, MdLogin, MdNewlabelTwotone, RiMenuFill, MdCloseSharp, HiInformationCircle } from "oh-vue-icons/icons";
+import { BiCaretRightFill, SiGitbook, CoAccountLogout, RiAccountPinCircleFill, FaPersonBooth, MdLogin, MdNewlabelTwotone, RiMenuFill, MdCloseSharp, HiInformationCircle, BiCheckCircleFill  } from "oh-vue-icons/icons";
 
-addIcons(BiCaretRightFill, SiGitbook, CoAccountLogout, RiAccountPinCircleFill, FaPersonBooth, MdLogin, MdNewlabelTwotone, RiMenuFill, MdCloseSharp, HiInformationCircle);
+addIcons(BiCaretRightFill, SiGitbook, CoAccountLogout, RiAccountPinCircleFill, FaPersonBooth, MdLogin, MdNewlabelTwotone, RiMenuFill, MdCloseSharp, HiInformationCircle, BiCheckCircleFill );
 
 const app = createApp(App)
 const pinia = createPinia()
