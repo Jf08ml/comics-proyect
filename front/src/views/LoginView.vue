@@ -11,8 +11,8 @@
 
           <input v-model="password" placeholder="Password" type="password" required>
           <p v-if="password == ''" style="color: red; margin-bottom: 8px;">Este campo es requerido</p>
-          <router-link v-if="!showMsgError" to="/recuperar">
-            <p>¿Olvidaste tu contraseña?</p>
+          <router-link  to="/recuperar">
+            <span>¿Olvidaste tu contraseña?</span>
           </router-link>
           <p v-if="showMsgError" style="color: red; margin-top: 5px;">{{showMsgError}}</p>
 

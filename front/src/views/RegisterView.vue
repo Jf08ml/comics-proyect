@@ -6,22 +6,30 @@
       </div>
       <div class="content-form">
         <form @submit.prevent="onSubmit">
-          <div class="input-group-addon">
-            <span><v-icon name="bi-check-circle-fill" scale="1" color="#afd85d" /></span>
-          <input v-model="nickname" :style="successNickname" placeholder="Nickname" type="text" required @input="validateNickname"  @blur="validateInput('nickname')">
+
+          <div class="form-register-div-input-nick">
+            <input class="input-register-nick" :style="{border: '2px solid' + nicknameValid.color}" v-model="nickname" placeholder="Nickname" type="text" required
+              @input="validateNickname" @blur="validateInput('nickname')">
+            <v-icon class="icon-register-nick" :name="nicknameValid.name" scale="1" :color="nicknameValid.color" />
+            <!-- <v-icon v-if="showIconNicknameInvalid" class="icon-register-nick" name="bi-x-circle-fill" scale="1" color="red" /> -->
           </div>
-          <p style="color: red;">{{ showErrorInputNickname }}</p>
+          <p>{{ showErrorInputNickname }}</p>
 
-          <input v-model="email" placeholder="Email" type="text" name="nickname" required @blur="validateInput('email')">
-          <p style="color: red;">{{ showErrorInputEmail }}</p>
+          <div class="form-register-div-input">
+            <input class="input-register" v-model="email" placeholder="Email" type="text" name="nickname" required
+              @blur="validateInput('email')">
+          </div>
+          <p>{{ showErrorInputEmail }}</p>
 
-          <input v-model="password" placeholder="Password" type="password" name="nickname" required
-            @blur="validateInput('password')">
-          <p style="color: red;">{{ showErrorInputPassword }}</p>
-          <p v-if="formMsgError" style="color: red; margin-top: 5px;">{{ formMsgError }}</p>
+          <div class="form-register-div-input">
+            <input class="input-register" v-model="password" placeholder="Password" type="password" name="nickname"
+              required @blur="validateInput('password')">
+          </div>
+          <p>{{ showErrorInputPassword }}</p>
+
+          <p v-if="formMsgError" style="margin-top: 5px;">{{ formMsgError }}</p>
 
           <button :disabled="disabled" type="submit" class="button-primary" @click="checkFormValidity">Register</button>
-
         </form>
       </div>
     </div>
@@ -37,31 +45,37 @@ import { useAuthStore } from '@/store/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const nickname = ref(null);
-const email = ref(null);
-const password = ref(null);
-const formMsgError = ref(null)
+const nickname = ref('');
+const email = ref('');
+const password = ref('');
+const formMsgError = ref('')
 
 const disabled = ref(false)
 
-const showErrorInputNickname = ref(null);
-const showErrorInputEmail = ref(null);
-const showErrorInputPassword = ref(null)
+const showErrorInputNickname = ref('');
+const showErrorInputEmail = ref('');
+const showErrorInputPassword = ref('')
 
 const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
-const successNickname = ref('');
+
+
+const nicknameValid = { name: '', color: ''};
 
 const validateNickname = async () => {
-  if(nickname.value.length >= 6) {
-    const response = await authStore.searchNickname(nickname.value); 
-    if(response.value === true) {
-      successNickname.value= 'border: 2px solid red';
+  if (nickname.value.length >= 6) {
+    const response = await authStore.searchNickname(nickname.value);
+    if (response.value === true) {
+      nicknameValid.name = 'bi-x-circle-fill';
+      nicknameValid.color = 'red';
     }
-    if(response.value === false){
-      successNickname.value = 'border: 2px solid #afd85d';
+    if (response.value === false) {
+      nicknameValid.name = 'bi-check-circle-fill';
+      nicknameValid.color = '#afd85d';
     }
   } else {
-    successNickname.value = ''
+    nicknameValid.name = '';
+    nicknameValid.color = '';
+
   }
 }
 
@@ -124,5 +138,7 @@ const onSubmit = async () => {
 };
 
 </script>
+
+<style></style>
 
     

@@ -49,13 +49,14 @@ form {
         width: 100%;
 
         @media screen and (max-width:900px) {
-            width: 60%;
+            width: 70%;
         }
     }
 
     p {
         margin: 0px;
         font-size: 10px;
+        color: red;
     }
 
     button {
@@ -63,4 +64,36 @@ form {
         padding-block: 4%;
     }
     
+    span {
+        font-size: 10px;
+    }
+    
 }
+
+.form-register-div-input-nick {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-end; 
+    position: relative;
+}
+
+.form-register-div-input {
+    display: flex; 
+    align-items: center; 
+    align-content: center;
+}
+
+.input-register-nick {
+    width: 100%; 
+    position: relative;
+}
+
+.icon-register-nick {
+    position: absolute; 
+    right: 20px;
+}
+
+.input-register {
+    width: 100%;
+}
+
