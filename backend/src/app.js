@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const routes = require('./routes/routes');
+const routes = require('./routes/auth');
 
 // Configuración de middlewares
 app.use(cors());

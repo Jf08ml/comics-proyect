@@ -59,7 +59,7 @@ const showErrorInputPassword = ref('')
 const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
 
-const nicknameValid = { name: '', color: '' };
+const nicknameValid = { name: 'si-superuser', color: 'grey' };
 const borderNicknameColor = ref('')
 
 const validateNickname = async () => {
@@ -73,11 +73,12 @@ const validateNickname = async () => {
     if (response.value === false) {
       nicknameValid.name = 'bi-check-circle-fill';
       nicknameValid.color = '#afd85d';
-      borderNicknameColor.value = 'border: 2px solid #afd85d';
+      borderNicknameColor.value = 'border: 2px solid #afd85d; box-shadow: 0px 0px 3px #afd85d';
     }
   } else {
-    nicknameValid.name = '';
-    nicknameValid.color = '';
+    nicknameValid.name = 'si-superuser';
+    nicknameValid.color = 'grey';
+    borderNicknameColor.value = '';
 
   }
 }
