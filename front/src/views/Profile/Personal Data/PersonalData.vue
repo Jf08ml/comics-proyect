@@ -4,23 +4,12 @@
             <div class="profile-pic" :class="{ 'default-pic': !userPhoto }">
                 <button @click="showModal" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.7"
                         title="Change photo" color="black" /></button>
-                <UploadPhoto v-if="showModalUpload">
-                        <div class="button-close-modal"><button class="button-close" @click="showModal">X</button></div>
-                        <form class="form-modal" enctype="multipart/form-data" @submit.prevent="onSubmit">
-                            <div class="div-form-upload">
-                                <label align="center" for="imagen" style="margin: auto;">
-                                    Profile photo
-                                    <v-icon name="hi-information-circle" scale="1" title="Verificación" />
-                                </label>
-                                <input @change="onFileChange" type="file" id="imagen" name="imagen"
-                                    aria-label="Archivo" />
-                            </div>
-                            <div class="buttons-modals">
-                                <button class="button-save">Save</button>
-                            </div>
-                        </form>
-                </UploadPhoto>
             </div>
+
+            <UploadPhoto v-if="showModalUpload">
+                <FormUploadPhoto :onShowModal="showModal" />
+            </UploadPhoto>
+            
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
             </div>
@@ -71,6 +60,7 @@ import { useAuthStore } from '@/store/auth';
 import "@/assets/scss/profile/personaldata/personaldata.scss";
 
 import UploadPhoto from './Modals/UploadPhoto.vue';
+import FormUploadPhoto from './Forms/FormUploadPhoto.vue';
 
 const authStore = useAuthStore();
 
@@ -114,11 +104,13 @@ const onSubmit = async () => {
 
 <style scoped>
 .profile-pic {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 20%;
+    margin: 10px;
     overflow: hidden;
     position: relative;
+    border: 1px solid black;
 }
 
 .profile-pic img {
@@ -134,7 +126,7 @@ const onSubmit = async () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('http://www.losolivosbogota.com/sites/salas/form/imagenes/sin_imagen.png');
+    background-image: url('../../../../public/no-profile-photo.png');
     background-size: cover;
     background-position: center;
 }

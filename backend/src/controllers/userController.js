@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION } = process.env;
+const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION, API_KEY_IMGBB } = process.env;
 const User = require('../models/users');
+const axios = require('axios');
 
 async function signup(req, res) {
   try {
@@ -93,7 +94,7 @@ async function searchNickname(req, res) {
 }
 
 async function updateUser(req, res) {
-  const {name, lastName, country, city, nickname, email} = req.body;
+  const { name, lastName, country, city, nickname, email } = req.body;
   console.log(req.body)
   try {
     const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
@@ -104,10 +105,10 @@ async function updateUser(req, res) {
       return res.status(401).json({ message: 'Unauthorized updateUser' });
     }
 
-    if(req.file) {
+    if (req.file) {
       try {
         const response = await axios.post('https://api.imgbb.com/1/upload', {
-          key: env.process.API_KEY_IMGBB,
+          key: API_KEY_IMGBB,
           image: req.file,
         });
         userUrlPhoto = response.data.data.url; // Asignar el valor de la respuesta de la API a userUrlPhoto
@@ -115,7 +116,7 @@ async function updateUser(req, res) {
         return res.status(400).send(error); // Si hay un error en la API de ImgBB, devolver una respuesta con status 400
       }
     }
-    
+
     user.name = name;
     user.lastName = lastName;
     user.country = country;
@@ -131,11 +132,52 @@ async function updateUser(req, res) {
   }
 }
 
+async function updateProfilePhoto(req, res) {
+  try {
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+
+    let userUrlPhoto = ''; // Definir como una variable let en lugar de una constante
+
+    const user = await User.findById(decodedToken.id);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized updateUser' });
+    }
+
+    console.log(req)
+
+    if (req.body) {
+      try {
+        const response = await axios.post('https://api.imgbb.com/1/upload', {
+          key: API_KEY_IMGBB,
+          image: req.body,
+        });
+        userUrlPhoto = response.data.data.url; // Asignar el valor de la respuesta de la API a userUrlPhoto
+      } catch (error) {
+        console.log(error)
+        return res.status(400).json({message: error}) // Si hay un error en la API de ImgBB, devolver una respuesta con status 400
+      }
+    } else {
+      console.log('error no hay file')
+      return res.status(400).json({message: 'Error no hay foto'})
+    }
+
+    user.userUrlPhoto = userUrlPhoto;
+
+    await user.save();
+    res.status(200).json({ message: 'Photo update success' });
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+}
+
 
 module.exports = {
   signup,
   login,
   refreshTokens,
   searchNickname,
-  updateUser
+  updateUser,
+  updateProfilePhoto
 };

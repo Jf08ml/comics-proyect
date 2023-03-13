@@ -9,7 +9,8 @@ router.post('/signup', userController.signup);
 router.post('/login', userController.login);
 router.post('/refresh-tokens', userController.refreshTokens);
 router.get('/searchnickname/:nickname', userController.searchNickname);
-router.put('/updateuser', authMiddleware, upload.none(), userController.updateUser);
+router.put('/updateuser', authMiddleware, userController.updateUser);
+router.put('/updateprofilephoto', authMiddleware, upload.single('imagen'), userController.updateProfilePhoto)
 router.get('/protected', authMiddleware,  (req, res) => {
   res.json({ message: 'You are authorized to access this route.' });
 });
