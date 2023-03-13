@@ -4,13 +4,14 @@
 
     p {
         color: #b81f59;
-        font-size: 15px;
+        font-size: 16px;
     }
 }
 
 .section-title {
-    height: 15%;
+    height: auto;
     display:flex; 
+    flex-direction:column;
     justify-content: center; 
     align-items: center;
 }
@@ -25,6 +26,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-top: 1px solid rgb(197, 191, 191);
 
 
     button {
@@ -32,7 +34,73 @@
         color: #e9b9cc;
         border: grey;
         border-radius: 5px;
-        width: 10vh;
+        width: auto;
+        height: 5vh;
+        box-shadow:  0px 0px 2px rgb(90, 87, 87);
+        cursor: pointer;
+        
+        &:hover {
+            color: white;
+            background-color:#ed8bb2;
+        }
+    }
+}
+
+.button-close-modal {
+    height: 5%; 
+    width: 100%; 
+    display:flex; 
+    justify-content: right;
+
+    button {
+        color: red;
+        background-color: transparent;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+
+        &:hover {
+            font-weight:  bolder;
+            text-shadow: 0px 0px 5px rgba(244, 71, 28, 0.937);
+        }
+    }
+
+}
+
+.form-modal {
+    width: 100%;
+    margin:  auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .buttons-modals {
+        width: 100%; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        align-content: center;
+
+        .button-save {
+            background-color: #b81f59;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        
+            &:hover {
+                background-color: darken(#c3064e, 10%);
+            }
+        }
+    }
+
+    button {
+        background-color: #a41c54;
+        color: #e9b9cc;
+        border: grey;
+        border-radius: 5px;
+        width: 28%;
         height: 5vh;
         box-shadow:  0px 0px 2px rgb(90, 87, 87);
         cursor: pointer;
@@ -46,19 +114,20 @@
 
 .div-form {
     display: flex; 
-    width: 80%;
+    width: 90%;
     margin-block: 5px;
 }
 
 .div-form-upload  {
     display: grid; 
     justify-content: center; 
-    width: 80%; 
-    border: 1px solid gray; 
+    width: 100%; 
     border-radius: 10px;
     margin-block: 10px;
+    
+    input {
+        border: none;
+        box-shadow: none;
+    }
 }
 
-.inputfile {
-    border: none;
-}

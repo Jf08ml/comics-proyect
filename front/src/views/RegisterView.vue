@@ -68,7 +68,7 @@ const validateNickname = async () => {
     if (response.value === true) {
       nicknameValid.name = 'bi-x-circle-fill';
       nicknameValid.color = 'red';
-      borderNicknameColor.value = 'border: 2px solid red';
+      borderNicknameColor.value = 'border: 2px solid red; box-shadow: 0px 0px 3px red';
     }
     if (response.value === false) {
       nicknameValid.name = 'bi-check-circle-fill';

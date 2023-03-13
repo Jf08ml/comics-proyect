@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api';
-// const BASE_URL = 'http://192.168.101.13:3000/api'
+// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://192.168.101.13:3000/api'
 
 export async function login(email, password) {
   try {
@@ -67,5 +67,23 @@ export async function searchNickname(nickname) {
   } catch (error) {
     console.error(error);
     throw new Error('Error service');
+  }
+}
+
+export async function updateUser(userData, token) {
+  console.log(userData)
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/updateuser`, userData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `${token}`,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al actualizar los datos del usuario');
   }
 }

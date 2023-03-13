@@ -34,8 +34,8 @@ import { useAuthStore } from '@/store/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref('juanf@example.com');
-const password = ref('contraseña123');
+const email = ref('chikimalvin@mail.com');
+const password = ref('Diana.123');
 const showMsgError = ref('')
 
 const onSubmit = async () => {

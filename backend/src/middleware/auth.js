@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
+const multer = require('multer');
 
 function verifyToken(req, res, next) {
   const token = req.headers['authorization'];
@@ -7,6 +8,7 @@ function verifyToken(req, res, next) {
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
+  
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {

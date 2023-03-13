@@ -43,8 +43,8 @@ async function login(req, res) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-    const refreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_EXPIRATION });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ token, refreshToken });
   } catch (err) {
@@ -59,7 +59,7 @@ async function refreshTokens(req, res) {
 
     jwt.verify(refreshToken, JWT_REFRESH_SECRET, async (err, decoded) => {
       if (err) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: err.name });
       }
 
       const user = await User.findById(decoded.id);
@@ -81,7 +81,7 @@ async function refreshTokens(req, res) {
 async function searchNickname(req, res) {
   const { nickname } = req.params;
   try {
-    const existingNick = await User.findOne({ nickname });
+    const existingNick = await User.findOne({ nickname: { $regex: new RegExp('^' + nickname.toLowerCase() + '$', 'i') } });
     if (existingNick) {
       return res.status(200).json({ value: true, message: 'Nickname already exists' });
     }
@@ -92,9 +92,50 @@ async function searchNickname(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  const {name, lastName, country, city, nickname, email} = req.body;
+  console.log(req.body)
+  try {
+    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    let userUrlPhoto = ''; // Definir como una variable let en lugar de una constante
+    const user = await User.findById(decodedToken.id);
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized updateUser' });
+    }
+
+    if(req.file) {
+      try {
+        const response = await axios.post('https://api.imgbb.com/1/upload', {
+          key: env.process.API_KEY_IMGBB,
+          image: req.file,
+        });
+        userUrlPhoto = response.data.data.url; // Asignar el valor de la respuesta de la API a userUrlPhoto
+      } catch (error) {
+        return res.status(400).send(error); // Si hay un error en la API de ImgBB, devolver una respuesta con status 400
+      }
+    }
+    
+    user.name = name;
+    user.lastName = lastName;
+    user.country = country;
+    user.city = city;
+    user.nickname = nickname;
+    user.email = email;
+    user.userUrlPhoto = userUrlPhoto;
+
+    await user.save();
+    res.status(200).json({ message: 'User information updated successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+}
+
+
 module.exports = {
   signup,
   login,
   refreshTokens,
-  searchNickname
+  searchNickname,
+  updateUser
 };
