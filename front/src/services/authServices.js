@@ -53,6 +53,23 @@ export async function refreshToken(refreshToken) {
   }
 }
 
+export async function getUser(token) {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/getuser`,
+      {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Authorization': `${token}`,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function searchNickname(nickname) {
   try {
     const response = await axios.get(
@@ -76,7 +93,7 @@ export async function updateUser(userData, token) {
       `${BASE_URL}/updateuser`, userData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': `${token}`,
         }
       }
@@ -87,14 +104,13 @@ export async function updateUser(userData, token) {
   }
 }
 
-export async function updateProfilePhoto(token, userPhotoUrl) {
+export async function updateProfilePhoto(userPhotoUrl, token) {
   try {
-    //implementar
     const response = await axios.put(
       `${BASE_URL}/updateprofilephoto`, userPhotoUrl,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': `${token}`,
         }
       }

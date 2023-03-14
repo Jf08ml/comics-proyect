@@ -1,4 +1,4 @@
-import { login, refreshToken, signup, searchNickname, updateUser, updateProfilePhoto } from '@/services/authServices';
+import { login, refreshToken, signup, searchNickname, updateUser, updateProfilePhoto, getUser } from '@/services/authServices';
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 
@@ -35,6 +35,11 @@ export const useAuthStore = defineStore('auth', {
       Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
+    async getUser(){
+      const response = await getUser(this.token);
+      return response;
+    },
+
     async searchNickname(nickname) {
       const response = await searchNickname(nickname);
       return response;
@@ -47,8 +52,8 @@ export const useAuthStore = defineStore('auth', {
       Cookies.remove('refreshToken', { sameSite: 'strict' });
     },
 
+
     async updateUser(userData) {
-      console.log(userData)
       const response = await updateUser(userData, this.token);
       return response;
     },

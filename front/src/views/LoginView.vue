@@ -34,7 +34,7 @@ import { useAuthStore } from '@/store/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref('chikimalvin@mail.com');
+const email = ref('chikimalvin@gmail.com');
 const password = ref('Diana.123');
 const showMsgError = ref('')
 

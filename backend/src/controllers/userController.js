@@ -93,29 +93,30 @@ async function searchNickname(req, res) {
   }
 }
 
-async function updateUser(req, res) {
-  const { name, lastName, country, city, nickname, email } = req.body;
-  console.log(req.body)
+async function getUser(req, res) {
   try {
     const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
     const decodedToken = jwt.verify(token, JWT_SECRET);
-    let userUrlPhoto = ''; // Definir como una variable let en lugar de una constante
+    const userId = decodedToken.id;
+    console.log(userId)
+    const user = await User.findById(userId);
+    res.status(200).json({user})
+  }catch (error) {
+    res.status(500).json({message: 'Error al obtener el usuario'})
+  }
+}
+
+async function updateUser(req, res) {
+  const { name, lastName, country, city, nickname, email } = req.body;
+  try {
+    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const decodedToken = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decodedToken.id);
+
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized updateUser' });
     }
 
-    if (req.file) {
-      try {
-        const response = await axios.post('https://api.imgbb.com/1/upload', {
-          key: API_KEY_IMGBB,
-          image: req.file,
-        });
-        userUrlPhoto = response.data.data.url; // Asignar el valor de la respuesta de la API a userUrlPhoto
-      } catch (error) {
-        return res.status(400).send(error); // Si hay un error en la API de ImgBB, devolver una respuesta con status 400
-      }
-    }
 
     user.name = name;
     user.lastName = lastName;
@@ -123,7 +124,6 @@ async function updateUser(req, res) {
     user.city = city;
     user.nickname = nickname;
     user.email = email;
-    user.userUrlPhoto = userUrlPhoto;
 
     await user.save();
     res.status(200).json({ message: 'User information updated successfully' });
@@ -133,11 +133,11 @@ async function updateUser(req, res) {
 }
 
 async function updateProfilePhoto(req, res) {
+  const { userPhotoUrl } = req.body;
+  console.log(userPhotoUrl)
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
-
-    let userUrlPhoto = ''; // Definir como una variable let en lugar de una constante
 
     const user = await User.findById(decodedToken.id);
 
@@ -145,30 +145,12 @@ async function updateProfilePhoto(req, res) {
       return res.status(401).json({ message: 'Unauthorized updateUser' });
     }
 
-    console.log(req)
-
-    if (req.body) {
-      try {
-        const response = await axios.post('https://api.imgbb.com/1/upload', {
-          key: API_KEY_IMGBB,
-          image: req.body,
-        });
-        userUrlPhoto = response.data.data.url; // Asignar el valor de la respuesta de la API a userUrlPhoto
-      } catch (error) {
-        console.log(error)
-        return res.status(400).json({message: error}) // Si hay un error en la API de ImgBB, devolver una respuesta con status 400
-      }
-    } else {
-      console.log('error no hay file')
-      return res.status(400).json({message: 'Error no hay foto'})
-    }
-
-    user.userUrlPhoto = userUrlPhoto;
+    user.userUrlPhoto = userPhotoUrl;
 
     await user.save();
     res.status(200).json({ message: 'Photo update success' });
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ message: 'servidor error' });
   }
 }
 
@@ -179,5 +161,6 @@ module.exports = {
   refreshTokens,
   searchNickname,
   updateUser,
-  updateProfilePhoto
+  updateProfilePhoto,
+  getUser
 };
