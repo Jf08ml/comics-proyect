@@ -101,9 +101,9 @@ const showModal = (content) => {
 }
 
 //Formulario para enviar información del usuario
-const onSubmit = async () => {
+const onSubmit = async (userInformation) => {
     try {
-        await authStore.updateUser(userData.value);
+        await authStore.updateUser(userInformation.value);
     } catch (error) {
         console.error(error)
     }
