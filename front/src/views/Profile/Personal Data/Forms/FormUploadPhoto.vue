@@ -22,7 +22,8 @@ import axios from 'axios';
 import { useAuthStore } from '@/store/auth';
 
 const props = defineProps({
-    onShowModal: Function
+    onShowModal: Function,
+    onPhotoUpdated: Function
 });
 
 const authStore = useAuthStore();
@@ -52,7 +53,8 @@ const onSubmit = async () => {
         const userPhotoUrlSend = { userPhotoUrl: userPhotoUrl.value }
         try {
             await authStore.updateProfilePhoto(userPhotoUrlSend)
-            alert("data enviada")
+            props.onPhotoUpdated(userPhotoUrlSend.userPhotoUrl);
+
         } catch (error) {
             console.error(error)
         }
