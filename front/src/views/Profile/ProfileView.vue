@@ -19,7 +19,7 @@ import {shallowRef} from 'vue'
 import "@/assets/scss/profile/profile.scss";
 
 
-import PersonalData from "./Personal Data/PersonalData.vue";
+import PersonalData from './Personal Data/PersonalData.vue';
 import PaymentMethods from "./Payment methods/PaymentMethods.vue";
 import ContentStatistics from "./Content Statistics/ContentStatistics.vue"
 import ContentCreated from "./Content created/ContentCreated.vue";

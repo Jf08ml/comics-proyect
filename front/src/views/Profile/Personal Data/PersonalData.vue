@@ -1,62 +1,56 @@
 <template>
     <div class="container-personal-data">
         <div class="section-title">
-            <div class="profile-pic" :class="{ 'default-pic': !userData.userPhoto }" :style="userData.userPhoto && { 'background-image': 'url(' + userData.userPhoto + ')', 'background-size': 'cover', 'background-position': 'center'}">
-                <button @click="showModal" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.7"
+            <div class="profile-pic" :class="profilePicClass" :style="profilePicStyle">
+                <div @click="showModal('viewphoto')" class="view-photo">
+                   <button >View photo</button>
+                </div>
+                <button @click="showModal('uploadphoto')" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.4"
                         title="Change photo" color="black" /></button>
             </div>
-
+            
             <UploadPhoto v-if="showModalUpload">
-                <FormUploadPhoto :onShowModal="showModal" :onPhotoUpdated="onPhotoUpdated" />
+                <FormUploadPhoto v-if="showComponent" :onShowModal="closeModalFromComponent" :onPhotoUpdated="onPhotoUpdated" />
+                <ViewPhoto v-else  :onShowModal="closeModalFromComponent" :urlViewPhoto="userData.userPhoto" />
             </UploadPhoto>
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
             </div>
         </div>
         <div class="section-content">
-            <form class="form" enctype="multipart/form-data" @submit.prevent="onSubmit">
-                <div class="div-form">
-                    <input v-model="userData.name" type="text" placeholder="Full name *" />
-                    <input v-model="userData.lastName" type="text" placeholder="Full last name *" />
-                </div>
-                <div class="div-form">
-                    <input v-model="userData.country" type="text" placeholder="Country *" />
-                    <input v-model="userData.city" type="text" placeholder="City *" />
-                </div>
-                <div class="div-form">
-                    <input v-model="userData.nickname" type="text" placeholder="Nickname *" />
-                    <input v-model="userData.email" type="text" placeholder="Email *" />
-                </div>
-                <div>
-                    <button>Save data</button>
-                </div>
-            </form>
-            <form class="form">
-                <p style="margin-top: 15px;">Change your password</p>
-                <div class="div-form" style="margin-top: 15px;">
-                    <input type="password" placeholder="Current password" />
-                    <input type="password" placeholder="New Password" />
-                </div>
-                <div>
-                    <button>Change password</button>
-                </div>
-            </form>
+            <FormUserData :userData="userData" :onSubmit="onSubmit"/>
+            <FormChangePassword />
         </div>
     </div>
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, ref, computed } from 'vue'
 import { useAuthStore } from '@/store/auth';
 import "@/assets/scss/profile/personaldata/personaldata.scss";
 
-import UploadPhoto from './Modals/UploadPhoto.vue';
+import UploadPhoto from './Modals/ModalDefault.vue';
 import FormUploadPhoto from './Forms/FormUploadPhoto.vue';
+import ViewPhoto from './Component/ViewPhoto.vue'
+import FormUserData from './Forms/FormUserData.vue'
+import FormChangePassword from './Forms/FormChangePassword.vue';
 
 const authStore = useAuthStore();
 
 const dataUser = ref(null);
+const showComponent = ref('');
+const showModalUpload = ref(false);
+const userData = ref({
+        name: '',
+        lastName: '',
+        country: '',
+        city: '',
+        nickname: '',
+        email: '',
+        userPhoto: ''
+});
 
+//Se obtienen los datos a mostrar en el formulario
 onBeforeMount(async () => {
     try {
         const response =  await authStore.getUser();
@@ -72,30 +66,44 @@ onBeforeMount(async () => {
     } catch (error) {
         console.error(error)
     }
-})
-const showModalUpload = ref(false);
-
-const userData = ref({
-        name: '',
-        lastName: '',
-        country: '',
-        city: '',
-        nickname: '',
-        email: '',
-        userPhoto: ''
 });
 
+//Estilos para mostrar imagen default o imagen de perfil
+const profilePicClass = computed(() => ({
+  'default-pic': !userData.value.userPhoto,
+}));
+
+const profilePicStyle = computed(() => ({
+  backgroundImage: userData.value.userPhoto ? `url(${userData.value.userPhoto})` : '',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+}));
+
+//Actualiza la url del perfil cuando se modifica
 const onPhotoUpdated = (newPhotoUrl) => {
     userData.value.userPhoto = newPhotoUrl;
+    showModal();
 }
-const showModal = () => {
+
+
+const closeModalFromComponent = () =>{
     showModalUpload.value = !showModalUpload.value
 }
 
+const showModal = (content) => {
+    if(content === 'viewphoto'){
+        showComponent.value = false;
+        showModalUpload.value = !showModalUpload.value
+    } else{
+        showComponent.value = true;
+        showModalUpload.value = !showModalUpload.value
+    }   
+}
+
+//Formulario para enviar información del usuario
 const onSubmit = async () => {
     try {
         await authStore.updateUser(userData.value);
-        alert("data enviada")
     } catch (error) {
         console.error(error)
     }
@@ -111,6 +119,32 @@ const onSubmit = async () => {
     overflow: hidden;
     position: relative;
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.view-photo {
+    position: absolute;
+    background-image: linear-gradient(to bottom right, rgba(0,0,0,0.5), rgba(255,255,255,0.5));
+    color: azure;
+    z-index: 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.view-photo button {
+    background-color: white;
+    color: #0d0d0d;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.profile-pic:hover .view-photo{
+    display: flex;
 }
 
 .profile-pic img {
@@ -135,12 +169,16 @@ const onSubmit = async () => {
     position: absolute;
     border-radius: 50%;
     border: none;
-    width: 27%;
-    height: 27%;
+    background-color: rgba(255, 255, 255, 0.684);
+    width: 25%;
+    height: 25%;
     bottom: 5px;
     right: 5px;
     z-index: 1;
     cursor: pointer;
     box-shadow: 0px 0px 3px black;
+} .upload-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 5px black;
 }
 </style>
