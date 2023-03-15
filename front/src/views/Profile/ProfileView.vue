@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import {shallowRef} from 'vue'
 import "@/assets/scss/profile/profile.scss";
+import {shallowRef} from 'vue'
 
 
 import PersonalData from './Personal Data/PersonalData.vue';

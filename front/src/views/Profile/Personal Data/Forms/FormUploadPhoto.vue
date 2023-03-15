@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div class="button-close-modal"><button class="button-close" @click="props.onShowModal">X</button></div>
         <form class="form-modal" enctype="multipart/form-data" @submit.prevent="onSubmit">
             <div class="div-form-upload">
                 <label align="center" for="imagen" style="margin: auto;">
@@ -22,7 +21,6 @@ import axios from 'axios';
 import { useAuthStore } from '@/store/auth';
 
 const props = defineProps({
-    onShowModal: Function,
     onPhotoUpdated: Function
 });
 

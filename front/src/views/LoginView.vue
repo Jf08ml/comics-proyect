@@ -26,9 +26,9 @@
 </template>
   
 <script setup>
+import '@/assets/scss/login/login.scss';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import '@/assets/scss/login/login.scss';
 import { useAuthStore } from '@/store/auth';
 
 const router = useRouter();

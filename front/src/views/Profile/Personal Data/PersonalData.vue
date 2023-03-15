@@ -9,9 +9,9 @@
                         title="Change photo" color="black" /></button>
             </div>
             
-            <UploadPhoto v-if="showModalUpload">
-                <FormUploadPhoto v-if="showComponent" :onShowModal="closeModalFromComponent" :onPhotoUpdated="onPhotoUpdated" />
-                <ViewPhoto v-else  :onShowModal="closeModalFromComponent" :urlViewPhoto="userData.userPhoto" />
+            <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
+                <FormUploadPhoto v-if="showComponent" :onPhotoUpdated="onPhotoUpdated" />
+                <ViewPhoto v-else  :urlViewPhoto="userData.userPhoto" />
             </UploadPhoto>
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
@@ -25,9 +25,9 @@
 </template>
 
 <script setup>
+import "@/assets/scss/profile/personaldata/personaldata.scss";
 import { onBeforeMount, ref, computed } from 'vue'
 import { useAuthStore } from '@/store/auth';
-import "@/assets/scss/profile/personaldata/personaldata.scss";
 
 import UploadPhoto from './Modals/ModalDefault.vue';
 import FormUploadPhoto from './Forms/FormUploadPhoto.vue';
@@ -139,8 +139,12 @@ const onSubmit = async (userInformation) => {
 .view-photo button {
     background-color: white;
     color: #0d0d0d;
+    cursor: pointer;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
+} .view-photo button:hover {
+    background-color:azure;
+
 }
 
 .profile-pic:hover .view-photo{
