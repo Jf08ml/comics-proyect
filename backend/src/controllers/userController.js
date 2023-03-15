@@ -98,7 +98,6 @@ async function getUser(req, res) {
     const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const userId = decodedToken.id;
-    console.log(userId)
     const user = await User.findById(userId);
     res.status(200).json({user})
   }catch (error) {

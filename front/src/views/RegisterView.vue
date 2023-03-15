@@ -11,7 +11,6 @@
             <input class="input-register-nick" :style="borderNicknameColor" v-model="nickname" placeholder="Nickname" type="text" required
               @input="validateNickname" @blur="validateInput('nickname')">
             <v-icon class="icon-register-nick" :name="nicknameValid.name" scale="1" :color="nicknameValid.color" />
-            <!-- <v-icon v-if="showIconNicknameInvalid" class="icon-register-nick" name="bi-x-circle-fill" scale="1" color="red" /> -->
           </div>
           <p>{{ showErrorInputNickname }}</p>
 
@@ -37,9 +36,9 @@
 </template>
     
 <script setup>
+import '@/assets/scss/login/login.scss';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import '@/assets/scss/login/login.scss';
 import { useAuthStore } from '@/store/auth';
 
 const router = useRouter();

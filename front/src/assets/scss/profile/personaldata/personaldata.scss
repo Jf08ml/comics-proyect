@@ -53,22 +53,16 @@
     justify-content: right;
 
     button {
-        color: red;
         background-color: transparent;
         border: none;
-        font-size: 15px;
+        border-radius: 100%;
         cursor: pointer;
-
-        &:hover {
-            font-weight:  bolder;
-            text-shadow: 0px 0px 5px rgba(244, 71, 28, 0.937);
-        }
     }
-
 }
 
 .form-modal {
     width: 100%;
+    height: 100%;
     margin:  auto;
     display: flex;
     flex-direction: column;
@@ -76,6 +70,7 @@
 
     .buttons-modals {
         width: 100%; 
+        height: 20%;
         display: flex; 
         justify-content: center; 
         align-items: center;
@@ -86,7 +81,8 @@
             color: #fff;
             border: none;
             border-radius: 5px;
-            font-size: 15px;
+            height: 5%;
+            font-size: 14px;
             cursor: pointer;
         
             &:hover {
@@ -111,17 +107,11 @@
         }
     }
 }
-
-.div-form {
-    display: flex; 
-    width: 90%;
-    margin-block: 5px;
-}
-
 .div-form-upload  {
     display: grid; 
     justify-content: center; 
     width: 100%; 
+    height: 80%;
     border-radius: 10px;
     margin-block: 10px;
     
@@ -129,5 +119,12 @@
         border: none;
         box-shadow: none;
     }
+}
+
+
+.div-form {
+    display: flex; 
+    width: 90%;
+    margin-block: 5px;
 }
 
