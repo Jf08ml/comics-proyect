@@ -14,7 +14,7 @@
                 <input v-model="userInformation.nickname" type="text" placeholder="Email *" />
             </div>
             <div>
-                <button>Save data</button>
+                <button class="button-primary">Save data</button>
             </div>
         </form>
     </div>

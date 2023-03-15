@@ -7,7 +7,7 @@
                 <input type="password" placeholder="New Password" />
             </div>
             <div>
-                <button>Change password</button>
+                <button class="button-primary">Change password</button>
             </div>
         </form>
     </div>

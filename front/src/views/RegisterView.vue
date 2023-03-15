@@ -1,32 +1,35 @@
 <template>
   <div class="container">
     <div class="content">
+
       <div class="content-title">
         <h1>Sign Up</h1>
       </div>
+
       <div class="content-form">
         <form @submit.prevent="onSubmit">
 
           <div class="form-register-div-input-nick">
-            <input class="input-register-nick" :style="borderNicknameColor" v-model="nickname" placeholder="Nickname" type="text" required
-              @input="validateNickname" @blur="validateInput('nickname')">
+            <input class="input-register-nick" :style="borderNicknameColor" v-model="nickname" placeholder="Nickname"
+              type="text" required @input="validateNickname" @blur="validateInput('nickname')">
             <v-icon class="icon-register-nick" :name="nicknameValid.name" scale="1" :color="nicknameValid.color" />
           </div>
           <p>{{ showErrorInputNickname }}</p>
 
-          <div class="form-register-div-input">
-            <input class="input-register" v-model="email" placeholder="Email" type="text" name="nickname" required
+          <div class="form-div-input">
+            <input class="input-form" v-model="email" placeholder="Email" type="text" name="nickname" required
               @blur="validateInput('email')">
           </div>
           <p>{{ showErrorInputEmail }}</p>
 
-          <div class="form-register-div-input">
-            <input class="input-register" v-model="password" placeholder="Password" type="password" name="nickname"
+          <div class="form-div-input">
+            <input class="input-form" v-model="password" placeholder="Password" type="password" name="nickname"
               required @blur="validateInput('password')">
           </div>
           <p>{{ showErrorInputPassword }}</p>
 
           <p v-if="formMsgError" style="margin-top: 5px;">{{ formMsgError }}</p>
+
 
           <button :disabled="disabled" type="submit" class="button-primary" @click="checkFormValidity">Register</button>
         </form>

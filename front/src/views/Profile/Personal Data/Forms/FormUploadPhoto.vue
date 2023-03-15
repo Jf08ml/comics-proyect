@@ -9,7 +9,7 @@
                 <input @change="onFileChange" type="file" id="imagen" name="imagen" aria-label="Archivo" />
             </div>
             <div class="buttons-modals">
-                <button class="button-save">Save</button>
+                <button class="button-primary">Save</button>
             </div>
         </form>
     </div>
