@@ -1,6 +1,6 @@
 <template>
 
-<h1 style="color:white;">This is home</h1>
+<h1 style="color:white;">jUANFE ES gAY</h1>
 </template>
 
 <script>

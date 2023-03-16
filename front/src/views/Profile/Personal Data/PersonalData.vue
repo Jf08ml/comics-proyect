@@ -6,7 +6,8 @@
                    <button >View photo</button>
                 </div>
                 <button @click="showModal('uploadphoto')" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.4"
-                        title="Change photo" color="black" /></button>
+                        title="Change photo" color="black" />
+                </button>
             </div>
             
             <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
@@ -114,11 +115,11 @@ const onSubmit = async (userInformation) => {
 .profile-pic {
     width: 140px;
     height: 140px;
-    border-radius: 20%;
+    border-radius: 50%;
     margin: 10px;
     overflow: hidden;
     position: relative;
-    border: 1px solid black;
+    border: 0.5px solid grey;
     display: flex;
     justify-content: center;
     align-items: center;
