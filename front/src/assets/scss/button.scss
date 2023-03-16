@@ -2,8 +2,9 @@ $primary-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 $font-size-title-page: 23px;
 $font-size: 17px;
 $small-font-size: 14px;
+$primary-color: #b81f59;
 .nav-button {
-    background-color: #b81f59;
+    background-color: $primary-color;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -12,26 +13,27 @@ $small-font-size: 14px;
     cursor: pointer;
 
     &:hover {
-        background-color: darken(#c3064e, 10%);
+        background-color: darken($primary-color, 10%);
     }
 }
 
 .nav-button-menu {
-    background-color: #b81f59;
-    color: #fff;
+    background-color: $primary-color;
+    height: auto;
+    color: white;
     border: none;
     border-radius: 5px;
     font-size: 17px;
 
     cursor: pointer;
     &:hover {
-        background-color: darken(#c3064e, 10%);
+        background-color: darken($primary-color, 10%);
     }  
 }
 
 .nav-button-menu-login {
-    background-color: #b81f59;
-    color: #fff;
+    background-color: $primary-color;
+    color: white;
     border: 1px solid whitesmoke;
     border-radius: 5px;
     font-size: $font-size;
@@ -42,15 +44,15 @@ $small-font-size: 14px;
     }
 
     &:hover {
-        background-color: darken(#ad3d3d, 10%);
-        box-shadow: 0 12px 16px 0 #ad3d3d, 0 17px 50px 0 rgba(255, 23, 23, 0.767);
+        background-color: darken($primary-color, 10%);
+        box-shadow: 0 12px 16px 0 $primary-color, 0 17px 50px 0 rgba(255, 23, 23, 0.767);
     }  
 }
 
 .nav-button-submenu {
     background-color: transparent;
     width: 100%;
-    color: #000000;
+    color: black;
     border: none;
     border-radius: 5px;
     align-items: center;
@@ -63,7 +65,7 @@ $small-font-size: 14px;
 
     &:hover {
         color: white;
-        background-color: darken(#c3064e, 10%);
+        background-color: darken($primary-color, 10%);
     }
 }
 .nav-button-menu-logout {
@@ -71,19 +73,19 @@ $small-font-size: 14px;
     color: #fa9191;
     border: none;
     align-items: center;
-    font-weight: bold;
     border-radius: 50%;
     cursor: pointer;
 
     &:hover {
-        box-shadow: 0 12px 16px 0 rgba(255, 0, 0, 0.24), 0 17px 50px 0 rgba(255, 23, 23, 0.767);
+        box-shadow: 0 12px 16px 0 $primary-color, 0 17px 50px 0 darken($primary-color, 40%);
         color: #fff;
     }
 }
 
 .nav-button-icone {
     background-color: transparent;
-    border: none;
+    height: auto;
+    border: 1px solid black;
     align-items: center;
     color: white;
     border-radius: 50%;
@@ -91,13 +93,13 @@ $small-font-size: 14px;
     cursor: pointer;
 
     &:hover {
-        box-shadow: 0 12px 16px 0 rgba(100, 100, 100, 0), 0 17px 50px 0 rgba(87, 255, 82, 0.767);
-        color: #fff;
+        box-shadow: 0 12px 16px 0 $primary-color, 0 17px 50px 0 darken($primary-color, 40%);
+        color: white;
     }
 }
 .nav-button-close {
     background-color: transparent;
-    color: rgb(248, 56, 56);
+    color: red;
     border: none;
     border-radius: 5px;
     font-weight: normal;
@@ -106,7 +108,7 @@ $small-font-size: 14px;
 
     &:hover {
         font-weight:  bolder;
-        text-shadow: 5px 5px 5px rgba(244, 71, 28, 0.937);
+        text-shadow: 5px 5px 5px darken(red, 10%);
     }
 }
 
@@ -116,8 +118,8 @@ $small-font-size: 14px;
     border: none;
     border-radius: 5px;
     margin: 25px;
-    width: 40%;
-    height: 30px;
+    width: 60%;
+    height: 40px;
     font-size: 15px;
     cursor: pointer;
 

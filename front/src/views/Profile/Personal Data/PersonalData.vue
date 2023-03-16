@@ -3,24 +3,27 @@
         <div class="section-title">
             <div class="profile-pic" :class="profilePicClass" :style="profilePicStyle">
                 <div @click="showModal('viewphoto')" class="view-photo">
-                   <button >View photo</button>
+                    <button>View photo</button>
                 </div>
                 <button @click="showModal('uploadphoto')" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.4"
                         title="Change photo" color="black" />
                 </button>
             </div>
-            
+
             <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
                 <FormUploadPhoto v-if="showComponent" :onPhotoUpdated="onPhotoUpdated" />
-                <ViewPhoto v-else  :urlViewPhoto="userData.userPhoto" />
+                <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
             </UploadPhoto>
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
             </div>
         </div>
         <div class="section-content">
-            <FormUserData :userData="userData" :onSubmit="onSubmit"/>
+
+            <FormUserData :userData="userData" :onSubmit="onSubmit" />
+
             <FormChangePassword />
+
         </div>
     </div>
 </template>
@@ -42,19 +45,19 @@ const dataUser = ref(null);
 const showComponent = ref('');
 const showModalUpload = ref(false);
 const userData = ref({
-        name: '',
-        lastName: '',
-        country: '',
-        city: '',
-        nickname: '',
-        email: '',
-        userPhoto: ''
+    name: '',
+    lastName: '',
+    country: '',
+    city: '',
+    nickname: '',
+    email: '',
+    userPhoto: ''
 });
 
 //Se obtienen los datos a mostrar en el formulario
 onBeforeMount(async () => {
     try {
-        const response =  await authStore.getUser();
+        const response = await authStore.getUser();
         dataUser.value = response.user;
 
         userData.value.name = dataUser.value.name;
@@ -71,13 +74,13 @@ onBeforeMount(async () => {
 
 //Estilos para mostrar imagen default o imagen de perfil
 const profilePicClass = computed(() => ({
-  'default-pic': !userData.value.userPhoto,
+    'default-pic': !userData.value.userPhoto,
 }));
 
 const profilePicStyle = computed(() => ({
-  backgroundImage: userData.value.userPhoto ? `url(${userData.value.userPhoto})` : '',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
+    backgroundImage: userData.value.userPhoto ? `url(${userData.value.userPhoto})` : '',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
 }));
 
 //Actualiza la url del perfil cuando se modifica
@@ -87,18 +90,18 @@ const onPhotoUpdated = (newPhotoUrl) => {
 }
 
 
-const closeModalFromComponent = () =>{
+const closeModalFromComponent = () => {
     showModalUpload.value = !showModalUpload.value
 }
 
 const showModal = (content) => {
-    if(content === 'viewphoto'){
+    if (content === 'viewphoto') {
         showComponent.value = false;
         showModalUpload.value = !showModalUpload.value
-    } else{
+    } else {
         showComponent.value = true;
         showModalUpload.value = !showModalUpload.value
-    }   
+    }
 }
 
 //Formulario para enviar información del usuario
@@ -115,7 +118,8 @@ const onSubmit = async (userInformation) => {
 .profile-pic {
     width: 140px;
     height: 140px;
-    border-radius: 50%;
+    border-radius: 26%;
+    box-shadow: 0 0 1px black;
     margin: 10px;
     overflow: hidden;
     position: relative;
@@ -127,7 +131,7 @@ const onSubmit = async (userInformation) => {
 
 .view-photo {
     position: absolute;
-    background-image: linear-gradient(to bottom right, rgba(0,0,0,0.5), rgba(255,255,255,0.5));
+    background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
     color: azure;
     z-index: 1;
     display: none;
@@ -142,13 +146,15 @@ const onSubmit = async (userInformation) => {
     color: #0d0d0d;
     cursor: pointer;
     border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-} .view-photo button:hover {
-    background-color:azure;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.view-photo button:hover {
+    background-color: azure;
 
 }
 
-.profile-pic:hover .view-photo{
+.profile-pic:hover .view-photo {
     display: flex;
 }
 
@@ -182,7 +188,9 @@ const onSubmit = async (userInformation) => {
     z-index: 1;
     cursor: pointer;
     box-shadow: 0px 0px 3px black;
-} .upload-btn:hover {
+}
+
+.upload-btn:hover {
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0px 0px 5px black;
 }

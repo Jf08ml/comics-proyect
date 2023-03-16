@@ -1,3 +1,6 @@
+$bg-color-active: #b81f59;
+$bg-color-navigation:#ed8bb2;
+
 .container-profile {
     width: 80vw;
     height: 90vh;
@@ -16,7 +19,8 @@
     align-items: center;
     width: 100%;
     height: 90%;
-    box-shadow: 0 3px 3px 3px #000000;
+    box-shadow: 0 0 20px black;
+    background-color:whitesmoke;
 }
 
 .navigation {
@@ -24,14 +28,14 @@
     justify-content: space-between;
     align-content: center;
     align-items: center;
-    background-color: #ed8bb2;
+    background-color: $bg-color-navigation;
     height: 10%;
     width: 100%;
-    border-bottom: 2px solid rgb(44, 38, 38);
+    border-bottom: 2px solid black;
 
     button.active {
         color: white;
-        background-color: #a41c54;
+        background-color: $bg-color-active;
     }
 
     button {
@@ -39,14 +43,14 @@
         width: 100%;
         font-family: $primary-font;
         font-size: 15px;
-        color: #a41c54;
+        color: $bg-color-active;
         background-color: transparent;
         border: none;
         box-shadow: none;
 
         &:hover {
             color: white;
-            background-color: #a41c54;
+            background-color: $bg-color-active;
         }
     }
 

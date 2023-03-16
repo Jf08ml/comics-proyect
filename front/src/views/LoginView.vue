@@ -11,13 +11,13 @@
 
           <div class="form-div-input">
             <input class="input-form" v-model="email" placeholder="Email" type="text" required>
-            <p v-if="email == ''" style="color: red;">Este campo es requerido</p>
           </div>
+          <p v-if="email == ''" style="color: red;">Este campo es requerido</p>
 
           <div class="form-div-input">
             <input class="input-form" v-model="password" placeholder="Password" type="password" required>
-            <p v-if="password == ''" style="color: red; margin-bottom: 8px;">Este campo es requerido</p>
           </div>
+          <p v-if="password == ''" style="color: red; margin-bottom: 8px;">Este campo es requerido</p>
 
           <router-link to="/recuperar">
             <span>¿Olvidaste tu contraseña?</span>

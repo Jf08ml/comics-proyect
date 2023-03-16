@@ -15,10 +15,11 @@
     align-items: center;
     border: 1px solid white;
     border-radius: 10px;
-    width: 60%;
+    width: 30%;
     height: auto;
+    box-shadow: 0 0 20px black;
     @media screen and (max-width:900px) {
-        width: 60%;
+        width: 80%;
     }
 }
 
@@ -44,7 +45,6 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     p {
         margin: 0px;
         font-size: 10px;
@@ -62,12 +62,14 @@ form {
     align-items: center; 
     justify-content: flex-end; 
     position: relative;
+    width: 70%;
 }
 
 .form-div-input {
     display: flex; 
     align-items: center; 
     align-content: center;
+    width: 70%;
 }
 
 .input-register-nick {

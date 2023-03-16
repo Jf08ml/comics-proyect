@@ -1,14 +1,11 @@
 <template>
     <div>
         <form class="form">
-            <p style="margin-top: 15px;">Change your password</p>
-            <div class="div-form" style="margin-top: 15px;">
+            <div class="div-form" style="margin-top: 20px;">
                 <input type="password" placeholder="Current password" />
                 <input type="password" placeholder="New Password" />
             </div>
-            <div>
-                <button class="button-primary">Change password</button>
-            </div>
+                <button>Change password</button>
         </form>
     </div>
 </template>

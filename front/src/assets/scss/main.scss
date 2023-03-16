@@ -29,9 +29,8 @@ input {
   display: flex; 
   align-items: center; 
   align-content: center;
-  border: 2px solid black;
+  border: 2px solid darken($primary-color, 2%);
   border-radius: 8px;
-  box-shadow: 0px 0px 2px black;
   font-size: $font-size;
   margin: 15px;
   padding: 10px;
@@ -42,7 +41,7 @@ input {
 }
 
 input:focus {
-  border: 2px solid #a41c54;
-  box-shadow: 0px 0px 3px #a73866;
+  border: 1px solid $primary-color;
+  box-shadow: 0px 0px 4px darken($primary-color, 10%);
   outline: none;
 }
