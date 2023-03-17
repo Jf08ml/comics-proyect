@@ -1,19 +1,26 @@
 <template>
   <nav class="navbar">
+
     <div>
       <NavbarIcone />
     </div>
+
     <div class="navbar-sections">
+
       <div class="navbar-sections-public">
         <NavbarPublic />
       </div>
+
       <div class="navbar-sections-user">
         <NavbarUser />
       </div>
+
     </div>
+
     <div class="menu-hamburger">
       <NavbarMobile />
     </div>
+
   </nav>
 </template>
   
