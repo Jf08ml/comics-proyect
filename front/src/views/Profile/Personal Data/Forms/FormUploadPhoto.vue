@@ -16,18 +16,14 @@
 </template>
 
 <script setup>
-import { ref} from 'vue';
-import axios from 'axios';
-import { useAuthStore } from '@/store/auth';
+import { ref, defineProps} from 'vue';
 
-
-
-const authStore = useAuthStore();
+const props = defineProps({
+    onSubmitPhoto: Function,
+})
 
 const imageUrl = ref(null)
 const imageFile = ref(null)
-
-const userPhotoUrl = ref('')
 
 const onFileChange = (e) => {
     const file = e.target.files[0]
@@ -39,27 +35,9 @@ const onFileChange = (e) => {
     }
 };
 
-const onSubmit = async () => {
-    try {
-        const formData = new FormData();
-        formData.append('image', imageFile.value);
-        formData.append('key', '167d8fe99b87334cc6f7f5d26ab77027')
-        const response = await axios.post('https://api.imgbb.com/1/upload', formData);
-        userPhotoUrl.value = response.data.data.url;
-        authStore.$state.userImgProfile = userPhotoUrl.value;
-        const userPhotoUrlSend = { userPhotoUrl: userPhotoUrl.value }
-        try {
-            await authStore.updateProfilePhoto(userPhotoUrlSend)
-
-        } catch (error) {
-            console.error(error)
-        }
-    } catch (error) {
-        console.error(error)
-    }
-};
-
-
+const onSubmit = () => {
+    props.onSubmitPhoto(imageFile.value)
+}
 </script>
 
 <style scoped></style>

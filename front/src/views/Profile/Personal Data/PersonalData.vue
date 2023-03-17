@@ -1,17 +1,10 @@
 <template>
     <div class="container-personal-data">
         <div class="section-title">
-            <div class="profile-pic" :class="profilePicClass" :style="profilePicStyle">
-                <div @click="showModal('viewphoto')" class="view-photo">
-                    <button>View photo</button>
-                </div>
-                <button @click="showModal('uploadphoto')" class="upload-btn"><v-icon name="md-addphotoalternate" scale="1.4"
-                        title="Change photo" color="black" />
-                </button>
-            </div>
+            <PhotoProfilePic :onShowModal="showModal" :profilePicClass="profilePicClass"  :profilePicStyle="profilePicStyle"/>
 
             <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
-                <FormUploadPhoto v-if="showComponent" />
+                <FormUploadPhoto v-if="showComponent" :onSubmitPhoto="onSubmitPhoto" />
                 <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
             </UploadPhoto>
             <div>
@@ -32,12 +25,13 @@
 import "@/assets/scss/profile/personaldata/personaldata.scss";
 import { onBeforeMount, ref, computed } from 'vue'
 import { useAuthStore } from '@/store/auth';
-
+import axios from 'axios';
 import UploadPhoto from './Modals/ModalDefault.vue';
 import FormUploadPhoto from './Forms/FormUploadPhoto.vue';
 import ViewPhoto from './Component/ViewPhoto.vue'
 import FormUserData from './Forms/FormUserData.vue'
 import FormChangePassword from './Forms/FormChangePassword.vue';
+import PhotoProfilePic from './Component/PhotoProfilePic.vue'
 
 const authStore = useAuthStore();
 
@@ -105,74 +99,27 @@ const onSubmit = async (userInformation) => {
         console.error(error)
     }
 };
+
+//upload photo for user
+const onSubmitPhoto = async (imageFile) => {
+    try {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('key', '167d8fe99b87334cc6f7f5d26ab77027')
+        const response = await axios.post('https://api.imgbb.com/1/upload', formData);
+        const userPhotoUrl = response.data.data.url;
+        authStore.$state.userImgProfile = userPhotoUrl;
+        const userPhotoUrlSend = { userPhotoUrl: userPhotoUrl }
+        try {
+            await authStore.updateProfilePhoto(userPhotoUrlSend)
+        } catch (error) {
+            console.error(error)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+};
+
 </script>
 
-<style scoped>
-.profile-pic {
-    width: 140px;
-    height: 140px;
-    border-radius: 26%;
-    box-shadow: 0 0 1px black;
-    margin: 10px;
-    overflow: hidden;
-    position: relative;
-    border: 0.5px solid grey;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.view-photo {
-    position: absolute;
-    background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
-    color: azure;
-    z-index: 1;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.view-photo button {
-    background-color: white;
-    color: #0d0d0d;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-.view-photo button:hover {
-    background-color: azure;
-
-}
-
-.profile-pic:hover .view-photo {
-    display: flex;
-}
-
-.profile-pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.upload-btn {
-    position: absolute;
-    border-radius: 50%;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.684);
-    width: 25%;
-    height: 25%;
-    bottom: 5px;
-    right: 5px;
-    z-index: 1;
-    cursor: pointer;
-    box-shadow: 0px 0px 3px black;
-}
-
-.upload-btn:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0px 0px 5px black;
-}
-</style>
+<style scoped></style>
