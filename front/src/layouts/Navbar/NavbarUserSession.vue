@@ -35,7 +35,8 @@ const profilePicStyle = computed(() => ({
     backgroundImage: userUrlPhoto.value ? `url(${userUrlPhoto.value})` : '',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    boxSshadow: ' 0 0 2px black'
+    boxShadow: ' 0 0 2px black',
+
 }));
 
 const logOut = () => {

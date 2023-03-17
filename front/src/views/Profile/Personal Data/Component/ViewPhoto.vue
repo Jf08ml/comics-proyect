@@ -1,15 +1,17 @@
 <template>
 <div style="width: 300px; height: 300px;"> 
-    <img :src="props.urlViewPhoto" width="300" height="300">
+    <img :src="userUrlPhoto" width="300" height="300">
 </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { computed } from 'vue'
+import { useAuthStore } from '@/store/auth';
 
-const props = defineProps({
-    urlViewPhoto: String,
-});
+const authStore = useAuthStore();
+
+const userUrlPhoto = computed(() => authStore.$state.userImgProfile)
+
 </script>
 
 <style scoped>

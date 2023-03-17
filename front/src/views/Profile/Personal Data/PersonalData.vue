@@ -41,6 +41,7 @@ import FormChangePassword from './Forms/FormChangePassword.vue';
 
 const authStore = useAuthStore();
 
+const userUrlPhoto = computed(() => authStore.$state.userImgProfile)
 const dataUser = ref(null);
 const showComponent = ref('');
 const showModalUpload = ref(false);
@@ -59,14 +60,12 @@ onBeforeMount(async () => {
     try {
         const response = await authStore.getUser();
         dataUser.value = response.user;
-
         userData.value.name = dataUser.value.name;
         userData.value.lastName = dataUser.value.lastName;
         userData.value.country = dataUser.value.country;
         userData.value.city = dataUser.value.city;
         userData.value.nickname = dataUser.value.nickname;
         userData.value.email = dataUser.value.email;
-        userData.value.userPhoto = dataUser.value.userUrlPhoto;
     } catch (error) {
         console.error(error)
     }
@@ -74,17 +73,14 @@ onBeforeMount(async () => {
 
 //Estilos para mostrar imagen default o imagen de perfil
 const profilePicClass = computed(() => ({
-    'default-pic': !userData.value.userPhoto,
+    'default-pic': !userUrlPhoto.value,
 }));
 
 const profilePicStyle = computed(() => ({
-    backgroundImage: userData.value.userPhoto ? `url(${authStore.$state.userImgProfile})` : '',
+    backgroundImage: userUrlPhoto.value ? `url(${userUrlPhoto.value})` : '',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
 }));
-
-//Actualiza la url del perfil cuando se modifica
-
 
 
 const closeModalFromComponent = () => {
@@ -159,18 +155,6 @@ const onSubmit = async (userInformation) => {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.default-pic::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../../../../public/no-profile-photo.png');
-    background-size: cover;
-    background-position: center;
 }
 
 .upload-btn {

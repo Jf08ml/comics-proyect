@@ -133,7 +133,6 @@ async function updateUser(req, res) {
 
 async function updateProfilePhoto(req, res) {
   const { userPhotoUrl } = req.body;
-  console.log(userPhotoUrl)
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
