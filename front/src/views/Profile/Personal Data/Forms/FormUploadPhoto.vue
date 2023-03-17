@@ -16,13 +16,11 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref} from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/store/auth';
 
-const props = defineProps({
-    onPhotoUpdated: Function
-});
+
 
 const authStore = useAuthStore();
 
@@ -48,10 +46,10 @@ const onSubmit = async () => {
         formData.append('key', '167d8fe99b87334cc6f7f5d26ab77027')
         const response = await axios.post('https://api.imgbb.com/1/upload', formData);
         userPhotoUrl.value = response.data.data.url;
+        authStore.$state.userImgProfile = userPhotoUrl.value;
         const userPhotoUrlSend = { userPhotoUrl: userPhotoUrl.value }
         try {
             await authStore.updateProfilePhoto(userPhotoUrlSend)
-            props.onPhotoUpdated(userPhotoUrlSend.userPhotoUrl);
 
         } catch (error) {
             console.error(error)

@@ -11,7 +11,7 @@
             </div>
 
             <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
-                <FormUploadPhoto v-if="showComponent" :onPhotoUpdated="onPhotoUpdated" />
+                <FormUploadPhoto v-if="showComponent" />
                 <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
             </UploadPhoto>
             <div>
@@ -78,16 +78,13 @@ const profilePicClass = computed(() => ({
 }));
 
 const profilePicStyle = computed(() => ({
-    backgroundImage: userData.value.userPhoto ? `url(${userData.value.userPhoto})` : '',
+    backgroundImage: userData.value.userPhoto ? `url(${authStore.$state.userImgProfile})` : '',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
 }));
 
 //Actualiza la url del perfil cuando se modifica
-const onPhotoUpdated = (newPhotoUrl) => {
-    userData.value.userPhoto = newPhotoUrl;
-    showModal();
-}
+
 
 
 const closeModalFromComponent = () => {

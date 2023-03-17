@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: Cookies.get('accessToken') || null,
     refreshToken: Cookies.get('refreshToken') || null,
+    userImgProfile: ''
   }),
   getters: {
     isAuthenticated: state => !!state.token,
@@ -37,6 +38,7 @@ export const useAuthStore = defineStore('auth', {
 
     async getUser(){
       const response = await getUser(this.token);
+      this.userImgProfile = response.user.userUrlPhoto;
       return response;
     },
 
@@ -60,6 +62,9 @@ export const useAuthStore = defineStore('auth', {
 
     async updateProfilePhoto(userPhotoUrl) {
       const response = await updateProfilePhoto(userPhotoUrl, this.token)
+      if(response == 'Photo update success'){
+        this.userImgProfile = userPhotoUrl;
+      }
       return response;
     }
   },
