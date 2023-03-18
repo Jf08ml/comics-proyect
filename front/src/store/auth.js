@@ -12,8 +12,8 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: state => !!state.token,
   },
   actions: {
-    async login(email, password) {
-      const response = await login(email, password);
+    async login(identifier, password) {
+      const response = await login(identifier, password);
       this.token = response.token;
       this.refreshToken = response.refreshToken;
       Cookies.set('accessToken', this.token, { sameSite: 'strict' });

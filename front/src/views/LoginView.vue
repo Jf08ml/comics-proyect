@@ -10,9 +10,9 @@
         <form @submit.prevent="onSubmit">
 
           <div class="form-div-input">
-            <input class="input-form" v-model="email" placeholder="Email" type="text" required>
+            <input class="input-form" v-model="identifier" placeholder="Email or nickname" type="text" required>
           </div>
-          <p v-if="email == ''" style="color: red;">Este campo es requerido</p>
+          <p v-if="identifier == ''" style="color: red;">Este campo es requerido</p>
 
           <div class="form-div-input">
             <input class="input-form" v-model="password" placeholder="Password" type="password" required>
@@ -42,13 +42,13 @@ import { useAuthStore } from '@/store/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref('chikimalvin@gmail.com');
+const identifier = ref('chikimalvin@gmail.com');
 const password = ref('Diana.123');
 const showMsgError = ref('')
 
 const onSubmit = async () => {
   try {
-    await authStore.login(email.value, password.value);
+    await authStore.login(identifier.value, password.value);
     router.push("/realcomics");
   } catch (error) {
     if (error.message === 'Invalid credentials') {

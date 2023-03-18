@@ -22,9 +22,10 @@
           </div>
           <p>{{ showErrorInputEmail }}</p>
 
-          <div class="form-div-input">
-            <input class="input-form" v-model="password" placeholder="Password" type="password" name="nickname"
-              required @blur="validateInput('password')">
+          <div class="form-register-div-input-nick">
+            <input class="input-register-nick" id="password-field" v-model.trim="password" placeholder="Password"
+              type="password" name="nickname" required @blur="validateInput('password')">
+            <v-icon @click="showPassword" class="icon-register-nick" :name="iconeShowPassowrd" scale="1" color="grey" />
           </div>
           <p>{{ showErrorInputPassword }}</p>
 
@@ -63,6 +64,17 @@ const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
 const nicknameValid = { name: 'si-superuser', color: 'grey' };
 const borderNicknameColor = ref('')
+const iconeShowPassowrd = ref('hi-eye');
+const showPassword = () => {
+  if (iconeShowPassowrd.value === 'hi-eye') {
+    iconeShowPassowrd.value = 'hi-eye-off';
+    document.getElementById("password-field").type = "text";
+  } else {
+    iconeShowPassowrd.value = 'hi-eye';
+    document.getElementById("password-field").type = "password";
+
+  }
+}
 
 const validateNickname = async () => {
   if (nickname.value.length >= 6) {
@@ -134,10 +146,10 @@ const onSubmit = async () => {
     await authStore.signup(nickname.value, email.value, password.value);
     router.push("/realcomics");
   } catch (error) {
-    if (error.message === 'Email already exists') {
-      formMsgError.value = "Email exists"
-    } else if (error.message === 'Nickname already exists') {
-      formMsgError.value = "Nickname exists"
+    if (error.result === 'errorEmail') {
+      formMsgError.value = error.message;
+    } else if (error.message === 'errorNickname') {
+      formMsgError.value = error.message;
     }
     console.error(error)
   }

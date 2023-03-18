@@ -7,52 +7,63 @@ async function signup(req, res) {
   try {
     const { nickname, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+    // Comprobación de usuario existente
+    const [existingUserWithEmail, existingUserWithNickname] = await Promise.all([
+      User.findOne({ email }),
+      User.findOne({ nickname }),
+    ]);
+
+    if (existingUserWithEmail) {
+      return res.status(400).json({ result: 'errorEmail', message: 'Email already exists' });
     }
 
-    const existingNick = await User.findOne({ nickname });
-    if (existingNick) {
-      return res.status(400).json({ message: 'Nickname already exists' });
+    if (existingUserWithNickname) {
+      return res.status(400).json({ result: 'errorNickname', message: 'Nickname already exists' });
     }
 
+    // Creación de usuario y tokens
     const user = new User({ nickname, email, password });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
     const refreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_EXPIRATION });
 
-    res.status(201).json({ token, refreshToken });
+    res.status(201).json({ result: 'success', token, refreshToken });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ result: 'error', message: 'Server error' });
   }
 }
 
+
+
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email: identifier }, { nickname: identifier }] });
     if (!user) {
-      return res.status(401).json({ message: 'Non-existent user' });
+      return res.status(401).json({ result: 'error', message: 'User not found. Please check your email address or nickname.' });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ result: 'error', message: 'Invalid password. Please check your password.' });
     }
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, refreshToken });
+    const dateNow = new Date();
+
+    res.status(200).json({ result: 'success', token: token, refreshToken: refreshToken, issuedAt: dateNow });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ result: 'error', message: 'Internal server error. Please try again later.' });
   }
 }
+
+
 
 async function refreshTokens(req, res) {
   try {
