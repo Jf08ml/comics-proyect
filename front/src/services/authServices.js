@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api';
-// const BASE_URL = 'http://192.168.101.13:3000/api'
+// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://192.168.101.13:3000/api'
 
 export async function login(identifier, password) {
   try {
@@ -103,6 +103,25 @@ export async function updateUser(userData, token) {
     throw new Error('Error al actualizar los datos del usuario');
   }
 }
+
+export async function updatePassword(passwords, token) {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/updatepassword`,
+      passwords,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
 
 export async function updateProfilePhoto(userPhotoUrl, token) {
   try {

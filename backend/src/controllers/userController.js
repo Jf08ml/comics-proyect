@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION, API_KEY_IMGBB } = process.env;
+const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION } = process.env;
 const User = require('../models/users');
-const axios = require('axios');
 
 async function signup(req, res) {
   try {
@@ -43,12 +42,12 @@ async function login(req, res) {
 
     const user = await User.findOne({ $or: [{ email: identifier }, { nickname: identifier }] });
     if (!user) {
-      return res.status(401).json({ result: 'error', message: 'User not found. Please check your email address or nickname.' });
+      return res.status(401).json({ result: 'errorNotFound', message: 'User not found. Please check your email address or nickname.' });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ result: 'error', message: 'Invalid password. Please check your password.' });
+      return res.status(401).json({ result: 'errorPassword', message: 'Invalid password. Please check your password.' });
     }
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
@@ -124,7 +123,7 @@ async function updateUser(req, res) {
     const user = await User.findById(decodedToken.id);
 
     if (!user) {
-      return res.status(401).json({ message: 'Unauthorized updateUser' });
+      return res.status(401).json({ result: 'errorUser', message: 'Unauthorized updateUser' });
     }
 
 
@@ -136,9 +135,34 @@ async function updateUser(req, res) {
     user.email = email;
 
     await user.save();
-    res.status(200).json({ message: 'User information updated successfully' });
+    res.status(200).json({ result: 'success', message: 'User information updated successfully' });
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ result: 'error', message: err });
+  }
+}
+
+async function updatePassword(req, res) {
+  const { currentPassword, newPassword } = req.body;
+  try {
+    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decodedToken.id);
+
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ result: 'errorpassword', message: 'Invalid password. Please check your password.' });
+    }
+
+    if (!user) {
+      return res.status(401).json({ result: 'error', message: 'Unauthorized updateUser' });
+    }
+
+    user.password = newPassword;
+
+    await user.save();
+    res.status(200).json({result: 'success', message: 'Password update success' });
+  } catch (err) {
+    res.status(500).json({result: "error", message: err });
   }
 }
 
@@ -171,5 +195,6 @@ module.exports = {
   searchNickname,
   updateUser,
   updateProfilePhoto,
-  getUser
+  getUser, 
+  updatePassword
 };

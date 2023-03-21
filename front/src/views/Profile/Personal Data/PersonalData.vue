@@ -3,19 +3,19 @@
         <div class="section-title">
             <PhotoProfilePic :onShowModal="showModal" :profilePicClass="profilePicClass"  :profilePicStyle="profilePicStyle"/>
 
-            <UploadPhoto v-if="showModalUpload" :onShowModal="closeModalFromComponent">
+            <ModalDefault v-if="showModalUpload" :onShowModal="closeModalFromComponent">
                 <FormUploadPhoto v-if="showComponent" :onSubmitPhoto="onSubmitPhoto" />
                 <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
-            </UploadPhoto>
+            </ModalDefault>
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
             </div>
         </div>
         <div class="section-content">
 
-            <FormUserData :userData="userData" :onSubmit="onSubmit" />
+            <FormUserData :userData="userData" :onSubmitUserInformation="onSubmitUserInformation" />
 
-            <FormChangePassword />
+            <FormChangePassword :onSubmitNewPassword="onSubmitNewPassword"/>
 
         </div>
     </div>
@@ -26,7 +26,7 @@ import "@/assets/scss/profile/personaldata/personaldata.scss";
 import { onBeforeMount, ref, computed } from 'vue'
 import { useAuthStore } from '@/store/auth';
 import axios from 'axios';
-import UploadPhoto from './Modals/ModalDefault.vue';
+import ModalDefault from '../../../components/Modals/ModalDefault.vue';
 import FormUploadPhoto from './Forms/FormUploadPhoto.vue';
 import ViewPhoto from './Component/ViewPhoto.vue'
 import FormUserData from './Forms/FormUserData.vue'
@@ -92,9 +92,10 @@ const showModal = (content) => {
 }
 
 //Formulario para enviar información del usuario
-const onSubmit = async (userInformation) => {
+const onSubmitUserInformation = async (userInformation) => {
     try {
-        await authStore.updateUser(userInformation.value);
+        const response = await authStore.updateUser(userInformation.value);
+        return response;
     } catch (error) {
         console.error(error)
     }
@@ -120,6 +121,14 @@ const onSubmitPhoto = async (imageFile) => {
     }
 };
 
+const onSubmitNewPassword = async(currentPassword, newPassword) => {
+    try {
+        const response = await authStore.updatePassword(currentPassword, newPassword)
+        return response;
+    } catch (error) {
+        return error
+    }
+ }
 </script>
 
 <style scoped></style>

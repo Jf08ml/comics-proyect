@@ -49,11 +49,12 @@ const showMsgError = ref('')
 const onSubmit = async () => {
   try {
     await authStore.login(identifier.value, password.value);
-    router.push("/realcomics");
+    router.push("/allthemostviewd");
   } catch (error) {
-    if (error.message === 'Invalid credentials') {
+    console.log(error)
+    if (error.result === 'errorPassword') {
       showMsgError.value = "Email o contraseña incorrecta"
-    } else if (error.message === "Non-existent user") {
+    } else if (error.result === "errorNotFound") {
       showMsgError.value = "No existe un usuario registrado"
     }
     console.error(error)

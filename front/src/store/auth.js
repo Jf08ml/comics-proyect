@@ -1,4 +1,4 @@
-import { login, refreshToken, signup, searchNickname, updateUser, updateProfilePhoto, getUser } from '@/services/authServices';
+import { login, refreshToken, signup, searchNickname, updateUser, updateProfilePhoto, getUser, updatePassword } from '@/services/authServices';
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 
@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', {
       this.refreshToken = response.refreshToken;
       Cookies.set('accessToken', this.token, { sameSite: 'strict' });
       Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
+      return response; 
     },
 
     async signup(nickname, email, password) {
@@ -36,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
       Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
     },
 
-    async getUser(){
+    async getUser() {
       const response = await getUser(this.token);
       this.userImgProfile = response.user.userUrlPhoto;
       return response;
@@ -60,13 +61,20 @@ export const useAuthStore = defineStore('auth', {
       return response;
     },
 
+    async updatePassword(currentPassword, newPassword) {
+        const requestBody = { currentPassword, newPassword };
+        const response = await updatePassword(requestBody, this.token);
+        return response;
+    },
+
+
     async updateProfilePhoto(userPhotoUrl) {
       const response = await updateProfilePhoto(userPhotoUrl, this.token)
-      if(response == 'Photo update success'){
+      if (response == 'Photo update success') {
         this.userImgProfile = userPhotoUrl;
       }
       return response;
-    }
+    },
   },
 });
 
