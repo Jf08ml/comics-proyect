@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const payoutController = require('../controllers/payoutController');
 const authMiddleware = require('../middleware/auth').verifyToken;
 
 
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
-router.post('/refresh-tokens', userController.refreshTokens);
+router.post('/refreshtokens', userController.refreshTokens);
 router.get('/getuser', authMiddleware, userController.getUser)
 router.get('/searchnickname/:nickname', userController.searchNickname);
 router.put('/updateuser', authMiddleware, userController.updateUser);

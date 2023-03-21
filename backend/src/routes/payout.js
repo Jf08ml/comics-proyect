@@ -4,7 +4,7 @@ const payoutController = require('../controllers/payoutController');
 const authMiddleware = require('../middleware/auth').verifyToken;
 
 
-router.post('/payout', authMiddleware, payoutController.savePayout)
+router.post('/payout', authMiddleware, payoutController.requestPayout)
 
 
 module.exports = router;

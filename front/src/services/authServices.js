@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const BASE_URL = 'http://localhost:3000/api';
-const BASE_URL = 'http://192.168.101.13:3000/api'
+const BASE_URL = 'http://localhost:3000/api';
+// const BASE_URL = 'http://192.168.101.13:3000/api'
 
 export async function login(identifier, password) {
   try {
@@ -45,11 +45,10 @@ export async function signup(nickname, email, password) {
 
 export async function refreshToken(refreshToken) {
   try {
-    const response = await axios.post(`${BASE_URL}/refresh-token`, { refreshToken });
+    const response = await axios.post(`${BASE_URL}/refreshtokens`, { refreshToken });
     return response.data;
   } catch (error) {
-    console.error(error);
-    throw new Error('Token refresh failed');
+    return await Promise.reject(error.response.data);
   }
 }
 
@@ -66,7 +65,7 @@ export async function getUser(token) {
     );
     return response.data;
   } catch (error) {
-    console.error(error);
+    return await Promise.reject(error.response.data);
   }
 }
 

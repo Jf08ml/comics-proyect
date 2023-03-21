@@ -10,8 +10,7 @@ function verifyToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.log(err)
-      return res.status(401).json({ message: 'Unauthorized error decoded' });
+      return res.status(401).json({ result: err.name, message: 'Unauthorized error decoded' });
     }
 
     req.userId = decoded.id;

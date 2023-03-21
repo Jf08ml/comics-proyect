@@ -20,10 +20,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useAuthStore } from "@/store/auth";
-import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 
 const userUrlPhoto = computed(() => authStore.$state.userImgProfile)
@@ -41,7 +39,6 @@ const profilePicStyle = computed(() => ({
 
 const logOut = () => {
     authStore.logout()
-    router.push("/");
 };
 </script>
 

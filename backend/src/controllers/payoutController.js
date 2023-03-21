@@ -3,8 +3,9 @@ const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION }
 const Payout = require('../models/payout');
 const User = require('../models/users');
 
-async function savePayout(req, res) {
-  const { balance, amount, emailPaypal, pagado } = req.body;
+async function requestPayout(req, res) {
+  const { balance, amount, emailPaypal, pagado } = req.body.payoutData || {};
+  console.log(req.body)
   try {
     const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
     const decodedToken = jwt.verify(token, JWT_SECRET);
@@ -23,7 +24,6 @@ async function savePayout(req, res) {
     const remainingBalance = balance - amount;
     res.status(200).json({ result: 'success', message: 'Payment requested successfully', remainingBalance: remainingBalance });
   } catch (error) {
-    console.log(error)
     res.status(500).json({ result: 'error', message: error });
   }
 }
@@ -41,5 +41,5 @@ async function savePayout(req, res) {
 //   });
 
 module.exports = {
-  savePayout
+  requestPayout
 }

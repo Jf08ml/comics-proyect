@@ -1,11 +1,12 @@
 import { login, refreshToken, signup, searchNickname, updateUser, updateProfilePhoto, getUser, updatePassword } from '@/services/authServices';
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
+import router from '@/router';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: Cookies.get('accessToken') || null,
-    refreshToken: Cookies.get('refreshToken') || null,
+    refreshTokenUser: Cookies.get('refreshToken') || null,
     userImgProfile: ''
   }),
   getters: {
@@ -15,32 +16,51 @@ export const useAuthStore = defineStore('auth', {
     async login(identifier, password) {
       const response = await login(identifier, password);
       this.token = response.token;
-      this.refreshToken = response.refreshToken;
+      this.refreshTokenUser = response.refreshToken;
       Cookies.set('accessToken', this.token, { sameSite: 'strict' });
-      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
-      return response; 
+      Cookies.set('refreshToken', this.refreshTokenUser, { sameSite: 'strict' });
+      return response;
     },
 
     async signup(nickname, email, password) {
       const response = await signup(nickname, email, password);
       this.token = response.token;
-      this.refreshToken = response.refreshToken;
+      this.refreshTokenUser = response.refreshToken;
       Cookies.set('accessToken', this.token, { sameSite: 'strict' });
-      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
+      Cookies.set('refreshToken', this.refreshTokenUser, { sameSite: 'strict' });
     },
 
     async refreshToken() {
-      const response = await refreshToken(this.refreshToken);
-      this.token = response.token;
-      this.refreshToken = response.refreshToken;
-      Cookies.set('accessToken', this.token, { sameSite: 'strict' });
-      Cookies.set('refreshToken', this.refreshToken, { sameSite: 'strict' });
+      try {
+        const response = await refreshToken(this.refreshTokenUser);
+        this.token = response.token;
+        this.refreshTokenUser = response.refreshToken;
+        Cookies.set('accessToken', this.token, { sameSite: 'strict' });
+        Cookies.set('refreshToken', this.refreshTokenUser, { sameSite: 'strict' });
+      } catch (error) {
+        if( error.message =='TokenExpiredError'){
+          this.logout()
+        }
+        console.log(error)
+      }
     },
 
     async getUser() {
-      const response = await getUser(this.token);
-      this.userImgProfile = response.user.userUrlPhoto;
-      return response;
+      try {
+        const response = await getUser(this.token);
+        this.userImgProfile = response.user.userUrlPhoto;
+        return response;
+      } catch (error) {
+      if(error.result == 'TokenExpiredError'){
+        try {
+          const response = this.refreshToken()
+          console.log(response)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+        return error;
+      }
     },
 
     async searchNickname(nickname) {
@@ -53,6 +73,7 @@ export const useAuthStore = defineStore('auth', {
       this.refreshToken = null;
       Cookies.remove('accessToken', { sameSite: 'strict' });
       Cookies.remove('refreshToken', { sameSite: 'strict' });
+      router.push('/')
     },
 
 
@@ -62,9 +83,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updatePassword(currentPassword, newPassword) {
-        const requestBody = { currentPassword, newPassword };
-        const response = await updatePassword(requestBody, this.token);
-        return response;
+      const requestBody = { currentPassword, newPassword };
+      const response = await updatePassword(requestBody, this.token);
+      return response;
     },
 
 

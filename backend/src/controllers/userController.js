@@ -24,8 +24,8 @@ async function signup(req, res) {
     const user = new User({ nickname, email, password });
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-    const refreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_EXPIRATION });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: '24h' });
 
     res.status(201).json({ result: 'success', token, refreshToken });
   } catch (err) {
@@ -51,11 +51,23 @@ async function login(req, res) {
     }
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
 
-    const dateNow = new Date();
+    const tokenDuration = 3600; // duración del token en segundos
+    const refreshTokenDuration = 86400	; // duración del refresh token en segundos
+    const now = new Date();
+    const tokenExpiration = new Date(now.getTime() + tokenDuration * 1000);
+    const refreshTokenExpiration = new Date(now.getTime() + refreshTokenDuration * 1000);
 
-    res.status(200).json({ result: 'success', token: token, refreshToken: refreshToken, issuedAt: dateNow });
+    res.status(200).json({
+      result: 'success',
+      token: token,
+      refreshToken: refreshToken,
+      issuedAt: now,
+      tokenExpire: tokenExpiration,
+      refreshTokenExpire: refreshTokenExpiration
+    });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ result: 'error', message: 'Internal server error. Please try again later.' });
@@ -70,6 +82,7 @@ async function refreshTokens(req, res) {
 
     jwt.verify(refreshToken, JWT_REFRESH_SECRET, async (err, decoded) => {
       if (err) {
+        console.log(err)
         return res.status(401).json({ message: err.name });
       }
 
@@ -78,8 +91,8 @@ async function refreshTokens(req, res) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
 
-      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-      const newRefreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_EXPIRATION });
+      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+      const newRefreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: '24h' });
 
       res.json({ token, refreshToken: newRefreshToken });
     });
@@ -109,9 +122,9 @@ async function getUser(req, res) {
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const userId = decodedToken.id;
     const user = await User.findById(userId);
-    res.status(200).json({user})
-  }catch (error) {
-    res.status(500).json({message: 'Error al obtener el usuario'})
+    res.status(200).json({ user })
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener el usuario' })
   }
 }
 
@@ -160,9 +173,9 @@ async function updatePassword(req, res) {
     user.password = newPassword;
 
     await user.save();
-    res.status(200).json({result: 'success', message: 'Password update success' });
+    res.status(200).json({ result: 'success', message: 'Password update success' });
   } catch (err) {
-    res.status(500).json({result: "error", message: err });
+    res.status(500).json({ result: "error", message: err });
   }
 }
 
@@ -195,6 +208,6 @@ module.exports = {
   searchNickname,
   updateUser,
   updateProfilePhoto,
-  getUser, 
+  getUser,
   updatePassword
 };
