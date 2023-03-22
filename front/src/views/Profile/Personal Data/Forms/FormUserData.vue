@@ -36,12 +36,13 @@ const submitData = async () => {
         if (response.result == "success") {
             notify({
                 type: "success",
-                title: "Updated",
+                title: "Success",
+                text:"Updated information",
             });
         } else if (response.result == "errorUser") {
             notify({
                 type: "error",
-                title: "Invalid password",
+                text: "Invalid password",
             });
         }
     } catch (error) {

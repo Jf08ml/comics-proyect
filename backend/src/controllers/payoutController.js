@@ -3,11 +3,19 @@ const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION }
 const Payout = require('../models/payout');
 const User = require('../models/users');
 
-async function requestPayout(req, res) {
-  const { balance, emailPaypal } = req.body.payoutData || {};
-  console.log(req.body)
+async function emailPayout(req, res) {
   try {
-    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const { balance, emailPaypal } = req.body.payoutData || {};
+
+    const [existingEmailPaypal] = await Promise.all([
+      Payout.findOne({ emailPaypal }),
+    ]);
+
+    if (existingEmailPaypal) {
+      return res.status(400).json({ result: 'errorEmail', message: 'Email already exists' });
+    }
+
+    const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decodedToken.id);
 
@@ -19,9 +27,49 @@ async function requestPayout(req, res) {
 
     await payout.save();
 
-    res.status(200).json({ result: 'success', message: 'Payment data save successfully' });
+    res.status(200).json({ result: 'success', message: 'Payment method saved' });
   } catch (error) {
     console.log(error)
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
+
+async function getUserPayments(req, res) {
+  try {
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+    const userData = await Payout.find({ "user": userId })
+    res.status(200).json({ userData })
+  } catch (error) {
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
+
+async function requestPayment(req, res) {
+  try {
+    const { requestPayment } = req.body || {};
+
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+
+    const userData = await Payout.find({ "user": userId })
+    const payout = await Payout.findById(userData[0]._id)
+
+    if (payout.balance <= 0 ) {
+      res.status(401).json({ result: "errorBalance", message: "No balance available" })
+    } else {
+
+      const remainig = payout.balance - requestPayment.amount;
+
+      payout.balance = remainig;
+      payout.payouts.push(requestPayment);
+
+      await payout.save();
+      res.status(200).json({ result: "success", message: "Requested payment" })
+    }
+  } catch (error) {
     res.status(500).json({ result: 'error', message: error });
   }
 }
@@ -39,5 +87,7 @@ async function requestPayout(req, res) {
 //   });
 
 module.exports = {
-  requestPayout
+  emailPayout,
+  getUserPayments,
+  requestPayment
 }

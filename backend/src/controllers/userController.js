@@ -53,7 +53,7 @@ async function login(req, res) {
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
 
-    const tokenDuration = 3600; // duración del token en segundos
+    const tokenDuration = 60; // duración del token en segundos
     const refreshTokenDuration = 86400	; // duración del refresh token en segundos
     const now = new Date();
     const tokenExpiration = new Date(now.getTime() + tokenDuration * 1000);
@@ -94,7 +94,7 @@ async function refreshTokens(req, res) {
       const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
       const newRefreshToken = jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, { expiresIn: '24h' });
 
-      res.json({ token, refreshToken: newRefreshToken });
+      res.status(200).json({result:"success", token, refreshToken: newRefreshToken });
     });
   } catch (err) {
     console.error(err);
@@ -118,7 +118,7 @@ async function searchNickname(req, res) {
 
 async function getUser(req, res) {
   try {
-    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const userId = decodedToken.id;
     const user = await User.findById(userId);
@@ -131,7 +131,7 @@ async function getUser(req, res) {
 async function updateUser(req, res) {
   const { name, lastName, country, city, nickname, email } = req.body;
   try {
-    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decodedToken.id);
 
@@ -157,7 +157,7 @@ async function updateUser(req, res) {
 async function updatePassword(req, res) {
   const { currentPassword, newPassword } = req.body;
   try {
-    const token = req.headers['authorization'];// El separador en el método split debe ser un espacio
+    const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decodedToken.id);
 

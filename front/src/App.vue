@@ -5,7 +5,7 @@
     </div>
     <div style="height: 90vh; width: 100vw;">
       <router-view />
-      <notifications position="top center"/>
+      <notifications position="top center" style="margin: 10px ;"/>
     </div>
   </div>
 </template>

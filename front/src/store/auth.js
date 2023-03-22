@@ -37,6 +37,7 @@ export const useAuthStore = defineStore('auth', {
         this.refreshTokenUser = response.refreshToken;
         Cookies.set('accessToken', this.token, { sameSite: 'strict' });
         Cookies.set('refreshToken', this.refreshTokenUser, { sameSite: 'strict' });
+        return response;
       } catch (error) {
         if( error.message =='TokenExpiredError'){
           this.logout()
@@ -53,8 +54,10 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
       if(error.result == 'TokenExpiredError'){
         try {
-          const response = this.refreshToken()
-          console.log(response)
+          const response = await this.refreshToken()
+          if(response.result == "success"){
+            location.reload()
+          }
         } catch (error) {
           console.error(error)
         }

@@ -5,13 +5,16 @@
             <p>Payments are made through Paypal from 3 to 5 business days.</p>
         </div>
         <div class="contentSendEmail">
-            <form class="formEmailPay" @submit.prevent="sendEmailPay">
-                <input v-model="payoutData.emailPaypal" type="text" placeholder="Email Paypal" required />
-                <button class="btn-save-email"><v-icon name="fa-regular-save" scale="1.7" title="Save"
-                        color="#b81f59" /></button>
+            <form class="formEmailPay" @submit.prevent="showModalConfirmation = true">
+                <input :disabled="disabledInputEmail" v-model="payoutData.emailPaypal" type="text"
+                    placeholder="Email Paypal" required />
+                <button v-if="!disabledInputEmail" class="btn-save-email"><v-icon
+                        name="fa-regular-save" scale="1.7" title="Save" color="#b81f59" /></button>
+                <v-icon style="margin: auto;" v-else name="fc-approval" scale="1.7" />
             </form>
         </div>
-
+        <ModalConfirmation v-if="showModalConfirmation" :confirmarModal="confirmarModal" :cancelarModal="cancelarModal"
+            title="¿Do you want to add this email?" message="Can only be added once" />
         <div class="containerRequestPayout">
             <div class="contentBalance">
                 <div class="subtitleBalance">
@@ -22,22 +25,25 @@
                 </div>
                 <div class="contentButtonHistory">
                     <button class="btn-history">
-                        <v-icon name="px-notes" scale="1.7" title="history" color="black"/>
+                        <v-icon name="px-notes" scale="1.7" title="history" color="black" />
                     </button>
                 </div>
             </div>
-            <form class="formPayout" @submit.prevent="sendPayout">
-                <input class="inputAlign" v-model="payoutData.amount" type="number" min="0" placeholder="Amount" required />
+            <form class="formPayout" @submit.prevent="showModalConfirmation = true">
+                <input :disabled="payoutData.balance <= 20" class="inputAlign" v-model="payoutData.amount" type="number" min="0" placeholder="Amount" required />
                 <span>$20 minimum - Fees</span>
-                <button class="button-primary">Pay out</button>
+                <button :disabled="payoutData.balance <= 20" class="button-primary">Pay out</button>
             </form>
         </div>
     </div>
 </template>
     
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { usePayoutStore } from '@/store/payout';
+import { notify } from "@kyvg/vue3-notification";
+
+import ModalConfirmation from '@/components/Modals/ModalConfirmation.vue';
 
 const payoutStore = usePayoutStore();
 
@@ -46,14 +52,56 @@ const payoutData = ref({
     balance: 0,
 });
 
-const sendEmailPay = async () => {
+const disabledInputEmail = ref(false)
+const showModalConfirmation = ref(false)
+onBeforeMount(async () => {
     try {
-        const response = await payoutStore.requestPayout(payoutData.value)
-        if (response.result == 'success') {
-            alert('success')
+        const response = await payoutStore.getUserPayments();
+        if (response.userData.length > 0) {
+            payoutData.value = response.userData[0];
+            disabledInputEmail.value = true;
         }
     } catch (error) {
-        console.error(error)
+        console.log(error)
+    }
+})
+
+const confirmarModal = async () => {
+    showModalConfirmation.value = false
+    await sendEmailPay()
+}
+
+
+const cancelarModal = () => {
+    showModalConfirmation.value = false
+}
+
+const sendEmailPay = async () => {
+    try {
+        const response = await payoutStore.emailPayout(payoutData.value)
+        if (response.result == 'success') {
+            notify({
+                type: "success",
+                title: "Success",
+                text: `${response.message}`,
+            });
+            try {
+                const response = await payoutStore.getUserPayments();
+                if (response.userData.length > 0) {
+                    payoutData.value = response.userData[0];
+                    disabledInputEmail.value = true;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        } else if (response.result == 'errorEmail') {
+            notify({
+                type: "error",
+                text: `${response.message}`,
+            });
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 </script>
@@ -68,6 +116,10 @@ const sendEmailPay = async () => {
 }
 
 .contentSendEmail {
+    display: grid;
+    align-items: center;
+    align-content: center;
+    background-color: white;
     margin-block: 10px;
     width: 100%;
     border-radius: 20px;
@@ -100,6 +152,7 @@ const sendEmailPay = async () => {
 }
 
 .containerRequestPayout {
+    background-color: white;
     margin-block: 10px;
     width: 100%;
     border-radius: 20px;
