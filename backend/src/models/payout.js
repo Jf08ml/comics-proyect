@@ -6,21 +6,27 @@ const payoutSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    balance: {
-      type: Number,
-      required: true
-    },
-    amount: {
-      type: Number,
-      required: true
-    },
     emailPaypal: {
       type: String,
       required: true
     },
-    pagado: {
-        type: Boolean
+    balance: {
+      type: Number,
+      required: true
+    },
+    payouts: {
+      type: [
+        new mongoose.Schema({
+          amount: {
+            type: Number
+          },
+          pagado: {
+            type: Boolean
+          }
+        })
+      ]
     }
+    
   });
   
 
