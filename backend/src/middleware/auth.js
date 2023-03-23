@@ -4,12 +4,14 @@ const { JWT_SECRET } = process.env;
 function verifyToken(req, res, next) {
   const token = req.headers['authorization'];
   if (!token) {
+    console.log('No token')
     return res.status(401).json({ message: 'Unauthorized token no exist' });
   }
   
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
+      console.log(err)
       return res.status(401).json({ result: err.name, message: 'Unauthorized error decoded' });
     }
 

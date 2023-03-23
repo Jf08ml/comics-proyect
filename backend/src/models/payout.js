@@ -17,11 +17,19 @@ const payoutSchema = new mongoose.Schema({
     payouts: {
       type: [
         new mongoose.Schema({
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: mongoose.Types.ObjectId
+          },
           amount: {
             type: Number
           },
           pagado: {
             type: Boolean
+          },
+          dateRequest: {
+            type: Date,
+            default: Date.now
           }
         })
       ]

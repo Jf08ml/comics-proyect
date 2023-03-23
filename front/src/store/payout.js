@@ -30,7 +30,7 @@ export const usePayoutStore = defineStore('payout', {
 
         async requestPayment(dataRequestPayment) {
             try {
-                const response = await requestPayment(dataRequestPayment, this.token)
+                const response = await requestPayment(dataRequestPayment, this.token);
                 return response;
             } catch (error) {
                 return error;
@@ -39,7 +39,7 @@ export const usePayoutStore = defineStore('payout', {
 
         async getAllPaymentsUser() {
             try {
-                const response = await getAllPaymentsUser(this.tojen)
+                const response = await getAllPaymentsUser(this.token)
                 return response;
             } catch (error) {
                 return error;

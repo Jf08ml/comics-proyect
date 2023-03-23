@@ -30,14 +30,14 @@
                 </div>
             </div>
             <form class="formPayout" @submit.prevent="sendRequestPayment">
-                <input :disabled="payoutData.balance <= 20" class="inputAlign" v-model="dataRequestPayment.amount" type="number" min="20" placeholder="Amount" required />
+                <input :disabled="payoutData.balance <= 19" class="inputAlign" v-model="dataRequestPayment.amount" type="number" min="20" placeholder="Amount" required />
                 <span>$20 minimum - Fees</span>
-                <button :disabled="payoutData.balance <= 20" class="button-primary">Pay out</button>
+                <button :disabled="payoutData.balance <= 19" class="button-primary">Pay out</button>
             </form>
         </div>
         <ModalDefault v-if="showModalHistory" :onShowModal="closeModalFromComponent">
-                <div><h1>Historial</h1></div>
-            </ModalDefault>
+                <TablePayments :allPayments="allPayments"/>
+        </ModalDefault>
     </div>
 </template>
     
@@ -48,7 +48,7 @@ import { notify } from "@kyvg/vue3-notification";
 
 import ModalDefault from '@/components/Modals/ModalDefault.vue';
 import ModalConfirmation from '@/components/Modals/ModalConfirmation.vue';
-
+import TablePayments from '@/views/Profile/Payment methods/Tables/TablePayments.vue'
 const payoutStore = usePayoutStore();
 
 const payoutData = ref({
@@ -61,11 +61,20 @@ const dataRequestPayment = ref({
     pagado: false,
 });
 
+const allPayments = ref()
+
 const disabledInputEmail = ref(false);
 const showModalConfirmation = ref(false);
 const showModalHistory = ref(false);
 
-const closeModalFromComponent = () => {
+const closeModalFromComponent = async () => {
+    try {
+        const response = await payoutStore.getAllPaymentsUser();
+        allPayments.value = response;
+    } catch (error) {
+        console.log(error)
+    }
+
     showModalHistory.value = !showModalHistory.value
 }
 

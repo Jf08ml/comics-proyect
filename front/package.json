@@ -10,10 +10,11 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.9.0",
     "core-js": "^3.8.3",
+    "date-fns": "^2.29.3",
     "js-cookie": "^3.0.1",
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.0.30",
-    "vue": "^3.2.13",
+    "vue": "^3.2.36",
     "vue-axios": "^3.5.2",
     "vue-router": "^4.0.3"
   },
