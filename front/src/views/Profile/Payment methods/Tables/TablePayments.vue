@@ -3,13 +3,15 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Amount</th>
                     <th>State</th>
                     <th>Requested on</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in allPayments.slice(0, showCount)" :key="index">
+                <tr v-for="(item, index) in allPayments.slice(0, showCount)" :key="item._id">
+                    <td>P-{{index}}</td>
                     <td><b>$ {{ item.amount }}</b></td>
                     <td :class="{ 'green': item.pagado, 'blue': !item.pagado }">{{ item.pagado ? 'PAGADO' : 'PENDIENTE' }}
                     </td>
