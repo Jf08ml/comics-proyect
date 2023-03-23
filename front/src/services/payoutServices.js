@@ -38,3 +38,23 @@ export async function getUserPayments(token){
         return await Promise.reject(error.response.data);
     }
 }
+
+export async function requestPayment(dataRequestPayment, token){
+    try {
+        const response = await axios.put(
+            `${BASE_URL}/requestpayment`,
+            {
+                dataRequestPayment
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                  'Authorization': `${token}`,
+                }
+            }
+        )
+        return response.data;
+    } catch (error) {
+        return await Promise.reject(error.response.data);
+    }
+}

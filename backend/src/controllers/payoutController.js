@@ -48,7 +48,7 @@ async function getUserPayments(req, res) {
 
 async function requestPayment(req, res) {
   try {
-    const { requestPayment } = req.body || {};
+    const { dataRequestPayment } = req.body || {};
 
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
@@ -61,13 +61,13 @@ async function requestPayment(req, res) {
       res.status(401).json({ result: "errorBalance", message: "No balance available" })
     } else {
 
-      const remainig = payout.balance - requestPayment.amount;
+      const remaining = payout.balance - dataRequestPayment.amount;
 
-      payout.balance = remainig;
-      payout.payouts.push(requestPayment);
+      payout.balance = remaining;
+      payout.payouts.push(dataRequestPayment);
 
       await payout.save();
-      res.status(200).json({ result: "success", message: "Requested payment" })
+      res.status(200).json({ result: "success", message: "Payment request made", remaining: remaining })
     }
   } catch (error) {
     res.status(500).json({ result: 'error', message: error });

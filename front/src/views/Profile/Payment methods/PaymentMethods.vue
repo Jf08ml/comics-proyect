@@ -29,8 +29,8 @@
                     </button>
                 </div>
             </div>
-            <form class="formPayout" @submit.prevent="showModalConfirmation = true">
-                <input :disabled="payoutData.balance <= 20" class="inputAlign" v-model="payoutData.amount" type="number" min="0" placeholder="Amount" required />
+            <form class="formPayout" @submit.prevent="sendRequestPayment">
+                <input :disabled="payoutData.balance <= 20" class="inputAlign" v-model="dataRequestPayment.amount" type="number" min="20" placeholder="Amount" required />
                 <span>$20 minimum - Fees</span>
                 <button :disabled="payoutData.balance <= 20" class="button-primary">Pay out</button>
             </form>
@@ -52,8 +52,14 @@ const payoutData = ref({
     balance: 0,
 });
 
-const disabledInputEmail = ref(false)
-const showModalConfirmation = ref(false)
+const dataRequestPayment = ref({
+    amount: '',
+    pagado: false,
+});
+
+const disabledInputEmail = ref(false);
+const showModalConfirmation = ref(false);
+
 onBeforeMount(async () => {
     try {
         const response = await payoutStore.getUserPayments();
@@ -100,6 +106,22 @@ const sendEmailPay = async () => {
                 text: `${response.message}`,
             });
         }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const sendRequestPayment = async() =>{
+    try {
+        const amountAsNumber = parseFloat(dataRequestPayment.value.amount);
+        const response = await payoutStore.requestPayment({ amount: amountAsNumber, pagado: dataRequestPayment.value.pagado });
+        payoutData.value.balance = response.remaining;
+        dataRequestPayment.value.amount = '';
+        notify({
+                type: "success",
+                title: "Success",
+                text: `${response.message}`,
+            });
     } catch (error) {
         console.log(error)
     }
