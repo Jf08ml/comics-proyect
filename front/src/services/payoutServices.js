@@ -58,3 +58,20 @@ export async function requestPayment(dataRequestPayment, token){
         return await Promise.reject(error.response.data);
     }
 }
+
+export async function getAllPaymentsUser(token){
+    try {
+        const response = await axios.get(
+            `${BASE_URL}/getallpaymentsuser`,
+            {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                  'Authorization': `${token}`,
+                }
+            }
+        )
+        return response.data;
+    } catch (error) {
+        return await Promise.reject(error.response.data);
+    }
+}

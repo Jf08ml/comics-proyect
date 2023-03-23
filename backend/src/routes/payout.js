@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/auth').verifyToken;
 
 router.post('/payout', authMiddleware, payoutController.emailPayout);
 router.get('/userpayments', authMiddleware, payoutController.getUserPayments);
+router.get('/getallpaymentsuser', authMiddleware, payoutController.getAllPaymentsUser)
 router.put('/requestpayment', authMiddleware, payoutController.requestPayment);
 
 

@@ -24,7 +24,7 @@
                     <h4>$ {{ payoutData.balance }}</h4>
                 </div>
                 <div class="contentButtonHistory">
-                    <button class="btn-history">
+                    <button @click="closeModalFromComponent" class="btn-history">
                         <v-icon name="px-notes" scale="1.7" title="history" color="black" />
                     </button>
                 </div>
@@ -35,6 +35,9 @@
                 <button :disabled="payoutData.balance <= 20" class="button-primary">Pay out</button>
             </form>
         </div>
+        <ModalDefault v-if="showModalHistory" :onShowModal="closeModalFromComponent">
+                <div><h1>Historial</h1></div>
+            </ModalDefault>
     </div>
 </template>
     
@@ -43,6 +46,7 @@ import { ref, onBeforeMount } from 'vue'
 import { usePayoutStore } from '@/store/payout';
 import { notify } from "@kyvg/vue3-notification";
 
+import ModalDefault from '@/components/Modals/ModalDefault.vue';
 import ModalConfirmation from '@/components/Modals/ModalConfirmation.vue';
 
 const payoutStore = usePayoutStore();
@@ -59,6 +63,11 @@ const dataRequestPayment = ref({
 
 const disabledInputEmail = ref(false);
 const showModalConfirmation = ref(false);
+const showModalHistory = ref(false);
+
+const closeModalFromComponent = () => {
+    showModalHistory.value = !showModalHistory.value
+}
 
 onBeforeMount(async () => {
     try {
@@ -76,7 +85,6 @@ const confirmarModal = async () => {
     showModalConfirmation.value = false
     await sendEmailPay()
 }
-
 
 const cancelarModal = () => {
     showModalConfirmation.value = false

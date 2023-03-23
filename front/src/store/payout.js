@@ -1,4 +1,4 @@
-import { emailPayout, getUserPayments, requestPayment } from "@/services/payoutServices";
+import { emailPayout, getUserPayments, requestPayment, getAllPaymentsUser } from "@/services/payoutServices";
 import { defineStore } from 'pinia';
 import { useAuthStore } from "./auth";
 
@@ -31,6 +31,15 @@ export const usePayoutStore = defineStore('payout', {
         async requestPayment(dataRequestPayment) {
             try {
                 const response = await requestPayment(dataRequestPayment, this.token)
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async getAllPaymentsUser() {
+            try {
+                const response = await getAllPaymentsUser(this.tojen)
                 return response;
             } catch (error) {
                 return error;

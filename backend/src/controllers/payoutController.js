@@ -57,7 +57,7 @@ async function requestPayment(req, res) {
     const userData = await Payout.find({ "user": userId })
     const payout = await Payout.findById(userData[0]._id)
 
-    if (payout.balance <= 0 ) {
+    if (payout.balance <= 0) {
       res.status(401).json({ result: "errorBalance", message: "No balance available" })
     } else {
 
@@ -69,6 +69,19 @@ async function requestPayment(req, res) {
       await payout.save();
       res.status(200).json({ result: "success", message: "Payment request made", remaining: remaining })
     }
+  } catch (error) {
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
+
+async function getAllPaymentsUser(req, res) {
+  try {
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+    const userData = await Payout.find({ "user": userId })
+
+    res.status(200).json(userData[0].payouts);
   } catch (error) {
     res.status(500).json({ result: 'error', message: error });
   }
@@ -89,5 +102,6 @@ async function requestPayment(req, res) {
 module.exports = {
   emailPayout,
   getUserPayments,
+  getAllPaymentsUser,
   requestPayment
 }
