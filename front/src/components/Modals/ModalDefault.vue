@@ -30,11 +30,16 @@ const props = defineProps({
   z-index: 1;
 }
 
+@media screen and (max-width: 900px) {
+  .modal-content {
+    max-width: 90%;
+  }
+}
+
 .modal-content {
   background-color: #fff;
   padding: 2px;
   border-radius: 5px;
-  max-width: 500px;
 }
 </style>
   

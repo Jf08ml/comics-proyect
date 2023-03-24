@@ -8,6 +8,9 @@ $bg-color-navigation:#ed8bb2;
     justify-content: center; 
     align-items: center;
     margin: auto;
+    @media screen and ( max-width: 900px){
+        width: 90vw;
+    }
 }
 
 .content-profile {
@@ -42,7 +45,7 @@ $bg-color-navigation:#ed8bb2;
         height: 100%;
         width: 100%;
         font-family: $primary-font;
-        font-size: 15px;
+        font-size: 17px;
         color: $bg-color-active;
         background-color: transparent;
         border: none;
@@ -51,6 +54,10 @@ $bg-color-navigation:#ed8bb2;
         &:hover {
             color: white;
             background-color: $bg-color-active;
+        }
+
+        @media screen and ( max-width: 900px){
+            font-size: 15px;
         }
     }
 

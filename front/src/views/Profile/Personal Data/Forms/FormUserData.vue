@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container-form-user-data">
         <form class="form" enctype="multipart/form-data" @submit.prevent="submitData">
             <div class="div-form">
                 <input v-model="userInformation.name" type="text" placeholder="Full name *" required/>
@@ -51,4 +51,13 @@ const submitData = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-form-user-data {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 3px gray;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 8px;
+}
+</style>

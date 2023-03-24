@@ -7,8 +7,8 @@
                 <button :class="{active: currentComponent === ContentStatistics}" @click="currentComponent = ContentStatistics">Statitics</button>
                 <button :class="{active: currentComponent === ContentCreated}"  @click="currentComponent = ContentCreated">Content Created</button>
             </div>
-            <div class="navitagion-content">
-                <component :is="currentComponent" />
+            <div class="navitagion-content" >
+                <component class="component" :is="currentComponent" />
             </div>
         </div>
     </div>
@@ -28,4 +28,5 @@ const currentComponent = shallowRef(PersonalData);
 
 </script>
 
-<style></style>
+<style scoped>
+</style>

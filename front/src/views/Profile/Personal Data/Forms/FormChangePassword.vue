@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container-form-change-password">
         <form class="form" @submit.prevent="onSubmitPassword">
             <div class="div-form" style="margin-top: 20px;">
                 <input v-model="currentPassword" type="password" placeholder="Current password" required/>
@@ -47,4 +47,12 @@ const onSubmitPassword = async () => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-form-change-password {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 3px gray;
+    width: 90%;
+    margin: auto;
+}
+</style>

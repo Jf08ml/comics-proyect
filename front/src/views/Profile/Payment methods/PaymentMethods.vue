@@ -42,6 +42,7 @@
 </template>
     
 <script setup>
+import "@/assets/scss/profile/paymentmethods/paymentmethods.scss";
 import { ref, onBeforeMount } from 'vue'
 import { usePayoutStore } from '@/store/payout';
 import { notify } from "@kyvg/vue3-notification";
@@ -146,103 +147,5 @@ const sendRequestPayment = async() =>{
 </script>
     
 <style scoped>
-.containerPayout {
-    margin: 10px;
-}
 
-.containerInfo {
-    margin-block: 30px;
-}
-
-.contentSendEmail {
-    display: grid;
-    align-items: center;
-    align-content: center;
-    background-color: white;
-    margin-block: 10px;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 0 3px gray;
-    margin-block: 20px;
-}
-
-.formEmailPay {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-content: center;
-    margin: auto;
-    border-radius: 20px;
-    width: 95%;
-}
-
-.btn-save-email {
-    border: none;
-    background-color: transparent;
-    border-radius: 50%;
-    margin: 5px;
-    padding: 0;
-}
-
-.btn-save-email:hover {
-    box-shadow: 0 0 2px #b81f59;
-    padding: 0;
-    cursor: pointer;
-}
-
-.containerRequestPayout {
-    background-color: white;
-    margin-block: 10px;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 0 3px gray;
-    margin-block: 20px;
-    padding-top: 10px;
-}
-
-.contentBalance {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    box-shadow: 0 0 3px grey;
-    border-radius: 10px;
-    width: 70%;
-    margin: auto;
-    margin-top: 15px;
-}
-
-.subtitleBalance {
-    width: 28%;
-    text-align: center;
-}
-
-.amountBalance {
-    width: 30%;
-    text-align: center;
-}
-
-.contentButtonHistory {}
-
-.btn-history {
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    padding: 0;
-}
-
-.btn-history:hover {
-    box-shadow: 0 0 5px grey;
-    padding: 0;
-    cursor: pointer;
-}
-
-.formPayout {
-    width: 70%;
-    margin: auto;
-}
-
-.inputAlign {
-    text-align: center;
-    width: 95%;
-}
 </style>

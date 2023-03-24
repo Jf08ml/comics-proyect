@@ -3,8 +3,13 @@
 
 
 $primary-color: #b81f59;
-$primary-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+$primary-font: Arial;
 $font-size: 15px;
+
+$scrollbar-width: 3px;
+$scrollbar-track-background: #f5f5f5;
+$scrollbar-thumb-background: #888;
+$scrollbar-thumb-hover-background: #555;
 
 body {
   font-family: $primary-font;
@@ -44,4 +49,23 @@ input:focus {
   border: 1px solid $primary-color;
   box-shadow: 0px 0px 4px darken($primary-color, 10%);
   outline: none;
+}
+
+// Estilos globales de la scrollbar
+::-webkit-scrollbar {
+  width: $scrollbar-width;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $scrollbar-track-background;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: $scrollbar-thumb-background;
+
+  &:hover {
+    border-radius: 10px;
+    background-color: $scrollbar-thumb-hover-background;
+  }
 }

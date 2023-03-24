@@ -44,23 +44,9 @@ const formatDate = (date) => {
   
 <style scoped>
 .table-container {
-    margin: 30px;
+    padding: 10px;
     max-height: 400px;
     overflow-y: auto;
-}
-
-.table-container::-webkit-scrollbar {
-    width: 2px;
-    /* ancho de la barra de desplazamiento */
-    background-color: #f5f5f5;
-    /* color de fondo de la barra de desplazamiento */
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background-color: #888;
-    /* color de la barra de desplazamiento */
-    border-radius: 1px;
-    /* radio de borde de la barra de desplazamiento */
 }
 
 .content-btn {
@@ -85,6 +71,16 @@ const formatDate = (date) => {
     color: white;
 }
 
+@media screen and (max-width: 900px) {
+.table-container {
+    margin: auto;
+    padding: 0;
+}
+
+td, th {
+    padding: 8px !important;
+}
+}
 .table {
     border-collapse: collapse;
     width: 100%;
