@@ -5,27 +5,13 @@
             <p>Payments are made through Paypal from 3 to 5 business days.</p>
         </div>
         <div class="contentSendEmail">
-            <FormEmailPay :payoutDataEmail="payoutData.emailPaypal" :disabledInputEmail="disabledInputEmail" :sendEmail="sendEmailPay"/>
+            <FormEmailPay :payoutDataEmail="payoutData.emailPaypal" :disabledInputEmail="disabledInputEmail"
+                :sendEmail="sendEmailPay" />
         </div>
         <div class="containerRequestPayout">
-            <div class="contentBalance">
-                <div class="subtitleBalance">
-                    <h3>Balance:</h3>
-                </div>
-                <div class="amountBalance">
-                    <h4>$ {{ payoutData.balance }}</h4>
-                </div>
-                <div class="contentButtonHistory">
-                    <button @click="closeModalFromComponent" class="btn-history">
-                        <v-icon name="px-notes" scale="1.7" title="history" color="black" />
-                    </button>
-                </div>
-            </div>
-            <FormRequestPayment :sendRequestPayment="sendRequestPayment"  :balance="payoutData.balance"/>
+            <BalanceAndHistory :balance="payoutData.balance" :allPayments="allPayments" :getPayments="getPayments"/>
+            <FormRequestPayment :sendRequestPayment="sendRequestPayment" :balance="payoutData.balance" />
         </div>
-        <ModalDefault v-if="showModalHistory" :onShowModal="closeModalFromComponent">
-            <TablePayments :allPayments="allPayments" />
-        </ModalDefault>
     </div>
 </template>
     
@@ -35,10 +21,10 @@ import { ref, onBeforeMount } from 'vue'
 import { usePayoutStore } from '@/store/payout';
 import { notify } from "@kyvg/vue3-notification";
 
-import ModalDefault from '@/components/Modals/ModalDefault.vue';
-import TablePayments from '@/views/Profile/Payment methods/Tables/TablePayments.vue'
+
 import FormEmailPay from "./Forms/FormEmailPay.vue";
 import FormRequestPayment from "./Forms/FormRequestPayment.vue";
+import BalanceAndHistory from "./Components/BalanceAndHistory.vue";
 
 const payoutStore = usePayoutStore();
 
@@ -54,18 +40,7 @@ const dataRequestPayment = ref({
 
 const allPayments = ref()
 const disabledInputEmail = ref(false);
-const showModalHistory = ref(false);
 
-const closeModalFromComponent = async () => {
-    try {
-        const response = await payoutStore.getAllPaymentsUser();
-        allPayments.value = response;
-    } catch (error) {
-        console.log(error)
-    }
-
-    showModalHistory.value = !showModalHistory.value
-}
 
 onBeforeMount(async () => {
     try {
@@ -79,7 +54,14 @@ onBeforeMount(async () => {
     }
 })
 
-
+const getPayments = async () => {
+    try {
+        const response = await payoutStore.getAllPaymentsUser();
+        allPayments.value = response;
+    } catch (error) {
+        console.log(error)
+    }
+}
 const sendEmailPay = async (emailPay) => {
     payoutData.value.emailPaypal = emailPay;
     try {
@@ -90,6 +72,7 @@ const sendEmailPay = async (emailPay) => {
                 title: "Success",
                 text: `${response.message}`,
             });
+            
             try {
                 const response = await payoutStore.getUserPayments();
                 if (response.userData.length > 0) {

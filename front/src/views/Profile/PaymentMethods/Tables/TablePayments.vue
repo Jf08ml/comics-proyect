@@ -3,15 +3,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Amount</th>
                     <th>State</th>
                     <th>Requested on</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in allPayments.slice(0, showCount)" :key="item._id">
-                    <td>P-{{index}}</td>
+                <tr v-for="(item, index) in displayedPayments" :key="index">
                     <td><b>$ {{ item.amount }}</b></td>
                     <td :class="{ 'green': item.pagado, 'blue': !item.pagado }">{{ item.pagado ? 'PAGADO' : 'PENDIENTE' }}
                     </td>
@@ -20,14 +18,13 @@
             </tbody>
         </table>
         <div class="content-btn">
-            <button class="btn-showmore" v-if="showCount < allPayments.length"
-                @click="showCount += 8">Ver más</button>
+            <button class="btn-showmore" v-if="showCount < allPayments.length" @click="showCount += 8">Ver más</button>
         </div>
     </div>
 </template>
-  
+
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, computed } from 'vue';
 import { format } from 'date-fns';
 
 const props = defineProps({
@@ -35,12 +32,15 @@ const props = defineProps({
 });
 
 const allPayments = ref(props.allPayments);
-const showCount  = ref(8);
+allPayments.value.sort((a, b) => new Date(b.dateRequest) - new Date(a.dateRequest));
+const showCount = ref(8);
+const displayedPayments = computed(() => allPayments.value.slice(0, showCount.value));
 
 const formatDate = (date) => {
     return format(new Date(date), 'dd/MM/yyyy');
 };
 </script>
+
   
 <style scoped>
 .table-container {

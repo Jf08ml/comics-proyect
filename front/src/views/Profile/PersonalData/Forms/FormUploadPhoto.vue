@@ -6,7 +6,7 @@
                     Profile photo
                     <v-icon name="hi-information-circle" scale="1" title="Verificación" />
                 </label>
-                <input @change="onFileChange" type="file" multiple id="imagen" name="imagen" aria-label="Archivo" />
+                <input class="input-modal" @change="onFileChange" type="file" multiple id="imagen" name="imagen" aria-label="Archivo" />
             </div>
             <div class="buttons-modals">
                 <button class="button-save">Save</button>

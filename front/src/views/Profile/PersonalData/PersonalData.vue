@@ -106,13 +106,18 @@ const onSubmitPhoto = async (imageFile) => {
     try {
         const formData = new FormData();
         formData.append('image', imageFile);
-        formData.append('key', '167d8fe99b87334cc6f7f5d26ab77027')
+        formData.append('key', '0f13a40a6bc24a6565e327d5b4b5e26c')
         const response = await axios.post('https://api.imgbb.com/1/upload', formData);
         const userPhotoUrl = response.data.data.url;
         authStore.$state.userImgProfile = userPhotoUrl;
         const userPhotoUrlSend = { userPhotoUrl: userPhotoUrl }
         try {
-            await authStore.updateProfilePhoto(userPhotoUrlSend)
+            const response = await authStore.updateProfilePhoto(userPhotoUrlSend);
+
+            if(response.result == "success"){
+                closeModalFromComponent();
+            }
+            
         } catch (error) {
             console.error(error)
         }

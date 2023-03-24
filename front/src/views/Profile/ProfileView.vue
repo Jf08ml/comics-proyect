@@ -19,10 +19,10 @@ import "@/assets/scss/profile/profile.scss";
 import {shallowRef} from 'vue'
 
 
-import PersonalData from './Personal Data/PersonalData.vue';
-import PaymentMethods from "./Payment methods/PaymentMethods.vue";
-import ContentStatistics from "./Content Statistics/ContentStatistics.vue"
-import ContentCreated from "./Content created/ContentCreated.vue";
+import PersonalData from './PersonalData/PersonalData.vue';
+import PaymentMethods from "./PaymentMethods/PaymentMethods.vue";
+import ContentStatistics from "./ContentStatistics/ContentStatistics.vue"
+import ContentCreated from "./ContentCreated/ContentCreated.vue";
 
 const currentComponent = shallowRef(PersonalData);
 
