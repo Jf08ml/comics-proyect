@@ -5,16 +5,8 @@
             <p>Payments are made through Paypal from 3 to 5 business days.</p>
         </div>
         <div class="contentSendEmail">
-            <form class="formEmailPay" @submit.prevent="showModalConfirmation = true">
-                <input :disabled="disabledInputEmail" v-model="payoutData.emailPaypal" type="text"
-                    placeholder="Email Paypal" required />
-                <button v-if="!disabledInputEmail" class="btn-save-email"><v-icon
-                        name="fa-regular-save" scale="1.7" title="Save" color="#b81f59" /></button>
-                <v-icon style="margin: auto;" v-else name="fc-approval" scale="1.7" />
-            </form>
+            <FormEmailPay :payoutDataEmail="payoutData.emailPaypal" :disabledInputEmail="disabledInputEmail" :sendEmail="sendEmailPay"/>
         </div>
-        <ModalConfirmation v-if="showModalConfirmation" :confirmarModal="confirmarModal" :cancelarModal="cancelarModal"
-            title="¿Do you want to add this email?" message="Can only be added once" />
         <div class="containerRequestPayout">
             <div class="contentBalance">
                 <div class="subtitleBalance">
@@ -29,14 +21,10 @@
                     </button>
                 </div>
             </div>
-            <form class="formPayout" @submit.prevent="sendRequestPayment">
-                <input :disabled="payoutData.balance <= 19" class="inputAlign" v-model="dataRequestPayment.amount" type="number" min="20" placeholder="Amount" required />
-                <span>$20 minimum - Fees</span>
-                <button :disabled="payoutData.balance <= 19" class="button-primary">Pay out</button>
-            </form>
+            <FormRequestPayment :sendRequestPayment="sendRequestPayment"  :balance="payoutData.balance"/>
         </div>
         <ModalDefault v-if="showModalHistory" :onShowModal="closeModalFromComponent">
-                <TablePayments :allPayments="allPayments"/>
+            <TablePayments :allPayments="allPayments" />
         </ModalDefault>
     </div>
 </template>
@@ -48,8 +36,10 @@ import { usePayoutStore } from '@/store/payout';
 import { notify } from "@kyvg/vue3-notification";
 
 import ModalDefault from '@/components/Modals/ModalDefault.vue';
-import ModalConfirmation from '@/components/Modals/ModalConfirmation.vue';
 import TablePayments from '@/views/Profile/Payment methods/Tables/TablePayments.vue'
+import FormEmailPay from "./Forms/FormEmailPay.vue";
+import FormRequestPayment from "./Forms/FormRequestPayment.vue";
+
 const payoutStore = usePayoutStore();
 
 const payoutData = ref({
@@ -63,9 +53,7 @@ const dataRequestPayment = ref({
 });
 
 const allPayments = ref()
-
 const disabledInputEmail = ref(false);
-const showModalConfirmation = ref(false);
 const showModalHistory = ref(false);
 
 const closeModalFromComponent = async () => {
@@ -91,16 +79,9 @@ onBeforeMount(async () => {
     }
 })
 
-const confirmarModal = async () => {
-    showModalConfirmation.value = false
-    await sendEmailPay()
-}
 
-const cancelarModal = () => {
-    showModalConfirmation.value = false
-}
-
-const sendEmailPay = async () => {
+const sendEmailPay = async (emailPay) => {
+    payoutData.value.emailPaypal = emailPay;
     try {
         const response = await payoutStore.emailPayout(payoutData.value)
         if (response.result == 'success') {
@@ -129,23 +110,22 @@ const sendEmailPay = async () => {
     }
 }
 
-const sendRequestPayment = async() =>{
+const sendRequestPayment = async (amount) => {
+    dataRequestPayment.value.amount = amount;
     try {
         const amountAsNumber = parseFloat(dataRequestPayment.value.amount);
         const response = await payoutStore.requestPayment({ amount: amountAsNumber, pagado: dataRequestPayment.value.pagado });
         payoutData.value.balance = response.remaining;
         dataRequestPayment.value.amount = '';
         notify({
-                type: "success",
-                title: "Success",
-                text: `${response.message}`,
-            });
+            type: "success",
+            title: "Success",
+            text: `${response.message}`,
+        });
     } catch (error) {
         console.log(error)
     }
 }
 </script>
     
-<style scoped>
-
-</style>
+<style scoped></style>
