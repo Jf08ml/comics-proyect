@@ -19,6 +19,7 @@
     height: auto;
     box-shadow: 0 0 20px black;
     @media screen and (max-width:900px) {
+        transition: all 0.2s ease-in-out;
         width: 80%;
     }
 }

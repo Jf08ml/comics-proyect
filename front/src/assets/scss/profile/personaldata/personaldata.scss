@@ -40,6 +40,7 @@
 
         @media screen and (max-width:900px) {
             width: 30%;
+            transition: all 0.2s ease-in-out;
         }
 
         &:hover {
@@ -97,6 +98,7 @@
 
             @media screen and (max-width:900px) {
                 width: 30%;
+                transition: all 0.2s ease-in-out;
             }
 
             &:hover {

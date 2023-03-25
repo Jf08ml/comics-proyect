@@ -56,7 +56,7 @@ const submitData = async () => {
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 3px gray;
-    width: 90%;
+    width: 80%;
     margin: auto;
     margin-bottom: 8px;
 }

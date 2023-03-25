@@ -41,6 +41,7 @@ $primary-color: #b81f59;
     cursor: pointer;
     @media screen and (max-width:500px) {
         font-size: cal(#{$small-font-size} - 5px);
+        transition: all 0.2s ease-in-out;
     }
 
     &:hover {

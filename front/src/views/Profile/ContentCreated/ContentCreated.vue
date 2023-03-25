@@ -1,11 +1,206 @@
 <template>
-    <div>
-        <h2>Content created</h2>
+    <div class="containerContent">
+        <div class="created-content">
+            <span class="move-animation">Create content and earn money! →</span>
+            <button @click="showModal" class="btn-create-content">Create content</button>
+        </div>
+        <div class="post-content">
+            <div class="search-content">
+                <input class="input-search" type="text" placeholder="Search...">
+            </div>
+            <div class="post-created">
+                <h4 style="color:red">You have not created content !</h4>
+            </div>
+            <div class="paginate-post">
+                <button>◄</button><button>1</button><button>►</button>
+            </div>
+        </div>
+        <ModalDefault v-if="closeOrOpen" :onShowModal="showModal">
+            <StepNextStep :currentStep="currentStep" :nextStep="nextStep" :prevStep="prevStep" :steps="steps" :onShowModal="showModal"/>
+        </ModalDefault>
     </div>
 </template>
     
 <script setup>
+import {ref} from 'vue'
+import ModalDefault from '@/components/Modals/ModalDefault.vue';
+import StepNextStep from './Components/StepNextStep.vue'
 
+const closeOrOpen = ref(false)
+const showModal = () => {
+    closeOrOpen.value = !closeOrOpen.value
+}
+
+const currentStep = ref(0);
+const steps = [
+  { title: 'Upload photos', description: 'Descripción del paso 1' },
+  { title: 'Post Information', description: 'Descripción del paso 2' },
+  { title: 'Preview', description: 'Descripción del paso 3' },
+];
+
+const nextStep = () => {
+  if (currentStep.value < steps.length - 1) {
+    currentStep.value++
+  }
+}
+
+const prevStep = () => {
+  if (currentStep.value > 0) {
+    currentStep.value--
+  }
+}
 </script>
     
-<style scoped></style>
+<style scoped>
+.containerContent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-inline: 35px;
+}
+
+.created-content {
+    height: 10%;
+    width: 80%;
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 3px gray;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+
+@media screen and (max-width: 700px) {
+    .created-content {
+        width: 100%;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.move-animation {
+    font-size: 17px;
+    animation: move 1s ease-in-out infinite alternate, color 2s linear infinite;
+}
+
+@keyframes move {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(15%);
+    }
+}
+
+@keyframes color {
+    0% {
+        color: red;
+    }
+
+    25% {
+        color: blue;
+    }
+
+    50% {
+        color: green;
+    }
+
+    75% {
+        color: purple;
+    }
+
+    100% {
+        color: orange;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .move-animation {
+        font-size: 9px;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.btn-create-content {
+    margin-top: 5px;
+    border-radius: 10px;
+    border: none;
+    padding: 6px;
+    background-color: #b81f59;
+    margin: 10px;
+    color: aliceblue;
+    cursor: pointer;
+    margin-left: 40px;
+}
+
+.btn-create-content:hover {
+    transition: 0.2s ease;
+    box-shadow: 0 0 8px #b81f59;
+}
+
+@media screen and (max-width: 900px) {
+    .btn-create-content {
+        font-size: 10px;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.post-content {
+    height: 90%;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 3px gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+}
+
+.search-content {
+    height: 10%;
+    width: 60%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-search {
+    width: 95%;
+}
+
+@media screen and (max-width: 700px) {
+    .input-search {
+        width: 80%;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.post-created {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 95%;
+    height: 80%;
+}
+
+.paginate-post {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+</style>
