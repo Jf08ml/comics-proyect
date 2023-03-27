@@ -54,6 +54,7 @@ $bg-color-navigation:#ed8bb2;
 
         &:hover {
             color: white;
+            transition: all 0.2s ease-in-out;
             background-color: $bg-color-active;
         }
 

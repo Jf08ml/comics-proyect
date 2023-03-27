@@ -13,14 +13,16 @@
                 </button>
             </div>
         </div>
+        <Transition>
         <ModalDefault v-if="showModalHistory" :onShowModal="closeModalFromComponent">
-            <TablePayments :allPayments="localAllPayments"/>
+            <TablePayments :allPayments="localAllPayments" />
         </ModalDefault>
+        </Transition>
     </div>
 </template>
 
 <script setup>
-import { defineProps, watch, ref } from 'vue';
+import { defineProps, watch, ref, onMounted } from 'vue';
 
 import ModalDefault from '@/components/Modals/ModalDefault.vue';
 import TablePayments from '@/views/Profile/PaymentMethods/Tables/TablePayments.vue'
@@ -34,9 +36,22 @@ const props = defineProps({
 const localBalance = ref(props.balance)
 const localAllPayments = ref(props.allPayments)
 const showModalHistory = ref(false);
+const fetchData = ref(true);
+
+onMounted(async () => {
+  if (fetchData.value) {
+    await props.getPayments();
+    fetchData.value = false;
+  }
+});
 
 const closeModalFromComponent = async () => {
-    await props.getPayments();
+    if (fetchData.value) {
+        await props.getPayments();
+        fetchData.value = false;
+    } else {
+        fetchData.value = true;
+    }
     showModalHistory.value = !showModalHistory.value
 }
 
@@ -50,4 +65,15 @@ watch(() => props.allPayments, (newValue) => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+</style>

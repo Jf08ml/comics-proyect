@@ -1,40 +1,188 @@
 <template>
-    <div>
+    <div class="container-sns">
         <div class="modal-header">
-            <h2>Creating content</h2>
+            <h2 class="title">Creating content</h2>
         </div>
         <div class="modal-body">
             <div class="modal-step" v-if="props.currentStep === 0">
-                <h3>{{ props.steps[0].title }}</h3>
-                <p>{{ props.steps[0].description }}</p>
-                <button @click="props.nextStep">Siguiente</button>
+                <div class="step-content">
+                    <h3>{{ props.steps[0].title }}</h3>
+                    <p>{{ props.steps[0].description }}</p>
+                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
+                        <StepOne :saveFiles="saveFiles" :selectedFiles="selectedFiles"/>
+                    </div>
+                </div>
+                <div class="change-step">
+                    <div>
+                    </div>
+                    <div class="content-btn-change">
+                        <button class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
+                                title="Next" color="#b81f59" /></button>
+                    </div>
+                </div>
             </div>
             <div class="modal-step" v-if="props.currentStep === 1">
-                <h3>{{ props.steps[1].title }}</h3>
-                <p>{{ props.steps[1].description }}</p>
-                <button @click="props.nextStep">Siguiente</button>
-                <button @click="props.prevStep">Anterior</button>
+                <div class="step-content">
+                    <h3>{{ props.steps[1].title }}</h3>
+                    <p>{{ props.steps[1].description }}</p>
+                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
+                        <StepTwo />
+                    </div>
+                </div>
+                <div class="change-step">
+                    <div class="content-btn-change">
+                        <button class="btn-change" @click="props.prevStep"><v-icon name="fa-arrow-left" scale="2"
+                                title="Previous" color="#b81f59" /></button>
+                    </div>
+                    <div class="content-btn-change">
+                        <button class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
+                                title="Next" color="#b81f59" /></button>
+                    </div>
+                </div>
             </div>
             <div class="modal-step" v-if="props.currentStep === 2">
-                <h3>{{ props.steps[2].title }}</h3>
-                <p>{{ props.steps[2].description }}</p>
-                <button @click="props.onShowModal">Finalizar</button>
-                <button @click="props.prevStep">Anterior</button>
+                <div class="step-content">
+                    <h3>{{ props.steps[2].title }}</h3>
+                    <p>{{ props.steps[2].description }}</p>
+                </div>
+                <div class="change-step">
+                    <div class="content-btn-change">
+                        <button class="btn-change" @click="props.prevStep"><v-icon name="fa-arrow-left" scale="2"
+                                title="Previous" color="#b81f59" /></button>
+                    </div>
+                    <div class="content-btn-change">
+                        <button class="btn-change-save" @click="props.onShowModal"><v-icon name="io-send" scale="2"
+                                title="Save" color="green" /></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
+import StepOne from './Steps/StepOne';
+import StepTwo from './Steps/StepTwo.vue'
 
 const props = defineProps({
     currentStep: Number,
     steps: Array,
     onShowModal: Function,
     nextStep: Function,
-    prevStep: Function
+    prevStep: Function,
 })
+
+const selectedFiles = ref([]);
+
+const saveFiles = (files) => {
+    selectedFiles.value = files;
+}
+
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-sns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 80vw;
+    height: 80vh;
+    padding: 5px;
+}
+
+h3 {
+    color: #b81f59;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    height: 10%;
+    width: 100%;
+}
+
+.title {
+    color: hsla(0, 0%, 0%, .9);
+    font: normal Varela Round, sans-serif;
+    text-align: center;
+    animation: move linear 2000ms infinite;
+}
+
+@keyframes move {
+    0% {
+        text-shadow: -1px 1px 0 hsla(180, 100%, 50%, 1);
+    }
+
+    25% {
+        text-shadow: 1px 1px 0 hsla(0, 100%, 50%, 1);
+    }
+
+    50% {
+        text-shadow: 1px -1px 0 hsla(180, 100%, 50%, 1);
+    }
+
+    75% {
+        text-shadow: -1px -1px 0 hsla(0, 100%, 50%, 1);
+    }
+
+    100% {
+        text-shadow: 4px -4px 0 hsla(0, 100%, 50%, 1),
+
+    }
+}
+
+.modal-body {
+    height: 90%;
+    width: 100%;
+}
+
+.modal-step {
+    height: 100%;
+    width: 100%;
+}
+
+.step-content {
+    text-align: center;
+    height: 80%;
+    width: 100%;
+}
+
+.change-step {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 14%;
+    width: 100%;
+}
+
+.content-btn-change {
+    margin-inline: 15px;
+}
+
+.btn-change {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.btn-change:hover {
+    box-shadow: 0 0 5px #b81f59;
+}
+
+.btn-change-save {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.btn-change-save:hover {
+    box-shadow: 0 0 5px #1fb82c;
+}
+</style>

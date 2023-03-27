@@ -1,12 +1,14 @@
 <template>
     <div class="container-personal-data">
         <div class="section-title">
-            <PhotoProfilePic :onShowModal="showModal" :profilePicClass="profilePicClass"  :profilePicStyle="profilePicStyle"/>
-
-            <ModalDefault v-if="showModalUpload" :onShowModal="closeModalFromComponent">
-                <FormUploadPhoto v-if="showComponent" :onSubmitPhoto="onSubmitPhoto" />
-                <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
-            </ModalDefault>
+            <PhotoProfilePic :onShowModal="showModal" :profilePicClass="profilePicClass"
+                :profilePicStyle="profilePicStyle" />
+            <Transition>
+                <ModalDefault v-if="showModalUpload" :onShowModal="closeModalFromComponent">
+                    <FormUploadPhoto v-if="showComponent" :onSubmitPhoto="onSubmitPhoto" />
+                    <ViewPhoto v-else :urlViewPhoto="userData.userPhoto" />
+                </ModalDefault>
+            </Transition>
             <div>
                 <p align="center">Section to modify personal data, account and password</p>
             </div>
@@ -15,7 +17,7 @@
 
             <FormUserData :userData="userData" :onSubmitUserInformation="onSubmitUserInformation" />
 
-            <FormChangePassword :onSubmitNewPassword="onSubmitNewPassword"/>
+            <FormChangePassword :onSubmitNewPassword="onSubmitNewPassword" />
 
         </div>
     </div>
@@ -114,10 +116,10 @@ const onSubmitPhoto = async (imageFile) => {
         try {
             const response = await authStore.updateProfilePhoto(userPhotoUrlSend);
 
-            if(response.result == "success"){
+            if (response.result == "success") {
                 closeModalFromComponent();
             }
-            
+
         } catch (error) {
             console.error(error)
         }
@@ -126,14 +128,24 @@ const onSubmitPhoto = async (imageFile) => {
     }
 };
 
-const onSubmitNewPassword = async(currentPassword, newPassword) => {
+const onSubmitNewPassword = async (currentPassword, newPassword) => {
     try {
         const response = await authStore.updatePassword(currentPassword, newPassword)
         return response;
     } catch (error) {
         return error
     }
- }
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
     <div class="containerContent">
         <div class="created-content">
-            <span class="move-animation">Create content and earn money! →</span>
+            <span class="move-animation">Earn money! →</span>
             <button @click="showModal" class="btn-create-content">Create content</button>
         </div>
         <div class="post-content">
@@ -15,14 +15,17 @@
                 <button>◄</button><button>1</button><button>►</button>
             </div>
         </div>
-        <ModalDefault v-if="closeOrOpen" :onShowModal="showModal">
-            <StepNextStep :currentStep="currentStep" :nextStep="nextStep" :prevStep="prevStep" :steps="steps" :onShowModal="showModal"/>
-        </ModalDefault>
+        <Transition>
+            <ModalDefault v-if="closeOrOpen" :onShowModal="showModal">
+                <StepNextStep :currentStep="currentStep" :nextStep="nextStep" :prevStep="prevStep" :steps="steps"
+                    :onShowModal="showModal" />
+            </ModalDefault>
+        </Transition>
     </div>
 </template>
     
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import ModalDefault from '@/components/Modals/ModalDefault.vue';
 import StepNextStep from './Components/StepNextStep.vue'
 
@@ -33,25 +36,35 @@ const showModal = () => {
 
 const currentStep = ref(0);
 const steps = [
-  { title: 'Upload photos', description: 'Descripción del paso 1' },
-  { title: 'Post Information', description: 'Descripción del paso 2' },
-  { title: 'Preview', description: 'Descripción del paso 3' },
+    { title: 'Upload photos', description: 'Upload your post and earn money according to the views.' },
+    { title: 'Post Information', description: 'Add details and tags.' },
+    { title: 'Preview', description: 'This is what your post will look like.' },
 ];
 
 const nextStep = () => {
-  if (currentStep.value < steps.length - 1) {
-    currentStep.value++
-  }
+    if (currentStep.value < steps.length - 1) {
+        currentStep.value++
+    }
 }
 
 const prevStep = () => {
-  if (currentStep.value > 0) {
-    currentStep.value--
-  }
+    if (currentStep.value > 0) {
+        currentStep.value--
+    }
 }
 </script>
     
 <style scoped>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
 .containerContent {
     width: 100%;
     height: 100%;
@@ -94,7 +107,7 @@ const prevStep = () => {
     }
 
     to {
-        transform: translateX(15%);
+        transform: translateX(30%);
     }
 }
 
@@ -122,7 +135,7 @@ const prevStep = () => {
 
 @media screen and (max-width: 700px) {
     .move-animation {
-        font-size: 9px;
+        font-size: 17px;
         transition: all 0.5s ease-in-out;
     }
 }
@@ -146,7 +159,7 @@ const prevStep = () => {
 
 @media screen and (max-width: 900px) {
     .btn-create-content {
-        font-size: 10px;
+        font-size: 12px;
         transition: all 0.5s ease-in-out;
     }
 }
@@ -181,8 +194,7 @@ const prevStep = () => {
 
 @media screen and (max-width: 700px) {
     .input-search {
-        width: 80%;
-        transition: all 0.5s ease-in-out;
+        width: 100%;
     }
 }
 

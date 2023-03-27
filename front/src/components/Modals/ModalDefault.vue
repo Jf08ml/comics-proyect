@@ -1,8 +1,10 @@
 <template>
+
   <div class="modal">
     <div class="modal-content">
       <div class="button-close-modal"><button class="button-close" @click="props.onShowModal"><v-icon
-            name="md-close-sharp" scale="1" title="CLose" color="red" animation="pulse" hover speed="fast"/></button></div>
+            name="md-close-sharp" scale="1" title="CLose" color="red" animation="pulse" hover speed="fast" /></button>
+      </div>
       <slot>
       </slot>
     </div>
@@ -11,9 +13,11 @@
   
 <script setup>
 import { defineProps } from 'vue';
+
 const props = defineProps({
   onShowModal: Function,
 });
+
 </script>
   
 <style>
