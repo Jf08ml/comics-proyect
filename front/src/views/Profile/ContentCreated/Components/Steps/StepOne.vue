@@ -10,10 +10,8 @@
                     aria-label="Archivo" />
             </div>
             <div class="selected-images">
-                <div v-for="image in selectedFiles" :key="image.name">
-                    <div style="position: relative;">
-                        <button @click="deleteImg(image.name)"
-                            style="background: transparent; border: none; position: absolute; color: red; font-weight: bolder; cursor: pointer; font-size: 15px;">x</button>
+                <div class="image-row" v-for="image in selectedFiles" :key="image.name">
+                    <div >
                         <img style="border: 1px solid black" :src="image.url" alt="Selected Image" />
                     </div>
                 </div>
@@ -26,29 +24,18 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue'
-
+import { ref, defineProps, onBeforeMount } from 'vue'
 
 const props = defineProps({
     saveFiles: Function,
-    selectedFiles: Array,
+    uploadedImages: Array
 })
 
-watch(() => props.selectedFiles, (newValue) => {
-    selectedFiles.value = newValue;
-});
-
-const existImgs = ref(props.selectedFiles)
-
-if (existImgs.value.length > 0) {
-    selectedFiles.value = existImgs;
-}
 const selectedFiles = ref([]);
 
-const deleteImg = async (name) => {
-    selectedFiles.value.splice(name, 1);
-}
-
+onBeforeMount(() => {
+    selectedFiles.value = props.uploadedImages
+})
 
 const onFileChange = (event) => {
     const files = event.target.files;
@@ -68,42 +55,39 @@ const onFileChange = (event) => {
     }
 };
 
-const onSubmit = async () => {
-    await props.saveFiles(selectedFiles.value)
+const onSubmit = () => {
+    props.saveFiles(selectedFiles.value)
 };
 </script>
 
 <style scoped>
 .selected-images {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    overflow-y: auto;
+    justify-items: center;
     align-items: center;
-    margin-top: 20px;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-height: 220px;
     box-shadow: 0 0 5px gainsboro;
 }
 
-.selected-images>div {
-    width: 90%;
+.selected-images .image-row {
     display: inline-block;
     white-space: nowrap;
+    margin: 5px;
 }
 
 .selected-images img {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 @media screen and (max-width: 700px) {
     .selected-images img {
-        width: 60px;
-        height: 60px;
-        margin: 5px;
-        object-fit: cover;
+        width: 100%;
+        height: 100%;
     }
 }
 </style>

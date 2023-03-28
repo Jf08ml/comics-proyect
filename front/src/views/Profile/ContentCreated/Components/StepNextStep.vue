@@ -9,14 +9,14 @@
                     <h3>{{ props.steps[0].title }}</h3>
                     <p>{{ props.steps[0].description }}</p>
                     <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
-                        <StepOne :saveFiles="saveFiles" :selectedFiles="selectedFiles"/>
+                        <StepOne :saveFiles="saveFiles" :uploadedImages="uploadedImages"/>
                     </div>
                 </div>
                 <div class="change-step">
                     <div>
                     </div>
                     <div class="content-btn-change">
-                        <button class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
+                        <button :disabled="nextDisabled" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
                                 title="Next" color="#b81f59" /></button>
                     </div>
                 </div>
@@ -73,10 +73,13 @@ const props = defineProps({
     prevStep: Function,
 })
 
-const selectedFiles = ref([]);
+const nextDisabled = ref(true)
+const uploadedImages = ref([]);
 
 const saveFiles = (files) => {
-    selectedFiles.value = files;
+    uploadedImages.value = files;
+    console.log(uploadedImages.value)
+    nextDisabled.value = false;
 }
 
 </script>
