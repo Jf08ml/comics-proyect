@@ -16,7 +16,7 @@
                     <div>
                     </div>
                     <div class="content-btn-change">
-                        <button :disabled="nextDisabled" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
+                        <button :disabled="uploadedImages.length > 0 ? nextDisabled = false : nextDisabled = true" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
                                 title="Next" color="#b81f59" /></button>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <h3>{{ props.steps[1].title }}</h3>
                     <p>{{ props.steps[1].description }}</p>
                     <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
-                        <StepTwo />
+                        <StepTwo :saveInfo="saveInfo" />
                     </div>
                 </div>
                 <div class="change-step">
@@ -35,7 +35,7 @@
                                 title="Previous" color="#b81f59" /></button>
                     </div>
                     <div class="content-btn-change">
-                        <button class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
+                        <button :disabled="Object.keys(postInfoSaved).length === 0 ? nextDisabled = true : nextDisabled = false" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
                                 title="Next" color="#b81f59" /></button>
                     </div>
                 </div>
@@ -44,6 +44,9 @@
                 <div class="step-content">
                     <h3>{{ props.steps[2].title }}</h3>
                     <p>{{ props.steps[2].description }}</p>
+                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
+                        <StepThree :uploadedImages="uploadedImages" :postInfoSaved="postInfoSaved"/>
+                    </div>
                 </div>
                 <div class="change-step">
                     <div class="content-btn-change">
@@ -63,7 +66,8 @@
 <script setup>
 import { defineProps, ref } from 'vue';
 import StepOne from './Steps/StepOne';
-import StepTwo from './Steps/StepTwo.vue'
+import StepTwo from './Steps/StepTwo.vue';
+import StepThree from './Steps/StepThree.vue'
 
 const props = defineProps({
     currentStep: Number,
@@ -74,12 +78,20 @@ const props = defineProps({
 })
 
 const nextDisabled = ref(true)
+
+
+//Imagenes cargadas
 const uploadedImages = ref([]);
+
+//Informacion cargada
+const postInfoSaved = ref({})
 
 const saveFiles = (files) => {
     uploadedImages.value = files;
-    console.log(uploadedImages.value)
-    nextDisabled.value = false;
+}
+
+const saveInfo = (info) => {
+    postInfoSaved.value = info;
 }
 
 </script>

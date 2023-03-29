@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onBeforeMount } from 'vue'
+import { ref, defineProps, onMounted } from 'vue'
 
 const props = defineProps({
     saveFiles: Function,
@@ -33,7 +33,7 @@ const props = defineProps({
 
 const selectedFiles = ref([]);
 
-onBeforeMount(() => {
+onMounted(() => {
     selectedFiles.value = props.uploadedImages
 })
 
@@ -82,12 +82,5 @@ const onSubmit = () => {
 .selected-images img {
     width: 100%;
     height: 100%;
-}
-
-@media screen and (max-width: 700px) {
-    .selected-images img {
-        width: 100%;
-        height: 100%;
-    }
 }
 </style>
