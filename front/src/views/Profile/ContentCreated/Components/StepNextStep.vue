@@ -1,8 +1,6 @@
 <template>
     <div class="container-sns">
-        <div class="modal-header">
-            <h2 class="title">Creating content</h2>
-        </div>
+ 
         <div class="modal-body">
             <div class="modal-step" v-if="props.currentStep === 0">
                 <div class="step-content">
@@ -54,7 +52,7 @@
                                 title="Previous" color="#b81f59" /></button>
                     </div>
                     <div class="content-btn-change">
-                        <button class="btn-change-save" @click="props.onShowModal"><v-icon name="io-send" scale="2"
+                        <button @click="submitPost" class="btn-change-save"><v-icon name="io-send" scale="2"
                                 title="Save" color="green" /></button>
                     </div>
                 </div>
@@ -94,6 +92,18 @@ const saveInfo = (info) => {
     postInfoSaved.value = info;
 }
 
+const submitPost = () => {
+    const postComplete = {
+        title: postInfoSaved.value.title,
+        description: postInfoSaved.value.description,
+        typeContent: postInfoSaved.value.typeContent,
+        keywords: [postInfoSaved.value.keywords.split(",")],
+        imagesPost: uploadedImages.value.target
+    }
+    console.log(postComplete)
+
+}
+
 </script>
 
 <style scoped>
@@ -109,17 +119,6 @@ const saveInfo = (info) => {
 }
 
 h3 {
-    color: #b81f59;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: center;
-    height: 10%;
-    width: 100%;
-}
-
-.title {
     color: hsla(0, 0%, 0%, .9);
     font: normal Varela Round, sans-serif;
     text-align: center;
@@ -149,8 +148,9 @@ h3 {
     }
 }
 
+
 .modal-body {
-    height: 90%;
+    height: 100%;
     width: 100%;
 }
 
