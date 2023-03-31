@@ -28,7 +28,7 @@ const imagesPost = ref(props.uploadedImages);
     flex-direction: column;
     align-content: center;
     align-items: center;
-    max-height: 320px;
+    max-height: 100%;
     overflow-y: auto;
 }
 

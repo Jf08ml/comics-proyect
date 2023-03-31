@@ -1,21 +1,22 @@
 <template>
     <div class="container-sns">
- 
+
         <div class="modal-body">
             <div class="modal-step" v-if="props.currentStep === 0">
                 <div class="step-content">
                     <h3>{{ props.steps[0].title }}</h3>
                     <p>{{ props.steps[0].description }}</p>
                     <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
-                        <StepOne :saveFiles="saveFiles" :uploadedImages="uploadedImages"/>
+                        <StepOne :saveFiles="saveFiles" :uploadedImages="uploadedImages" />
                     </div>
                 </div>
                 <div class="change-step">
                     <div>
                     </div>
                     <div class="content-btn-change">
-                        <button :disabled="uploadedImages.length > 0 ? nextDisabled = false : nextDisabled = true" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
-                                title="Next" color="#b81f59" /></button>
+                        <button :disabled="uploadedImages.length > 0 ? nextDisabled = false : nextDisabled = true"
+                            class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2" title="Next"
+                                color="#b81f59" /></button>
                     </div>
                 </div>
             </div>
@@ -33,17 +34,18 @@
                                 title="Previous" color="#b81f59" /></button>
                     </div>
                     <div class="content-btn-change">
-                        <button :disabled="Object.keys(postInfoSaved).length === 0 ? nextDisabled = true : nextDisabled = false" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2"
-                                title="Next" color="#b81f59" /></button>
+                        <button
+                            :disabled="Object.keys(postInfoSaved).length === 0 ? nextDisabled = true : nextDisabled = false"
+                            class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2" title="Next"
+                                color="#b81f59" /></button>
                     </div>
                 </div>
             </div>
             <div class="modal-step" v-if="props.currentStep === 2">
                 <div class="step-content">
-                    <h3>{{ props.steps[2].title }}</h3>
-                    <p>{{ props.steps[2].description }}</p>
-                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px;">
-                        <StepThree :uploadedImages="uploadedImages" :postInfoSaved="postInfoSaved"/>
+                        <h3>{{ props.steps[2].title }}</h3>
+                    <div style="height: 90%;">
+                        <StepThree style="height: 100%;" :uploadedImages="uploadedImages" :postInfoSaved="postInfoSaved" />
                     </div>
                 </div>
                 <div class="change-step">
@@ -52,8 +54,8 @@
                                 title="Previous" color="#b81f59" /></button>
                     </div>
                     <div class="content-btn-change">
-                        <button @click="submitPost" class="btn-change-save"><v-icon name="io-send" scale="2"
-                                title="Save" color="green" /></button>
+                        <button @click="submitPost" class="btn-change-save"><v-icon name="io-send" scale="2" title="Save"
+                                color="green" /></button>
                     </div>
                 </div>
             </div>
@@ -85,6 +87,7 @@ const uploadedImages = ref([]);
 const postInfoSaved = ref({})
 
 const saveFiles = (files) => {
+    console.log(files)
     uploadedImages.value = files;
 }
 
@@ -98,7 +101,7 @@ const submitPost = () => {
         description: postInfoSaved.value.description,
         typeContent: postInfoSaved.value.typeContent,
         keywords: [postInfoSaved.value.keywords.split(",")],
-        imagesPost: uploadedImages.value.target
+        imagesPost: uploadedImages.value
     }
     console.log(postComplete)
 
@@ -113,9 +116,8 @@ const submitPost = () => {
     justify-content: center;
     align-items: center;
     align-content: center;
-    width: 80vw;
-    height: 80vh;
-    padding: 5px;
+    width: 90vw;
+    height: 90vh;
 }
 
 h3 {
@@ -161,7 +163,7 @@ h3 {
 
 .step-content {
     text-align: center;
-    height: 80%;
+    height: 85%;
     width: 100%;
 }
 
@@ -169,7 +171,7 @@ h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 14%;
+    height: 15%;
     width: 100%;
 }
 
@@ -199,5 +201,4 @@ h3 {
 
 .btn-change-save:hover {
     box-shadow: 0 0 5px #1fb82c;
-}
-</style>
+}</style>

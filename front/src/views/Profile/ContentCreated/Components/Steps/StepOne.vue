@@ -6,7 +6,7 @@
                     Upload the images
                     <v-icon name="hi-information-circle" scale="1" title="Verificación" />
                 </label>
-                <input class="input-modal" @change="onFileChange" type="file" multiple id="imagen" name="imagen"
+                <input class="input-modal"  @change="onFileChange" type="file" multiple id="imagen" name="imagen"
                     aria-label="Archivo" />
             </div>
             <div class="selected-images">
@@ -50,9 +50,9 @@ const onFileChange = (event) => {
                 url: e.target.result,
             });
         };
-
         reader.readAsDataURL(file);
     }
+    console.log(selectedFiles.value.target)
 };
 
 const onSubmit = () => {
