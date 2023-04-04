@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from 'vue'
+import { ref, defineProps, onMounted, toRaw  } from 'vue'
 
 const props = defineProps({
     saveFiles: Function,
@@ -52,11 +52,11 @@ const onFileChange = (event) => {
         };
         reader.readAsDataURL(file);
     }
-    console.log(selectedFiles.value.target)
 };
 
 const onSubmit = () => {
-    props.saveFiles(selectedFiles.value)
+    const rawSelectedFiles = toRaw(selectedFiles.value)
+    props.saveFiles(rawSelectedFiles)
 };
 </script>
 
