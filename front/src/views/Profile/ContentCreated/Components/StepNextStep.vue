@@ -43,8 +43,8 @@
             </div>
             <div class="modal-step" v-if="props.currentStep === 2">
                 <div class="step-content">
-                    <h3>{{ props.steps[2].title }}</h3>
-                    <p></p>
+                        <h3>{{ props.steps[2].title }}</h3>
+                        <p></p>
                     <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px; height: 90%;">
                         <StepThree style="height: 100%;" :uploadedImages="uploadedImages" :postInfoSaved="postInfoSaved" />
                     </div>
@@ -65,11 +65,10 @@
 </template>
 
 <script setup>
-import { defineProps, ref, toRaw } from 'vue';
+import { defineProps, ref, toRaw} from 'vue';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo.vue';
 import StepThree from './Steps/StepThree.vue'
-import axios from 'axios';
 
 const props = defineProps({
     currentStep: Number,
@@ -89,15 +88,14 @@ const uploadedImages = ref([]);
 const postInfoSaved = ref({})
 
 const saveFiles = (files) => {
-    uploadedImages.value = files;
-    console.log(uploadedImages.value)
+    uploadedImages.value = toRaw(files);
 }
 
 const saveInfo = (info) => {
     postInfoSaved.value = info;
 }
 
-const submitPost = async () => {
+const submitPost = () => {
     const postComplete = {
         title: postInfoSaved.value.title,
         description: postInfoSaved.value.description,
@@ -105,18 +103,7 @@ const submitPost = async () => {
         keywords: [postInfoSaved.value.keywords.split(",")],
         imagesPost: toRaw(uploadedImages.value)
     }
-
-    for (let i = 0; i < postComplete.imagesPost.length; i++) {
-        try {
-            const formData = new FormData();
-            formData.append('image', postComplete.imagesPost[i]);
-            formData.append('key', '0f13a40a6bc24a6565e327d5b4b5e26c')
-            const response = await axios.post('https://api.imgbb.com/1/upload', formData);
-            console.log(response)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    console.log(postComplete)
 }
 
 </script>
@@ -213,5 +200,4 @@ h3 {
 
 .btn-change-save:hover {
     box-shadow: 0 0 5px #1fb82c;
-}
-</style>
+}</style>

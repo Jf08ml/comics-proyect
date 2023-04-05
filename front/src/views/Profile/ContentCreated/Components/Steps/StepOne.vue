@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, toRaw  } from 'vue'
+import { ref, defineProps, onMounted, toRaw } from 'vue'
 
 const props = defineProps({
     saveFiles: Function,
@@ -46,7 +46,7 @@ const onFileChange = (event) => {
 
         reader.onload = (e) => {
             selectedFiles.value.push({
-                name: file.name,
+                imagefile: file,
                 url: e.target.result,
             });
         };
@@ -55,8 +55,8 @@ const onFileChange = (event) => {
 };
 
 const onSubmit = () => {
-    const rawSelectedFiles = toRaw(selectedFiles.value)
-    props.saveFiles(rawSelectedFiles)
+    const toRawImages = toRaw(selectedFiles.value)
+    props.saveFiles(toRawImages)
 };
 </script>
 
