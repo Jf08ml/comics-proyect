@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div style="height: 10vh; width: 100vw;">
       <NavigationBar />
     </div>

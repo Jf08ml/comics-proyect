@@ -14,12 +14,11 @@ import { defineProps, ref } from 'vue';
 
 const props = defineProps({
     uploadedImages: Array,
-    postInfoSaved: Object
+    postInfoSaved: Object, // Añade una nueva prop para controlar la ejecución de la función
 })
 
 const infoPost = ref(props.postInfoSaved);
 const imagesPost = ref(props.uploadedImages);
-
 </script>
 
 <style scoped>
@@ -34,7 +33,6 @@ const imagesPost = ref(props.uploadedImages);
 
 .content-images {
     width: 100%;
-
     margin-top: 10px;
 }
 img {

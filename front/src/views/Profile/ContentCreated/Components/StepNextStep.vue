@@ -6,7 +6,10 @@
                 <div class="step-content">
                     <h3>{{ props.steps[0].title }}</h3>
                     <p>{{ props.steps[0].description }}</p>
-                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px; height: 90%;">
+                    <p style="background-color: beige;" v-if="!props.addComicPart.isTrusted">You are adding a part to the
+                        following comic: <b>{{
+                            props.addComicPart.title }}</b></p>
+                    <div class="step">
                         <StepOne :saveFiles="saveFiles" :uploadedImages="uploadedImages" />
                     </div>
                 </div>
@@ -14,9 +17,8 @@
                     <div>
                     </div>
                     <div class="content-btn-change">
-                        <button :disabled="uploadedImages.length > 0 ? nextDisabled = false : nextDisabled = true"
-                            class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2" title="Next"
-                                color="#b81f59" /></button>
+                        <button v-if="nextStepTwo" class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right"
+                                scale="2" title="Next" color="#b81f59" /></button>
                     </div>
                 </div>
             </div>
@@ -24,7 +26,7 @@
                 <div class="step-content">
                     <h3>{{ props.steps[1].title }}</h3>
                     <p>{{ props.steps[1].description }}</p>
-                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px; height: 90%;">
+                    <div class="step">
                         <StepTwo :saveInfo="saveInfo" />
                     </div>
                 </div>
@@ -34,19 +36,21 @@
                                 title="Previous" color="#b81f59" /></button>
                     </div>
                     <div class="content-btn-change">
-                        <button
-                            :disabled="Object.keys(postInfoSaved).length === 0 ? nextDisabled = true : nextDisabled = false"
-                            class="btn-change" @click="props.nextStep"><v-icon name="fa-arrow-right" scale="2" title="Next"
-                                color="#b81f59" /></button>
+                        <button v-if="nextStepThree" class="btn-change" @click="props.nextStep"><v-icon
+                                name="fa-arrow-right" scale="2" title="Next" color="#b81f59" /></button>
                     </div>
                 </div>
             </div>
             <div class="modal-step" v-if="props.currentStep === 2">
                 <div class="step-content">
-                        <h3>{{ props.steps[2].title }}</h3>
-                        <p></p>
-                    <div style="box-shadow: 0 0 3px gainsboro; margin-top: 30px; height: 90%;">
+                    <h3>{{ props.steps[2].title }}</h3>
+                    <p></p>
+                    <div class="step">
                         <StepThree style="height: 100%;" :uploadedImages="uploadedImages" :postInfoSaved="postInfoSaved" />
+                        <div class="loading-bar" v-if="isLoading">
+                        </div>
+                        <span v-if="isLoading">The content is being uploaded, the waiting time will depend on the number
+                            of images, please wait</span>
                     </div>
                 </div>
                 <div class="change-step">
@@ -65,21 +69,31 @@
 </template>
 
 <script setup>
-import { defineProps, ref, toRaw} from 'vue';
+import { defineProps, ref, toRaw, watchEffect } from 'vue';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo.vue';
 import StepThree from './Steps/StepThree.vue'
 
+
 const props = defineProps({
     currentStep: Number,
     steps: Array,
-    onShowModal: Function,
     nextStep: Function,
     prevStep: Function,
+    sendPost: Function,
+    isFunctionRunning: Boolean,
+    addComicPart: Object
 })
 
-const nextDisabled = ref(true)
+const isLoading = ref(true); // Añade una variable reactiva para controlar la visibilidad de la barra de carga
 
+// Utiliza un watcher para escuchar cambios en isFunctionRunning
+watchEffect(() => {
+    isLoading.value = props.isFunctionRunning;
+})
+
+const nextStepTwo = ref(false)
+const nextStepThree = ref(false);
 
 //Imagenes cargadas
 const uploadedImages = ref([]);
@@ -89,21 +103,16 @@ const postInfoSaved = ref({})
 
 const saveFiles = (files) => {
     uploadedImages.value = toRaw(files);
+    nextStepTwo.value = true;
 }
 
 const saveInfo = (info) => {
     postInfoSaved.value = info;
+    nextStepThree.value = true;
 }
 
-const submitPost = () => {
-    const postComplete = {
-        title: postInfoSaved.value.title,
-        description: postInfoSaved.value.description,
-        typeContent: postInfoSaved.value.typeContent,
-        keywords: [postInfoSaved.value.keywords.split(",")],
-        imagesPost: toRaw(uploadedImages.value)
-    }
-    console.log(postComplete)
+const submitPost = async () => {
+    await props.sendPost(uploadedImages.value, postInfoSaved.value)
 }
 
 </script>
@@ -150,6 +159,24 @@ h3 {
 }
 
 
+.loading-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #4caf50;
+    animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+
 .modal-body {
     height: 100%;
     width: 100%;
@@ -164,6 +191,12 @@ h3 {
     text-align: center;
     height: 85%;
     width: 100%;
+}
+
+.step {
+    box-shadow: 0 0 3px gainsboro;
+    margin-top: 30px;
+    height: 88%;
 }
 
 .change-step {
@@ -200,4 +233,5 @@ h3 {
 
 .btn-change-save:hover {
     box-shadow: 0 0 5px #1fb82c;
-}</style>
+}
+</style>

@@ -9,29 +9,43 @@
                 <input class="input-search" type="text" placeholder="Search...">
             </div>
             <div class="post-created">
-                <h4 style="color:red">You have not created content !</h4>
-            </div>
-            <div class="paginate-post">
-                <button>◄</button><button>1</button><button>►</button>
+                <comicsCreated  @show-modal="showModal" />
             </div>
         </div>
         <Transition>
             <ModalDefault v-if="closeOrOpen" :onShowModal="showModal">
-                <StepNextStep :currentStep="currentStep" :nextStep="nextStep" :prevStep="prevStep" :steps="steps"
-                    :onShowModal="showModal" />
+                <StepNextStep :isFunctionRunning="isFunctionRunning" :currentStep="currentStep" :nextStep="nextStep"
+                    :prevStep="prevStep" :steps="steps" :onShowModal="showModal" :sendPost="sendPost"
+                    :addComicPart="addComicPart" />
             </ModalDefault>
         </Transition>
     </div>
 </template>
     
 <script setup>
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
+import axios from 'axios';
+import { useComicStore } from '@/store/comic'
+import { notify } from "@kyvg/vue3-notification";
+
 import ModalDefault from '@/components/Modals/ModalDefault.vue';
 import StepNextStep from './Components/StepNextStep.vue'
+import comicsCreated from './Components/comicsCreated.vue'
 
-const closeOrOpen = ref(false)
-const showModal = () => {
+
+const comicStore = useComicStore()
+
+const closeOrOpen = ref(false);
+
+const isFunctionRunning = ref(false)
+
+const addComicPart = ref(null)
+
+const showModal = (id) => {
     closeOrOpen.value = !closeOrOpen.value
+
+    addComicPart.value = id;
+
 }
 
 const currentStep = ref(0);
@@ -50,6 +64,46 @@ const nextStep = () => {
 const prevStep = () => {
     if (currentStep.value > 0) {
         currentStep.value--
+    }
+}
+
+const sendPost = async (uploadedImages, postInfoSaved) => {
+    const urlImageSend = ref([])
+
+    isFunctionRunning.value = true;
+
+    for (let i = 0; i < toRaw(uploadedImages.length); i++) {
+        const formData = new FormData();
+        formData.append('image', uploadedImages[i].imagefile);
+        formData.append('key', '0f13a40a6bc24a6565e327d5b4b5e26c')
+        const response = await axios.post('https://api.imgbb.com/1/upload', formData);
+        const userPhotoUrl = response.data.data.url;
+        urlImageSend.value.push(userPhotoUrl)
+    }
+
+    const postComplete = {
+        title: postInfoSaved.title,
+        description: postInfoSaved.description,
+        typeContent: postInfoSaved.typeContent,
+        keywords: postInfoSaved.chips,
+        imagesPost: toRaw(urlImageSend.value),
+        comicPart: addComicPart.value.isTrusted ? '' : addComicPart.value
+    }
+    try {
+        const response = await comicStore.comicPost(postComplete);
+        currentStep.value = 0;
+        showModal()
+        if (response.result === "success") {
+
+            notify({
+                type: "success",
+                title: "Success",
+                text: "Post uploaded",
+            });
+        }
+        isFunctionRunning.value = false;
+    } catch (error) {
+        console.log(error)
     }
 }
 </script>
@@ -72,11 +126,10 @@ const prevStep = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-inline: 35px;
 }
 
 .created-content {
-    height: 10%;
+    height: 8%;
     width: 80%;
     padding: 10px;
     background-color: white;
@@ -86,12 +139,13 @@ const prevStep = () => {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin: 5px;
+    margin: 10px;
 }
 
 @media screen and (max-width: 700px) {
     .created-content {
-        width: 100%;
+        width: 80%;
+        height: 5%;
         transition: all 0.5s ease-in-out;
     }
 }
@@ -165,8 +219,8 @@ const prevStep = () => {
 }
 
 .post-content {
-    height: 90%;
-    width: 100%;
+    height: 85%;
+    width: 90%;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 3px gray;
@@ -174,12 +228,19 @@ const prevStep = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    margin: 5px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 700px) {
+    .post-content {
+        width: 90%;
+        height: 85%;
+        transition: all 0.5s ease-in-out;
+    }
 }
 
 .search-content {
-    height: 10%;
+    height: 9%;
     width: 60%;
     padding: 10px;
     display: flex;
@@ -200,19 +261,9 @@ const prevStep = () => {
 
 .post-created {
     display: flex;
-    align-items: center;
-    align-content: center;
+    flex-direction: row;
     justify-content: center;
     width: 95%;
     height: 80%;
-}
-
-.paginate-post {
-    height: 10%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 }
 </style>

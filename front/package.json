@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^2.9.0",
+    "browser-image-compression": "^2.0.2",
     "core-js": "^3.8.3",
     "date-fns": "^2.29.3",
     "js-cookie": "^3.0.1",

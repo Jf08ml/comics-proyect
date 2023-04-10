@@ -17,46 +17,67 @@
                 </div>
             </div>
             <div class="buttons-modals">
-                <button class="button-save">Save</button>
+                <button :disabled="blockButton" class="button-save">Save</button>
             </div>
         </form>
     </div>
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, toRaw } from 'vue'
+import { ref, defineProps, onMounted, toRaw } from 'vue';
+import imageCompression from 'browser-image-compression';
 
 const props = defineProps({
-    saveFiles: Function,
-    uploadedImages: Array
-})
+  saveFiles: Function,
+  uploadedImages: Array,
+});
 
 const selectedFiles = ref([]);
 
+const blockButton = ref(true);
+
 onMounted(() => {
-    selectedFiles.value = props.uploadedImages
-})
+  selectedFiles.value = props.uploadedImages;
+});
 
-const onFileChange = (event) => {
-    const files = event.target.files;
+const compressImage = async (file) => {
+  const options = {
+    maxSizeMB: 1, // Tamaño máximo en MB, ajusta según tus necesidades
+    maxWidthOrHeight: 1920, // Ancho o alto máximo en píxeles, ajusta según tus necesidades
+    useWebWorker: true,
+  };
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
+  try {
+    const compressedFile = await imageCompression(file, options);
+    return compressedFile;
+  } catch (error) {
+    console.error('Error al comprimir la imagen:', error);
+    return file;
+  }
+};
 
-        reader.onload = (e) => {
-            selectedFiles.value.push({
-                imagefile: file,
-                url: e.target.result,
-            });
-        };
-        reader.readAsDataURL(file);
-    }
+const onFileChange = async (event) => {
+  const files = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const compressedFile = await compressImage(file);
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      selectedFiles.value.push({
+        imagefile: compressedFile,
+        url: e.target.result,
+      });
+    };
+    reader.readAsDataURL(compressedFile);
+  }
+  blockButton.value = false;
 };
 
 const onSubmit = () => {
-    const toRawImages = toRaw(selectedFiles.value)
-    props.saveFiles(toRawImages)
+  const toRawImages = toRaw(selectedFiles.value);
+  props.saveFiles(toRawImages);
 };
 </script>
 

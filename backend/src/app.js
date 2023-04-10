@@ -3,8 +3,9 @@ const express = require('express');
 const morgan = require('morgan')
 const app = express();
 const cors = require('cors');
-const authroutes = require('./routes/auth');
+const authRoutes = require('./routes/auth');
 const payoutRoutes = require('./routes/payout')
+const comicRoutes = require('./routes/comic')
 
 // Configuración de middlewares
 app.use(cors());
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Rutas
-app.use('/api', authroutes, payoutRoutes);
+app.use('/api', authRoutes, payoutRoutes, comicRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -22,9 +23,9 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-// const HOST = '192.168.101.13'
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-  // console.log(`Network listening at http://${HOST}:${PORT}/`);
+const HOST = '192.168.101.13'
+app.listen(PORT, HOST, () => {
+  // console.log(`Server listening on port ${PORT}`);
+  console.log(`Network listening at http://${HOST}:${PORT}/`);
 });
 

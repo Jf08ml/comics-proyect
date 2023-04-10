@@ -8,7 +8,7 @@ $bg-color-navigation:#ed8bb2;
     justify-content: center; 
     align-items: center;
     margin: auto;
-    @media screen and ( max-width: 900px){
+    @media screen and ( max-width: 1050px){
         width: 90vw;
         transition: all 0.2s ease-in-out;
     }
@@ -22,7 +22,7 @@ $bg-color-navigation:#ed8bb2;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 90%;
+    height: 95%;
     box-shadow: 0 0 20px black;
     background-color:whitesmoke;
 }

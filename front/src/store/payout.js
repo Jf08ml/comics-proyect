@@ -5,14 +5,10 @@ import { useAuthStore } from "./auth";
 const authStore = useAuthStore();
 
 export const usePayoutStore = defineStore('payout', {
-    state: () => ({
-        token: authStore.token,
-        refreshTokenUser: authStore.refreshTokenUser
-    }),
     actions: {
         async emailPayout(payoutData) {
             try {
-                const response = await emailPayout(payoutData, this.token);
+                const response = await emailPayout(payoutData, authStore.token);
                 return response;
             } catch (error) {
                 return error;
@@ -21,7 +17,7 @@ export const usePayoutStore = defineStore('payout', {
 
         async getUserPayments() {
             try {
-                const response = await getUserPayments(this.token);
+                const response = await getUserPayments(authStore.token);
                 return response;
             } catch (error) {
                 return error;
@@ -30,7 +26,7 @@ export const usePayoutStore = defineStore('payout', {
 
         async requestPayment(dataRequestPayment) {
             try {
-                const response = await requestPayment(dataRequestPayment, this.token);
+                const response = await requestPayment(dataRequestPayment, authStore.token);
                 return response;
             } catch (error) {
                 return error;
@@ -39,7 +35,7 @@ export const usePayoutStore = defineStore('payout', {
 
         async getAllPaymentsUser() {
             try {
-                const response = await getAllPaymentsUser(this.token)
+                const response = await getAllPaymentsUser(authStore.token)
                 return response;
             } catch (error) {
                 return error;

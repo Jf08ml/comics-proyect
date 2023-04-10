@@ -37,6 +37,11 @@ const routes = [
     name: 'profile',
     component: () => import(/* webpackChunkName: "profile" */ '../views/Profile/ProfileView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/viewcomic/:id',
+    name: 'viewcomic',
+    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/viewComic/viewComic.vue')
   }
 ]
 
