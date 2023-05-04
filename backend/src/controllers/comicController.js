@@ -4,7 +4,7 @@ const Comic = require('../models/comic');
 const User = require('../models/users');
 
 async function postComic(req, res) {
-  const { title, description, typeContent, keywords, imagesPost, comicPart } = req.body.postComplete;
+  const { title, description, typeContent, keywords, imagesPost } = req.body.postComplete;
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
@@ -17,14 +17,7 @@ async function postComic(req, res) {
       typeContent: typeContent,
       keywords: keywords,
       imagesPost: imagesPost,
-      comicPartOf: comicPart ? "" : comicPart
     });
-
-    if (comicPart != "") {
-      const searchComicReference = await Comic.findById(comicPart);
-      searchComicReference.comicPartOf.push(comic._id);
-      await searchComicReference.save();
-    }
 
     await comic.save();
     res.status(200).json({ result: 'success', message: "Comic save" });

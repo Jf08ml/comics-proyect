@@ -7,7 +7,7 @@
            <button>«</button>
            <button>»</button>
         </div>
-        <div class="content-images" v-for="image in comic.imagesPost" :key="image._id">
+        <div class="content-images" v-for="(image, index) in comic.imagesPost" :key="index">
             <div>
                 <img style="border: 1px solid black" :src="image" />
             </div>
@@ -51,11 +51,7 @@ onBeforeMount(async () => {
         const response = await comicStore.getUserComic(idComic.id);
         comic.value = response;
         orderComics.value.push(comic.value._id)
-
-        for(let i = 0; i <= comic.value.comicPartOf.length; i++){
-            orderComics.value.push(comic.value.comicPartOf[i])
-        }
-        console.log(orderComics.value)
+        console.log(comic.value)
         try {
             const response = await comicStore.getAllComics();
             azarComics.value = response;

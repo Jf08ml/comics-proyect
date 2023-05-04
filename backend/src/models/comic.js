@@ -26,13 +26,6 @@ const comicSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    comicPartOf: {
-      type: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comic'
-      }],
-      default: []
-    },
     views: {
       type: Number,
       default: 0
