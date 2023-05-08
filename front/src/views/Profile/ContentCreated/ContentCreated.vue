@@ -9,7 +9,7 @@
                 <input class="input-search" type="text" placeholder="Search...">
             </div>
             <div class="post-created">
-                <comicsCreated  @show-modal="showModal" />
+                <comicsCreated @show-modal="showModal" />
             </div>
         </div>
         <Transition>
@@ -87,21 +87,39 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
         typeContent: postInfoSaved.typeContent,
         keywords: postInfoSaved.chips,
         imagesPost: toRaw(urlImageSend.value),
-        comicPart: addComicPart.value.isTrusted ? '' : addComicPart.value
+        comicPart: ''
     }
-    try {
-        const response = await comicStore.comicPost(postComplete);
-        currentStep.value = 0;
-        showModal()
-        if (response.result === "success") {
 
-            notify({
-                type: "success",
-                title: "Success",
-                text: "Post uploaded",
-            });
+    const serie = {
+        name: postComplete.title
+    }
+
+    try {
+        const response = await comicStore.seriePost(serie);
+        postComplete.comicPart = response.serie._id;
+
+        try {
+            const response = await comicStore.comicPost(postComplete);
+            currentStep.value = 0;
+            if (response.result === "success") {
+                try {
+                    const response = await comicStore.putComic(postComplete);
+                    if (response.result === "success") {
+                        notify({
+                            type: "success",
+                            title: "Success",
+                            text: "Post uploaded",
+                        });
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            showModal()
+            isFunctionRunning.value = false;
+        } catch (error) {
+            console.log(error)
         }
-        isFunctionRunning.value = false;
     } catch (error) {
         console.log(error)
     }

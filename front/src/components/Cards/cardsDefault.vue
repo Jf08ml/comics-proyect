@@ -24,7 +24,7 @@ h4 {
     padding: 2px; 
     margin: 0px; 
     color:aliceblue; 
-    font-size: 2vw;
+    font-size: 1vw;
 }
 
 span {

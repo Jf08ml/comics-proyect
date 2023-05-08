@@ -2,6 +2,41 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION } = process.env;
 const Comic = require('../models/comic');
 const User = require('../models/users');
+const Serie = require('../models/serie');
+
+async function postSerie(req, res) {
+  const { title } = req.body.serie;
+
+  try {
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decodedToken.id);
+
+    const serie = new Serie({
+      user: user._id,
+      name: title
+    })
+    await serie.save();
+    res.status(200).json({ result: 'success', serie: serie });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
+
+async function putComic(req, res) {
+  const { comicPart, _id } = req.body.postComplete;
+  try {
+    const serie = await Serie.findById(comicPart);
+    serie.parts = _id;
+
+    await serie.save()
+    res.status(200).json({ result: 'success', message: "success updated" });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
 
 async function postComic(req, res) {
   const { title, description, typeContent, keywords, imagesPost } = req.body.postComplete;
