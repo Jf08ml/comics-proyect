@@ -30,6 +30,10 @@ const comicSchema = new mongoose.Schema({
       type: Number,
       default: 0
     },
+    serie: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Serie'
+    },
     uploadData: {
       type: Date,
       default: Date.now

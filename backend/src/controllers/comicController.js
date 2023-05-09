@@ -6,18 +6,18 @@ const Serie = require('../models/serie');
 
 async function postSerie(req, res) {
   const { title } = req.body.serie;
-
+  console.log(req.body.serie)
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decodedToken.id);
 
     const serie = new Serie({
-      user: user._id,
-      name: title
+      userId: user._id,
+      nameSerie: title
     })
     await serie.save();
-    res.status(200).json({ result: 'success', serie: serie });
+    res.status(200).json({ result: 'success', serie_id: serie._id });
   } catch (error) {
     console.log(error)
     res.status(500).json({ result: 'error', message: error });
@@ -25,12 +25,15 @@ async function postSerie(req, res) {
 }
 
 async function putComic(req, res) {
-  const { comicPart, _id } = req.body.postComplete;
+  const { serie, _id } = req.body.comicLoaded;
   try {
-    const serie = await Serie.findById(comicPart);
-    serie.parts = _id;
+    const serieFound = await Serie.findById(serie);
+    if (!serieFound) {
+      return res.status(404).json({ result: 'error', message: "Serie not found" });
+    }
+    serieFound.partsSerie = _id;
 
-    await serie.save()
+    await serieFound.save()
     res.status(200).json({ result: 'success', message: "success updated" });
   } catch (error) {
     console.log(error)
@@ -39,7 +42,7 @@ async function putComic(req, res) {
 }
 
 async function postComic(req, res) {
-  const { title, description, typeContent, keywords, imagesPost } = req.body.postComplete;
+  const { title, description, typeContent, keywords, imagesPost, comicPart } = req.body.postComplete;
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);
@@ -52,10 +55,11 @@ async function postComic(req, res) {
       typeContent: typeContent,
       keywords: keywords,
       imagesPost: imagesPost,
+      serie: comicPart
     });
 
     await comic.save();
-    res.status(200).json({ result: 'success', message: "Comic save" });
+    res.status(200).json({ result: 'success', message: "Comic save", comic: comic });
   } catch (error) {
     console.log(error)
     res.status(500).json({ result: 'error', message: error });
@@ -101,5 +105,7 @@ module.exports = {
   postComic,
   getUserComics,
   getUserComic,
-  getAzarComics
+  getAzarComics,
+  postSerie,
+  putComic
 }

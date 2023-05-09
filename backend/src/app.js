@@ -14,7 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Rutas
-app.use('/api', authRoutes, payoutRoutes, comicRoutes);
+// Rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/payout', payoutRoutes);
+app.use('/api/comic', comicRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

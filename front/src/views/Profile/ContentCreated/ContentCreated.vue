@@ -91,34 +91,36 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
     }
 
     const serie = {
-        name: postComplete.title
+        title: postComplete.title
     }
 
     try {
         const response = await comicStore.seriePost(serie);
-        postComplete.comicPart = response.serie._id;
-
-        try {
-            const response = await comicStore.comicPost(postComplete);
-            currentStep.value = 0;
-            if (response.result === "success") {
-                try {
-                    const response = await comicStore.putComic(postComplete);
-                    if (response.result === "success") {
-                        notify({
-                            type: "success",
-                            title: "Success",
-                            text: "Post uploaded",
-                        });
+        postComplete.comicPart = response.serie_id;
+        if (response.result === "success") {
+            try {
+                const response = await comicStore.comicPost(postComplete);
+                const comicLoaded = response.comic;
+                currentStep.value = 0;
+                if (response.result === "success") {
+                    try {
+                        const response = await comicStore.putComic(comicLoaded);
+                        if (response.result === "success") {
+                            notify({
+                                type: "success",
+                                title: "Success",
+                                text: "Post uploaded",
+                            });
+                        }
+                    } catch (error) {
+                        console.log(error)
                     }
-                } catch (error) {
-                    console.log(error)
                 }
+                showModal()
+                isFunctionRunning.value = false;
+            } catch (error) {
+                console.log(error)
             }
-            showModal()
-            isFunctionRunning.value = false;
-        } catch (error) {
-            console.log(error)
         }
     } catch (error) {
         console.log(error)

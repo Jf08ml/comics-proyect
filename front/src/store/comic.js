@@ -1,4 +1,4 @@
-import { comicPost, getUserComics, getUserComic, getAzarComics } from "@/services/comicServices";
+import { seriePost, putComic, comicPost, getUserComics, getUserComic, getAzarComics } from "@/services/comicServices";
 import { defineStore } from 'pinia';
 import { useAuthStore } from "./auth";
 
@@ -6,6 +6,24 @@ const authStore = useAuthStore();
 
 export const useComicStore = defineStore('comic', {
     actions: {
+        async seriePost(serie){
+            try {
+                const response = await seriePost(serie, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async putComic(comicLoaded){
+            try {
+                const response = await putComic(comicLoaded, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
         async comicPost(postComplete) {
             try {
                 const response = await comicPost(postComplete, authStore.token);

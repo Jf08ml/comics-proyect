@@ -5,18 +5,19 @@ const serieSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         default: mongoose.Types.ObjectId // Esto generará un nuevo ObjectId único por defecto
       },
-    user_id: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
       },
-    name: {
+    nameSerie: {
         type: String,
         required: true
     },
-    parts: {
-        type: Array
-    }
+    partsSerie: [{
+      type: mongoose.Schema.Types.ObjectId
+  }]
+  
 });
 
 module.exports = mongoose.model('Serie', serieSchema);
