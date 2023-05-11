@@ -6,6 +6,8 @@ const authMiddleware = require('../middleware/auth').verifyToken;
 router.post('/postcomic', authMiddleware, comicController.postComic);
 router.get('/usercomics', authMiddleware, comicController.getUserComics);
 router.get('/usercomic/:id', authMiddleware, comicController.getUserComic);
+router.get('/userseries', authMiddleware, comicController.getUserSeries);
+router.get('/userserie/:id', authMiddleware, comicController.getUserSerie);
 router.post('/postserie', authMiddleware, comicController.postSerie);
 router.put('/putcomic', authMiddleware, comicController.putComic);
 

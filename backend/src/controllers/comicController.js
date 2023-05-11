@@ -24,13 +24,39 @@ async function postSerie(req, res) {
   }
 }
 
+async function getUserSeries(req, res) {
+  try {
+    const token = req.headers['authorization'];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+    const userSeries = await Serie.find({ "user": userId })
+    res.status(200).json(userSeries)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ result: 'error', message: error });
+  }
+}
+
+async function getUserSerie(req, res) {
+  const { id } = req.params;
+  try {
+    const mainSerie = await Serie.findById(id); // Busca el cómic principal por su ID
+
+    return res.status(200).json(mainSerie); // Retorna los cómics relacionados
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 async function putComic(req, res) {
-  const { serie, _id } = req.body.comicLoaded;
+  const { serie, _id, imagesPost } = req.body.comicLoaded;
   try {
     const serieFound = await Serie.findById(serie);
     if (!serieFound) {
       return res.status(404).json({ result: 'error', message: "Serie not found" });
     }
+
+    serieFound.frontPage = imagesPost[0];
     serieFound.partsSerie = _id;
 
     await serieFound.save()
@@ -107,5 +133,7 @@ module.exports = {
   getUserComic,
   getAzarComics,
   postSerie,
-  putComic
+  putComic,
+  getUserSeries,
+  getUserSerie
 }

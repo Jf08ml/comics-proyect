@@ -1,4 +1,4 @@
-import { seriePost, putComic, comicPost, getUserComics, getUserComic, getAzarComics } from "@/services/comicServices";
+import { seriePost, getUserSeries, getUserSerie, putComic, comicPost, getUserComics, getUserComic, getAzarComics } from "@/services/comicServices";
 import { defineStore } from 'pinia';
 import { useAuthStore } from "./auth";
 
@@ -6,7 +6,7 @@ const authStore = useAuthStore();
 
 export const useComicStore = defineStore('comic', {
     actions: {
-        async seriePost(serie){
+        async seriePost(serie) {
             try {
                 const response = await seriePost(serie, authStore.token);
                 return response;
@@ -15,7 +15,47 @@ export const useComicStore = defineStore('comic', {
             }
         },
 
-        async putComic(comicLoaded){
+        async getUserSeries() {
+            try {
+                const response = await getUserSeries(authStore.token);
+                return response;
+            } catch (error) {
+                if (error.result == 'TokenExpiredError') {
+                    try {
+                        const response = await useAuthStore.refreshToken()
+                        if (response.result == "success") {
+                            location.reload()
+                        }
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
+                return error;
+            }
+        },
+
+        async getUserSerie(id) {
+            try {
+                const response = await getUserSerie(id, authStore.token);
+                return response;
+            } catch (error) {
+                if (error.result == 'TokenExpiredError') {
+                    try {
+                        const response = await useAuthStore.refreshToken()
+                        if (response.result == "success") {
+                            location.reload()
+                        }
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
+                return error;
+            }
+        },
+
+        
+
+        async putComic(comicLoaded) {
             try {
                 const response = await putComic(comicLoaded, authStore.token);
                 return response;

@@ -3,8 +3,8 @@
         <div style="overflow-y: auto;">
             <div class="row" v-for="comicsChunk in paginatedItems" :key="comicsChunk[0]._id">
                 <div class="comics" v-for="comic in comicsChunk" :key="comic._id">
-                    <cardDefault class="card-styles" :title="comic.title"
-                        :description="comic.description" :image="comic.imagesPost[0]" :views="comic.views"/>
+                    <cardDefault class="card-styles" :title="comic.nameSerie"
+                        :description="comic.description" :image="comic.frontPage" :views="comic.views"/>
                     <div class="show-options">
                         <div style="margin:5px">
                             <button @click="$emit('show-modal', comic)" class="btn-options"><v-icon name="ri-file-edit-fill" color="white" scale="1"/></button>
@@ -41,15 +41,15 @@ const comics = ref();
 const isMobile = ref(window.innerWidth < 500)
 onBeforeMount(async () => {
     try {
-        const response = await comicStore.getUserComics();
+        const response = await comicStore.getUserSeries();
         comics.value = response;
     } catch (error) {
-        console.log(Error)
+        console.log(error)
     }
 })
 
 const openComic = (comic) => {
-    router.push(`/viewcomic/${comic}`)
+    router.push(`/viewserie/${comic}`)
 }
 
 const refreshComics = async () => {

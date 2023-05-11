@@ -43,7 +43,6 @@ const addComicPart = ref(null)
 
 const showModal = (id) => {
     closeOrOpen.value = !closeOrOpen.value
-
     addComicPart.value = id;
 
 }

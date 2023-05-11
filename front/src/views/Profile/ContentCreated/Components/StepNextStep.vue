@@ -6,9 +6,9 @@
                 <div class="step-content">
                     <h3>{{ props.steps[0].title }}</h3>
                     <p>{{ props.steps[0].description }}</p>
-                    <p style="background-color: beige;" v-if="!props.addComicPart.isTrusted">You are adding a part to the
+                    <p style="background-color: beige;" v-if="props.addComicPart._id">You are adding a part to the
                         following comic: <b>{{
-                            props.addComicPart.title }}</b></p>
+                            props.addComicPart.nameSerie }}</b></p>
                     <div class="step">
                         <StepOne :saveFiles="saveFiles" :uploadedImages="uploadedImages" />
                     </div>
