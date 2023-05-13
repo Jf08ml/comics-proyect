@@ -6,7 +6,6 @@ const Serie = require('../models/serie');
 
 async function postSerie(req, res) {
   const { title } = req.body.serie;
-  console.log(req.body.serie)
   try {
     const token = req.headers['authorization'];
     const decodedToken = jwt.verify(token, JWT_SECRET);

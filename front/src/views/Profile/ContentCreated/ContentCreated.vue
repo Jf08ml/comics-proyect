@@ -41,9 +41,9 @@ const isFunctionRunning = ref(false)
 
 const addComicPart = ref(null)
 
-const showModal = (id) => {
+const showModal = (comic) => {
     closeOrOpen.value = !closeOrOpen.value
-    addComicPart.value = id;
+    addComicPart.value = comic;
 
 }
 

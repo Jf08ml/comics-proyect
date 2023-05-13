@@ -4,10 +4,12 @@
             <h1>{{ serie.nameSerie }}</h1>
         </div>
         <div>
-            <img :src="serie.frontPage" />
+            <img :src="serie.frontPage" width="400" height="420" style="box-shadow: 0 0 5px #b81f59;"/>
         </div>
         <div>
-
+            <ul v-for="(item, index) in serie.partsSerie" :key="index">
+                <router-link :to="`/viewcomic/${item}`"><li style="color: white;">{{ serie.nameSerie }} - part {{ index }} </li></router-link>
+            </ul>
         </div>
     </div>
 </template>

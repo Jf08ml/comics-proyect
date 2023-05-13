@@ -9,7 +9,7 @@
         </div>
         <div class="content-images" v-for="(image, index) in comic.imagesPost" :key="index">
             <div>
-                <img style="border: 1px solid black" :src="image" />
+                <img style="box-shadow: 0 0 5px #b81f59;" :src="image" />
             </div>
         </div>
         <div style="color:whitesmoke">
