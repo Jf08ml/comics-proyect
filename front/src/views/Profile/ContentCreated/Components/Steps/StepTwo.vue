@@ -1,9 +1,23 @@
 <template>
   <div>
-    <form class="form" enctype="multipart/form-data" @submit.prevent="submitData">
+    <form
+      class="form"
+      enctype="multipart/form-data"
+      @submit.prevent="submitData"
+    >
       <div class="div-form">
-        <input v-model="postInfo.title" type="text" placeholder="Title *" required />
-        <input v-model="postInfo.description" type="text" placeholder="Description *" required />
+        <input
+          v-model="postInfo.title"
+          type="text"
+          placeholder="Title *"
+          required
+        />
+        <input
+          v-model="postInfo.description"
+          type="text"
+          placeholder="Description *"
+          required
+        />
       </div>
       <div class="div-form">
         <select v-model="postInfo.typeContent" class="" required>
@@ -11,10 +25,21 @@
           <option value="Animated">Animated</option>
           <option value="Real">Real</option>
         </select>
-        <input v-model="postInfo.artist" type="text" placeholder="Original artist *" required />
+        <input
+          v-model="postInfo.artist"
+          type="text"
+          placeholder="Original artist *"
+          required
+        />
       </div>
       <div class="div-form">
-        <input id="input" type="text" placeholder="Keywords separated for comma *" v-model="text" @keydown.space="addChip" />
+        <input
+          id="input"
+          type="text"
+          placeholder="Keywords separated for comma *"
+          v-model="text"
+          @keydown.space="addChip"
+        />
       </div>
       <div class="chips">
         <div v-for="(chip, index) in postInfo.chips" :key="index" class="chip">
@@ -26,21 +51,22 @@
     </form>
   </div>
 </template>
-  
+
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps } from "vue";
 
 const props = defineProps({
   saveInfo: Function,
-})
+  infoComic: Object,
+});
 
 const postInfo = ref({
-  title: 'Comic Marvel',
-  description: 'descripcion',
-  typeContent: '',
-  artist: 'Marvel',
-  chips: ['Marvel'],
-})
+  title: props.infoComic.nameSerie,
+  description: props.infoComic.description,
+  typeContent: "",
+  artist: props.infoComic.artist,
+  chips: props.infoComic ? [] : props.infoComic.keywords,
+});
 const text = ref("");
 
 const addChip = () => {
@@ -48,17 +74,17 @@ const addChip = () => {
     postInfo.value.chips.push(text.value.trim());
     text.value = "";
   }
-}
+};
 
 const removeChip = (index) => {
   postInfo.value.chips.splice(index, 1);
-}
+};
 
 const submitData = () => {
-  props.saveInfo(postInfo.value)
-}
+  props.saveInfo(postInfo.value);
+};
 </script>
-  
+
 <style scoped>
 .chips {
   display: flex;
@@ -94,4 +120,3 @@ const submitData = () => {
   line-height: 1;
 }
 </style>
-  

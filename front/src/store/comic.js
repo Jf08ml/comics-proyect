@@ -53,7 +53,7 @@ export const useComicStore = defineStore('comic', {
             }
         },
 
-        
+
 
         async putComic(comicLoaded) {
             try {
@@ -91,25 +91,27 @@ export const useComicStore = defineStore('comic', {
             }
         },
         async getUserComic(id) {
-            try {
-                const response = await getUserComic(id, authStore.token);
-                return response;
-            } catch (error) {
-                if (error.result == 'TokenExpiredError') {
-                    try {
-                        const response = await useAuthStore.refreshToken()
-                        if (response.result == "success") {
-                            location.reload()
+            if (id) {
+                try {
+                    const response = await getUserComic(id, authStore.token);
+                    return response;
+                } catch (error) {
+                    if (error.result == 'TokenExpiredError') {
+                        try {
+                            const response = await useAuthStore.refreshToken()
+                            if (response.result == "success") {
+                                location.reload()
+                            }
+                        } catch (error) {
+                            console.error(error)
                         }
-                    } catch (error) {
-                        console.error(error)
                     }
+                    return error;
                 }
-                return error;
             }
         },
 
-        async getAllComics() {
+        async getAzarComics() {
             try {
                 const response = await getAzarComics()
                 return response;

@@ -4,8 +4,8 @@
             <h1> {{ comic.title }}</h1>
         </div>
         <div>
-           <button>«</button>
-           <button>»</button>
+            <button>«</button>
+            <button>»</button>
         </div>
         <div class="content-images" v-for="(image, index) in comic.imagesPost" :key="index">
             <div>
@@ -47,22 +47,20 @@ let comicLoaded = ref(false);
 const idComic = route.params;
 
 onBeforeMount(async () => {
-    try {
-        const response = await comicStore.getUserComic(idComic.id);
-        comic.value = response;
-        orderComics.value.push(comic.value._id)
-        console.log(comic.value)
         try {
-            const response = await comicStore.getAllComics();
-            azarComics.value = response;
-            comicLoaded.value = true;
+            const response = await comicStore.getUserComic(idComic.id);
+            comic.value = response;
+            orderComics.value.push(comic.value._id)
+            try {
+                const response = await comicStore.getAzarComics();
+                azarComics.value = response;
+                comicLoaded.value = true;
+            } catch (error) {
+                console.log(error)
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    } catch (error) {
-        console.log(Error);
-    }
-
 });
 
 const openComic = (comic) => {
@@ -76,14 +74,14 @@ watch(() => route.params.id, async (newIdComic) => {
         const response = await comicStore.getUserComic(idComic.value);
         comic.value = response;
         try {
-            const response = await comicStore.getAllComics();
+            const response = await comicStore.getAzarComics();
             azarComics.value = response;
             comicLoaded.value = true;
         } catch (error) {
             console.log(error)
         }
     } catch (error) {
-        console.log(Error);
+        console.log(error);
     }
 });
 

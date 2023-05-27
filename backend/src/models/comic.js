@@ -10,18 +10,6 @@ const comicSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    description: {
-      type: String,
-      required: true
-    },
-    typeContent: {
-        type: String,
-        required: true
-    },
-    keywords: {
-        type: Array,
-        required: true
-    },
     imagesPost : {
         type: Array,
         required: true

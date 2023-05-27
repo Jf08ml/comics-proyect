@@ -3,7 +3,7 @@
   <div class="modal">
     <div class="modal-content">
       <div class="button-close-modal"><button class="button-close" @click="props.onShowModal"><v-icon
-            name="md-close-sharp" scale="1" title="CLose" color="red" animation="pulse" hover speed="fast" /></button>
+            name="md-close-sharp" scale="2" title="CLose" color="red" animation="pulse" hover speed="fast" /></button>
       </div>
       <slot>
       </slot>
