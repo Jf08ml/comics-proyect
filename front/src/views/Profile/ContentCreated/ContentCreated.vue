@@ -129,17 +129,17 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
                 });
               }
             } catch (error) {
-              console.log(error);
+              console.error(error);
             }
           }
           showModal();
           isFunctionRunning.value = false;
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   } else {
     try {
@@ -157,13 +157,13 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
             });
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
       showModal();
       isFunctionRunning.value = false;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 };

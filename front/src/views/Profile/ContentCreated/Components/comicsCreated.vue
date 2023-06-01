@@ -70,7 +70,7 @@ onBeforeMount(async () => {
     const response = await comicStore.getUserSeries();
     comics.value = response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
@@ -83,7 +83,7 @@ const refreshComics = async () => {
     const response = await comicStore.getUserSeries();
     comics.value = response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

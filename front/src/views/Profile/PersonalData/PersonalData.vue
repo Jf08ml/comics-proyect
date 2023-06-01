@@ -105,7 +105,6 @@ const onSubmitUserInformation = async (userInformation) => {
 
 //upload photo for user
 const onSubmitPhoto = async (imageFile) => {
-    console.log(imageFile)
     try {
         const formData = new FormData();
         formData.append('image', imageFile);

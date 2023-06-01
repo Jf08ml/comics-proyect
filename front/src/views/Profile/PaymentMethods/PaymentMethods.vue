@@ -50,7 +50,7 @@ onBeforeMount(async () => {
             disabledInputEmail.value = true;
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 })
 
@@ -59,7 +59,7 @@ const getPayments = async () => {
         const response = await payoutStore.getAllPaymentsUser();
         allPayments.value = response;
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 const sendEmailPay = async (emailPay) => {
@@ -80,7 +80,7 @@ const sendEmailPay = async (emailPay) => {
                     disabledInputEmail.value = true;
                 }
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         } else if (response.result == 'errorEmail') {
             notify({
@@ -89,7 +89,7 @@ const sendEmailPay = async (emailPay) => {
             });
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -106,7 +106,7 @@ const sendRequestPayment = async (amount) => {
             text: `${response.message}`,
         });
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 </script>

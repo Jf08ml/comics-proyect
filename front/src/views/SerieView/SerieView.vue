@@ -4,33 +4,11 @@
       <h2>{{ serie.nameSerie }}</h2>
     </div>
     <div class="content-description">
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          align-content: center;
-        "
-      >
+      <div class="content-img">
         <img :src="serie.frontPage" class="img-frontpage" />
       </div>
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 40vw;
-        "
-      >
-        <div
-          style="
-            height: 80%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          "
-        >
+      <div class="content-description-comic">
+        <div class="content-text-description">
           <p class="p-description">
             {{ serie.description }}
           </p>
@@ -80,7 +58,6 @@ onBeforeMount(async () => {
   try {
     const response = await comicStore.getUserSerie(idComic.id);
     serie.value = response;
-    console.log(serie.value);
     orderComics.value.push(serie.value._id);
   } catch (error) {
     console.error(error);
@@ -93,10 +70,33 @@ onBeforeMount(async () => {
   display: flex;
   justify-content: space-around;
   align-content: center;
-  width: 90vw;
+  width: 60vw;
   box-shadow: 0 0 2px #ffffff;
   padding: 10px;
   border-radius: 5px;
+}
+
+.content-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.content-description-comic {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+}
+
+.content-text-description {
+  margin: 20px;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .custom-router-link {
   color: #333;
@@ -166,8 +166,7 @@ onBeforeMount(async () => {
 }
 
 .list-comics {
-  width: auto;
-  max-width: 50vw;
+  width: 50vw;
   height: 5vh;
   margin-top: 15px;
   display: flex;
@@ -181,6 +180,10 @@ onBeforeMount(async () => {
     max-width: 80vw;
     height: 5vh;
     margin-top: 10px;
+  }
+
+  .content-description {
+    width: 90vw;
   }
 
   .chip {

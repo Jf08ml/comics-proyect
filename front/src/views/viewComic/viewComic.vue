@@ -56,10 +56,10 @@ onBeforeMount(async () => {
                 azarComics.value = response;
                 comicLoaded.value = true;
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
 });
 
@@ -78,10 +78,10 @@ watch(() => route.params.id, async (newIdComic) => {
             azarComics.value = response;
             comicLoaded.value = true;
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
