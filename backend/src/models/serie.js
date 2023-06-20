@@ -42,6 +42,10 @@ const serieSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  score: {
+    type: Number,
+    default: 0,
+  },
   uploadData: {
     type: Date,
     default: Date.now,

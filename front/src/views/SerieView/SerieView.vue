@@ -14,15 +14,7 @@
           </p>
         </div>
         <router-link to="/artist">Artist: {{ serie.artist }}</router-link>
-        <div class="chips">
-          <div
-            v-for="(words, index) in serie.keywords"
-            :key="index"
-            class="chip"
-          >
-            {{ words }}
-          </div>
-        </div>
+        <StarRating />
       </div>
     </div>
     <div>
@@ -42,10 +34,10 @@
 
 <script setup>
 import { onBeforeMount, ref } from "vue";
+// import StarRating from 'vue-star-rating';
 import { useComicStore } from "@/store/comic";
 import { useRoute } from "vue-router";
-// import cardDefault from '@/components/Cards/cardsDefault.vue';
-// import router from '@/router';
+
 
 const comicStore = useComicStore();
 const route = useRoute();
@@ -53,6 +45,7 @@ const route = useRoute();
 const serie = ref({});
 const orderComics = ref([]);
 const idComic = route.params;
+
 
 onBeforeMount(async () => {
   try {
@@ -92,7 +85,7 @@ onBeforeMount(async () => {
 }
 
 .content-text-description {
-  margin: 20px;
+  margin: 8px;
   height: 80%;
   display: flex;
   justify-content: center;
@@ -146,25 +139,6 @@ onBeforeMount(async () => {
   background-color: #ccc;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 8px;
-  gap: 8px;
-}
-
-.chip {
-  display: flex;
-  align-items: center;
-  padding: 2px 6px;
-  background-color: #4e73df;
-  color: #fff;
-  border-radius: 12px;
-  font-size: 12px;
-  margin-bottom: 8px;
-  height: 24px;
-}
-
 .list-comics {
   width: 50vw;
   height: 5vh;
@@ -184,11 +158,6 @@ onBeforeMount(async () => {
 
   .content-description {
     width: 90vw;
-  }
-
-  .chip {
-    font-size: 10px;
-    height: 20px;
   }
 }
 </style>
