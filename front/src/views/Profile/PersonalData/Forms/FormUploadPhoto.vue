@@ -36,7 +36,7 @@ const onFileChange = (e) => {
 };
 
 const onSubmit = () => {
-    const toRawImageFile = imageFile.value.target
+    const toRawImageFile = imageFile.value
     props.onSubmitPhoto(toRawImageFile)
 }
 </script>
