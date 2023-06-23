@@ -18,7 +18,8 @@
     "pinia": "^2.1.4",
     "vue": "^3.3.4",
     "vue-axios": "^3.5.2",
-    "vue-router": "^4.2.2"
+    "vue-router": "^4.2.2",
+    "vue-star-rating": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

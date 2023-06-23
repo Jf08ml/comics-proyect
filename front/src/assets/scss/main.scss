@@ -14,12 +14,12 @@ $scrollbar-thumb-hover-background: #555;
 body {
   font-family: $primary-font;
   font-size: $font-size;
-  background-color: #333;
+  background-image: radial-gradient(circle at 50% -20.71%, #505467 0, #191e29 50%, #020e2e 100%);
+  background-attachment: fixed;
   color: #333;
   margin: 0px;
-  height: 100vh;
-  width: 100vw;
 }
+
 
 
 h1 {

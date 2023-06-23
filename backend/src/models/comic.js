@@ -18,6 +18,10 @@ const comicSchema = new mongoose.Schema({
       type: Number,
       default: 0
     },
+    score: {
+      type: Number,
+      default: 0
+    },
     serie: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Serie'

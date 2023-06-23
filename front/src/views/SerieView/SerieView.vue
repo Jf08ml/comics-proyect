@@ -1,7 +1,7 @@
 <template>
   <div align="center">
     <div>
-      <h2>{{ serie.nameSerie }}</h2>
+      <h1>{{ serie.nameSerie }}</h1>
     </div>
     <div class="content-description">
       <div class="content-img">
@@ -13,8 +13,10 @@
             {{ serie.description }}
           </p>
         </div>
-        <router-link to="/artist">Artist: {{ serie.artist }}</router-link>
-        <StarRating />
+        <router-link class="custom-router" to="/artist">Artist: {{ serie.artist }}</router-link>
+        <div style="margin: 10px;">
+          <star-rating v-model:rating="rating" :increment="0.01" class="custom-star-rating" :read-only="true" :star-size="30" :glow="10" glow-color="#ffd055"></star-rating>
+        </div>
       </div>
     </div>
     <div>
@@ -34,10 +36,9 @@
 
 <script setup>
 import { onBeforeMount, ref } from "vue";
-// import StarRating from 'vue-star-rating';
 import { useComicStore } from "@/store/comic";
 import { useRoute } from "vue-router";
-
+import StarRating from 'vue-star-rating'
 
 const comicStore = useComicStore();
 const route = useRoute();
@@ -45,12 +46,14 @@ const route = useRoute();
 const serie = ref({});
 const orderComics = ref([]);
 const idComic = route.params;
+const rating = ref(0)
 
 
 onBeforeMount(async () => {
   try {
     const response = await comicStore.getUserSerie(idComic.id);
     serie.value = response;
+    rating.value = serie.value.score;
     orderComics.value.push(serie.value._id);
   } catch (error) {
     console.error(error);
@@ -59,12 +62,30 @@ onBeforeMount(async () => {
 </script>
 
 <style scoped>
+h1 {
+  color: #ffffff;
+}
+.custom-star-rating {
+  font-weight: bold;
+  font-size: 1.2em;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  color: #999;
+
+}
+
+.custom-router {
+  color: #ccc;
+}
+
 .content-description {
   display: flex;
+  background-color: #010101;
   justify-content: space-around;
   align-content: center;
   width: 60vw;
-  box-shadow: 0 0 2px #ffffff;
+
   padding: 10px;
   border-radius: 5px;
 }
@@ -127,6 +148,7 @@ onBeforeMount(async () => {
   box-shadow: 0 0 5px #010101;
   width: 20vw;
   height: 35vh;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {
