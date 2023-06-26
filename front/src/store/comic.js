@@ -24,7 +24,7 @@ export const useComicStore = defineStore('comic', {
                     try {
                         const response = await useAuthStore.refreshToken()
                         if (response.result == "success") {
-                            location.reload()
+                            location.reload(true)
                         }
                     } catch (error) {
                         console.error(error)

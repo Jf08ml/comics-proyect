@@ -20,7 +20,7 @@
       </div>
     </div>
     <div>
-      <h4 style="color: white">List of comics</h4>
+      <h3 style="color: white">List of comics</h3>
     </div>
     <div
       class="list-comics"
@@ -28,7 +28,7 @@
       :key="index"
     >
       <router-link class="custom-router-link" :to="`/viewcomic/${item}`">
-        {{ serie.nameSerie }} - part {{ index }}
+        {{ index }}.{{ serie.nameSerie }}
       </router-link>
     </div>
   </div>
@@ -113,7 +113,7 @@ h1 {
   align-items: center;
 }
 .custom-router-link {
-  color: #333;
+  color: #ffffff;
   display: inline-block;
   width: auto;
   white-space: nowrap;
@@ -121,8 +121,7 @@ h1 {
   font-size: 16px;
   text-decoration: none;
   padding: 10px 15px;
-  border: 1px solid #333;
-  background-color: #eee;
+  border: 1px solid #ffffff;
   border-radius: 4px;
 }
 
@@ -158,7 +157,8 @@ h1 {
   }
 }
 .custom-router-link:hover {
-  background-color: #ccc;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .list-comics {
