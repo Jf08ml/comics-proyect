@@ -2,10 +2,10 @@
   <div class="card">
     <img :src="props.image" alt="Card image" class="card-img-top" />
     <div class="content-text">
-      <div style="height: 70%">
+      <div style="height: 70%; display: flex; align-items: center; justify-content: center;">
         <h4>{{ props.title }}</h4>
       </div>
-      <div style="height: 20%">
+      <div style="height: 30%; display: flex; align-items: center; justify-content: center;">
         <span>Views: {{ props.views }}</span>
       </div>
     </div>
@@ -38,11 +38,11 @@ span {
 
 @media (max-width: 600px) {
   h4 {
-    font-size: 3vw;
+    font-size: 0.7rem;
   }
 
   span {
-    font-size: 2vw;
+    font-size: 0.6rem;
   }
 }
 .card {
@@ -52,8 +52,8 @@ span {
   align-content: center;
   align-items: center;
   box-shadow: 0 0 5px #b81f59;
-  width: 10%;
-  height: 20%;
+  width: 100%;
+  height: 100%;
   background: #333;
 }
 .card-img-top {
@@ -63,9 +63,11 @@ span {
 }
 
 .content-text {
+  width: 100%;
   height: 25%;
   display: flex;
   flex-direction: column;
   text-align: center;
+  box-shadow: 0 0 5px #b81f59;
 }
 </style>

@@ -18,9 +18,9 @@
             </div>
             <div style="display: flex; flex-wrap: wrap; justify-content: center;">
                 <div v-for="img in azarComics" :key="img._id"
-                    style="flex-basis: 20%; margin: 10px; border: 1px solid white">
+                    style="flex-basis: 25%; height: 220px; margin: 10px; border: 1px solid white">
                     <div style="width: 100%; height: 100%;" @click="openComic(img._id)">
-                        <cardDefault style="width: 100%; height: 100%;" :title="img.title" :description="img.description"
+                        <cardDefault :title="img.title" :description="img.description"
                             :image="img.imagesPost[0]" :views="img.views" />
                     </div>
                 </div>
