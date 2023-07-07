@@ -13,9 +13,20 @@
             {{ serie.description }}
           </p>
         </div>
-        <router-link class="custom-router" to="/artist">Artist: {{ serie.artist }}</router-link>
-        <div style="margin: 10px;">
-          <star-rating v-model:rating="rating" :increment="0.01" class="custom-star-rating" :read-only="true" :star-size="30" :glow="10" glow-color="#ffd055"></star-rating>
+        <router-link class="custom-router" to="/artist"
+          >Artist: {{ serie.artist }}</router-link
+        >
+        <div class="custom-star-rating-container">
+          <star-rating
+            v-model:rating="rating"
+            :show-rating="false"
+            :increment="0.01"
+            :star-size="starSize"
+            :read-only="true"
+            :glow="5"
+            glow-color="#ffd055"
+          ></star-rating>
+          <div class="custom-text">{{ rating }}</div>
         </div>
       </div>
     </div>
@@ -35,19 +46,27 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 import { useComicStore } from "@/store/comic";
 import { useRoute } from "vue-router";
-import StarRating from 'vue-star-rating'
+import StarRating from "vue-star-rating";
 
 const comicStore = useComicStore();
 const route = useRoute();
+const starSize = ref(25);
 
 const serie = ref({});
 const orderComics = ref([]);
 const idComic = route.params;
-const rating = ref(0)
+const rating = ref(0);
 
+const updateStarSize = () => {
+  if (window.innerWidth <= 600) {
+    starSize.value = 20;
+  } else {
+    starSize.value = 30;
+  }
+};
 
 onBeforeMount(async () => {
   try {
@@ -58,6 +77,15 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error(error);
   }
+});
+
+onMounted(() => {
+  window.addEventListener("resize", updateStarSize);
+  updateStarSize();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateStarSize);
 });
 </script>
 
@@ -72,7 +100,6 @@ h1 {
   padding-right: 10px;
   border-radius: 5px;
   color: #999;
-
 }
 
 .custom-router {
@@ -125,6 +152,34 @@ h1 {
   border-radius: 4px;
 }
 
+.custom-star-rating-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  margin: 20px;
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+}
+
+.custom-text {
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 5px;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffd055;
+}
+
+@media screen and (max-width: 700px) {
+  .custom-star-rating-container {
+    width: 100%;
+  }
+
+  .custom-text {
+    font-size: 1em;
+  }
+}
+
 @media (max-width: 600px) {
   .custom-router-link {
     font-size: 14px;
@@ -153,7 +208,7 @@ h1 {
 @media (max-width: 600px) {
   .img-frontpage {
     width: 40vw;
-    height: 20vh;
+    height: 25vh;
   }
 }
 .custom-router-link:hover {

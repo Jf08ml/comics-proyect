@@ -41,7 +41,7 @@ const routes = [
   {
     path: '/viewcomic/:id',
     name: 'viewcomic',
-    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/viewComic/viewComic.vue')
+    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/viewComic/ComicView.vue')
   },
   {
     path: '/viewserie/:id',
