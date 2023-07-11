@@ -3,25 +3,13 @@
     <div>
       <h1>{{ comic.title }}</h1>
     </div>
-    <div>
-      <button
-        :class="showBack ? 'btn-navigation' : 'btn-navigation-blocked'"
-        :disabled="!showBack"
-        @click="backComic()"
-      >
-        «
-      </button>
-      <button class="btn-navigation" @click="openSerie(comic.serie)">
-        <v-icon name="hi-information-circle" />
-      </button>
-      <button
-        :class="showNext ? 'btn-navigation' : 'btn-navigation-blocked'"
-        :disabled="!showNext"
-        @click="nextComic()"
-      >
-        »
-      </button>
-    </div>
+    <NavigationButtons
+      :showBack="showBack"
+      :showNext="showNext"
+      @next-comic="nextComic"
+      @back-comic="backComic"
+      @open-serie="openSerie"
+    />
     <div
       class="content-images"
       v-for="(image, index) in comic.imagesPost"
@@ -31,22 +19,38 @@
         <img class="img-styles" :src="image" />
       </div>
     </div>
+
+    <NavigationButtons
+      :showBack="showBack"
+      :showNext="showNext"
+      @next-comic="nextComic"
+      @back-comic="backComic"
+      @open-serie="openSerie"
+    />
+
+    <LineDivider />
+
     <div class="containter-text-rate">
       <span>Rate here!</span>
     </div>
+
     <div class="custom-star-rating-container">
       <star-rating
         v-model:rating="rating"
+        :read-only="rating > 0 ? true : false"
         :show-rating="false"
         :increment="0.01"
         :star-size="starSize"
         :glow="5"
         glow-color="#ffd055"
+        @click="postRate()"
       ></star-rating>
+
       <div class="custom-text">{{ rating }}</div>
     </div>
-    <div style="border-bottom: 2px solid whitesmoke"></div>
-    <div>
+    <div class="custom-text">Views: {{ comic.views }}</div>
+    <LineDivider />
+    <div style="margin: 20px">
       <div>
         <h3>Other comics</h3>
       </div>
@@ -80,11 +84,16 @@ import {
 } from "vue";
 import { useComicStore } from "@/store/comic";
 import { useRoute } from "vue-router";
+import { useAuthStore } from "@/store/auth";
 import cardDefault from "@/components/Cards/cardsDefault.vue";
 import router from "@/router";
 import StarRating from "vue-star-rating";
+import { notify } from "@kyvg/vue3-notification";
+import LineDivider from "@/components/LineDivider.vue";
+import NavigationButtons from "./Components/NavigationButtons.vue";
 
 const comicStore = useComicStore();
+const authStore = useAuthStore();
 const route = useRoute();
 const rating = ref(0);
 const starSize = ref(30);
@@ -96,8 +105,11 @@ const azarComics = ref({});
 const comicLoaded = ref(false);
 const idComic = route.params;
 const page = ref();
+const runPostRate = ref(true);
 const showBack = ref(false);
 const showNext = ref(true);
+const contador = ref(0);
+const viewSended = ref(false);
 
 const updateStarSize = () => {
   if (window.innerWidth <= 600) {
@@ -111,6 +123,12 @@ onBeforeMount(async () => {
   try {
     const response = await comicStore.getUserComic(idComic.id);
     comic.value = response;
+    rating.value = comic.value.score;
+    if (rating.value > 0) {
+      runPostRate.value = false;
+    } else {
+      runPostRate.value = true;
+    }
     orderComics.value.push(comic.value._id);
     try {
       const response = await comicStore.getAzarComics();
@@ -134,14 +152,27 @@ onBeforeMount(async () => {
   pagination();
 });
 
+const contadorView = () => {
+  contador.value = 0;
+  setTimeout(() => {
+    if (!viewSended.value) {
+      sendView();
+      viewSended.value = true;
+    }
+  }, 10000);
+};
+
 onMounted(() => {
+  contadorView();
   window.addEventListener("resize", updateStarSize);
+
   updateStarSize();
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateStarSize);
 });
+
 
 const pagination = () => {
   const countPages = serie.value.partsSerie.length;
@@ -160,9 +191,11 @@ const pagination = () => {
 const nextComic = async () => {
   let pageNext = page.value + 1;
   let comicIdNext = serie.value.partsSerie[pageNext];
+
   router.push(`/viewcomic/${comicIdNext}`);
   await nextTick();
   pagination();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const backComic = async () => {
@@ -171,9 +204,12 @@ const backComic = async () => {
   router.push(`/viewcomic/${comicIdNext}`);
   await nextTick();
   pagination();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-const openSerie = (serie) => {
+const openSerie = () => {
+  let serie = comic.value.serie;
+
   router.push(`/viewserie/${serie}`);
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
@@ -183,6 +219,82 @@ const openComic = (comic) => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
+const postRate = async () => {
+  let comicId = comic.value._id;
+  let serieId = comic.value.serie;
+
+  if (!authStore.token) {
+    rating.value = 0;
+    return alert("Debes iniciar sesión");
+  }
+
+  if (runPostRate.value) {
+    try {
+      const rateResponse = await comicStore.postRateComic(
+        rating.value,
+        comicId
+      );
+
+      if (rateResponse.result !== "success") {
+        rating.value = 0;
+        return notify({
+          type: "error",
+          title: "Error",
+          text: `${rateResponse.message}`,
+        });
+      }
+
+      const comicScoreResponse = await comicStore.assignScore(comicId);
+
+      if (comicScoreResponse.result !== "success") {
+        return notify({
+          type: "error",
+          title: "Error",
+          text: `${comicScoreResponse.message}`,
+        });
+      }
+
+      const serieScoreResponse = await comicStore.assignScoreSerie(serieId);
+
+      if (serieScoreResponse.result !== "success") {
+        return notify({
+          type: "error",
+          title: "Error",
+          text: `${serieScoreResponse.message}`,
+        });
+      }
+
+      notify({
+        type: "success",
+        title: "Success",
+        text: "All operations were successful",
+      });
+    } catch (error) {
+      notify({
+        type: "error",
+        title: "Error",
+        text: `An unexpected error occurred: ${error.message}`,
+      });
+    }
+  }
+};
+
+const sendView = async () => {
+  let comicId = comic.value._id;
+  let serieId = comic.value.serie;
+  if (viewSended.value === false) {
+    try {
+      const response = await comicStore.countViews(comicId);
+      if (response.result === "success") {
+        await comicStore.countViewsSerie(serieId);
+      }
+      viewSended.value = true;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+};
+
 watch(
   () => route.params.id,
   async (newIdComic) => {
@@ -190,6 +302,14 @@ watch(
     try {
       const response = await comicStore.getUserComic(idComic.value);
       comic.value = response;
+      rating.value = comic.value.score;
+      contadorView();
+      viewSended.value = false;
+      if (rating.value > 0) {
+        runPostRate.value = false;
+      } else {
+        runPostRate.value = true;
+      }
       try {
         const response = await comicStore.getAzarComics();
         azarComics.value = response;
@@ -208,7 +328,6 @@ watch(
     } catch (error) {
       console.error(error);
     }
-
     pagination();
   }
 );
@@ -222,34 +341,6 @@ watch(
 
 .img-styles {
   box-shadow: 0 0 5px #b81f59;
-}
-
-.btn-navigation {
-  background-color: #b81f59;
-  color: white;
-  border: none;
-  margin: 2px;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 5%;
-  height: 10%;
-}
-
-.btn-navigation:hover {
-  box-shadow: 0 0 5px#ffffff;
-}
-
-.btn-navigation-blocked {
-  background-color: #7e7e7e;
-  color: rgb(252, 252, 252);
-  border: none;
-  margin: 2px;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 5%;
-  height: 10%;
 }
 
 .content-comics-azar {

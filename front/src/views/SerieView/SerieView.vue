@@ -112,7 +112,6 @@ h1 {
   justify-content: space-around;
   align-content: center;
   width: 60vw;
-
   padding: 10px;
   border-radius: 5px;
 }
@@ -201,7 +200,7 @@ h1 {
 .img-frontpage {
   box-shadow: 0 0 5px #010101;
   width: 20vw;
-  height: 35vh;
+  height: 40vh;
   border-radius: 8px;
 }
 

@@ -10,6 +10,10 @@ router.get('/userseries', authMiddleware, comicController.getUserSeries);
 router.get('/userserie/:id', comicController.getUserSerie);
 router.post('/postserie', authMiddleware, comicController.postSerie);
 router.put('/putcomic', authMiddleware, comicController.putComic);
-
 router.get('/azarcomics', comicController.getAzarComics);
+router.post('/rateComic', authMiddleware, comicController.postRateComic);
+router.put('/assignScore', comicController.assignScore);
+router.put('/assignScoreSerie', comicController.assignScoreSerie);
+router.put('/sumView', comicController.countViews);
+router.put('/sumViewSerie', comicController.countViewsSerie);
 module.exports = router;

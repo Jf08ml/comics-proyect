@@ -17,12 +17,12 @@
           <div class="show-options">
             <div style="margin: 5px">
               <button @click="$emit('show-modal', comic)" class="btn-options">
-                <v-icon name="ri-file-edit-fill" color="grey" scale="1" />
+                <v-icon name="ri-file-edit-fill" color="grey" scale="0.9" />
               </button>
             </div>
             <div style="margin: 5px">
               <button @click="openComic(comic._id)" class="btn-options">
-                <v-icon name="hi-eye" color="grey" scale="1" />
+                <v-icon name="hi-eye" color="grey" scale="0.9" />
               </button>
             </div>
           </div>
@@ -241,6 +241,12 @@ const paginatedItems = computed(() => {
     justify-content: center;
     width: 100%;
     height: 100%;
+  }
+
+  .btn-options {
+    box-shadow: 0 0 3px black;
+    width: 25px;
+    height: 25px;
   }
 }
 </style>

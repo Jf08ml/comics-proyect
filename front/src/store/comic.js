@@ -1,4 +1,4 @@
-import { seriePost, getUserSeries, getUserSerie, putComic, comicPost, getUserComics, getUserComic, getAzarComics } from "@/services/comicServices";
+import { seriePost, getUserSeries, getUserSerie, putComic, comicPost, getUserComics, getUserComic, getAzarComics, postRateComic, assignScore, assignScoreSerie, countViews, countViewsSerie} from "@/services/comicServices";
 import { defineStore } from 'pinia';
 import { useAuthStore } from "./auth";
 
@@ -114,6 +114,51 @@ export const useComicStore = defineStore('comic', {
         async getAzarComics() {
             try {
                 const response = await getAzarComics()
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async postRateComic(rate, comicId) {
+            try {
+                const response = await postRateComic(comicId, rate, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async assignScore(comicId) {
+            try {
+                const response = await assignScore(comicId, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async assignScoreSerie(serieId) {
+            try {
+                const response = await assignScoreSerie(serieId, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async countViews(comicId) {
+            try {
+                const response = await countViews(comicId, authStore.token);
+                return response;
+            } catch (error) {
+                return error;
+            }
+        },
+
+        async countViewsSerie(serieId) {
+            try {
+                const response = await countViewsSerie(serieId, authStore.token);
                 return response;
             } catch (error) {
                 return error;
