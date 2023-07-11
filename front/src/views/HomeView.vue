@@ -19,7 +19,7 @@
               <div class="comic-title">
                 <h5>{{ comic.title }}</h5>
               </div>
-              <div style=" height: 80%; width: 100%">
+              <div style="height: 80%; width: 100%">
                 <img
                   :src="comic.imagesPost[0]"
                   :alt="`Cover of ${comic.title}`"
