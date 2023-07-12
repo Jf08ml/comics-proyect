@@ -274,6 +274,15 @@ async function countViewsSerie(req, res) {
   }
 }
 
+async function getAnimatedSeries(req, res) {
+  try {
+    const animatedComics = await Serie.find({typeContent: "Animated"})
+    
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
   postComic,
   getUserComics,

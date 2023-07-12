@@ -9,7 +9,7 @@
       <div class="content-slider">
         <Carousel
           :autoplay="3000"
-          :itemsToShow="5"
+          :itemsToShow="carouselSize"
           :wrapAround="true"
           :transition="500"
           class="content-carousel"
@@ -19,7 +19,44 @@
               <div class="comic-title">
                 <h5>{{ comic.title }}</h5>
               </div>
-              <div style="height: 80%; width: 100%">
+              <div class="comic-photo">
+                <img
+                  class="img-frontpage"
+                  :src="comic.imagesPost[0]"
+                  :alt="`Cover of ${comic.title}`"
+                />
+              </div>
+              <div class="comic-hot">
+                <img
+                  class="img-hot"
+                  src="../../public/hot.png"
+                />
+              </div>
+            </div>
+          </Slide>
+        </Carousel>
+      </div>
+    </div>
+    <div class="content-secondary" style="margin-top: 10px">
+      <div class="content-subtitle">
+        <LineDivider style="margin: 0" />
+        <h2>Real Comics</h2>
+        <LineDivider style="margin: 0" />
+      </div>
+      <div class="content-slider">
+        <Carousel
+          :autoplay="3000"
+          :itemsToShow="carouselSize"
+          :wrapAround="true"
+          :transition="500"
+          class="content-carousel"
+        >
+          <Slide v-for="(comic, index) in azarComics" :key="index">
+            <div class="carousel__item">
+              <div class="comic-title">
+                <h5>{{ comic.title }}</h5>
+              </div>
+              <div class="comic-photo">
                 <img
                   :src="comic.imagesPost[0]"
                   :alt="`Cover of ${comic.title}`"
@@ -30,16 +67,11 @@
         </Carousel>
       </div>
     </div>
-    <div class="content-secondary">
-      <LineDivider />
-      <h2>Real Comics</h2>
-      <LineDivider />
-    </div>
   </div>
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
 import { useComicStore } from "@/store/comic";
@@ -47,6 +79,16 @@ import LineDivider from "@/components/LineDivider.vue";
 
 const comicStore = useComicStore();
 const azarComics = ref({});
+const carouselSize = ref(6);
+
+const updateCarouselSize = () => {
+  if (window.innerWidth <= 600) {
+    carouselSize.value = 2.5;
+  } else {
+    carouselSize.value = 6;
+  }
+};
+
 onBeforeMount(async () => {
   try {
     const response = await comicStore.getAzarComics();
@@ -54,6 +96,15 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error(error);
   }
+});
+
+onMounted(() => {
+  window.addEventListener("resize", updateCarouselSize);
+  updateCarouselSize();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateCarouselSize);
 });
 </script>
 
@@ -67,7 +118,7 @@ h2 {
   height: 100%;
 }
 .content-secondary {
-  height: 50%;
+  height: 49%;
 }
 
 .content-subtitle {
@@ -89,14 +140,17 @@ h2 {
   align-content: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
 }
 .carousel__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 92%;
+  border-radius: 10px;
   box-shadow: 0 0 5px #000000;
 }
 
@@ -104,16 +158,34 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 20%;
+  height: 10%;
   width: 100%;
   color: aliceblue;
+  text-shadow: 0 0 5px #f5669c;
 }
 
-img {
-  object-fit: fill;
+.comic-photo {
+  height: 90%;
   width: 100%;
-  height: 280px;
-  border-radius: 2px;
+}
+
+.img-frontpage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.img-hot {
+    object-fit: cover;
+    width: 35px;
+    height: 35px;
+}
+
+
+.comic-hot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 @media screen and (max-width: 700px) {
@@ -139,7 +211,7 @@ img {
 
 .carousel__slide {
   opacity: 0.9;
-  transform: rotateY(-20deg) scale(0.9);
+  transform: rotateY(-10deg) scale(0.9);
 }
 
 .carousel__slide--active ~ .carousel__slide {
@@ -147,8 +219,8 @@ img {
 }
 
 .carousel__slide--prev {
-  opacity: 1;
-  transform: rotateY(-10deg) scale(0.95);
+  opacity: 0.9;
+  transform: rotateY(-10deg) scale(0.9);
 }
 
 .carousel__slide--next {
