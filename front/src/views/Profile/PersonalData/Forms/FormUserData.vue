@@ -32,17 +32,16 @@ const userInformation = ref(props.userData);
 const submitData = async () => {
     try {
         const response = await props.onSubmitUserInformation(userInformation);
-        
-        if (response.result == "success") {
+        if (response.result === "success") {
             notify({
                 type: "success",
                 title: "Success",
                 text:"Updated information",
             });
-        } else if (response.result == "errorUser") {
+        } else {
             notify({
                 type: "error",
-                text: "Invalid password",
+                text: "Error with de server",
             });
         }
     } catch (error) {

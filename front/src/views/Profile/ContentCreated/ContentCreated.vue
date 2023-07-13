@@ -8,10 +8,15 @@
     </div>
     <div class="post-content">
       <div class="search-content">
-        <input class="input-search" type="text" placeholder="Search..." />
+        <input
+          class="input-search"
+          type="text"
+          placeholder="Search..."
+          v-model="searchTerm"
+        />
       </div>
       <div class="post-created">
-        <comicsCreated @show-modal="showModal" />
+        <comicsCreated @show-modal="showModal" :searchTerm="searchTerm"/>
       </div>
     </div>
     <Transition>
@@ -48,6 +53,8 @@ const closeOrOpen = ref(false);
 const isFunctionRunning = ref(false);
 
 const addComicPart = ref(null);
+
+const searchTerm = ref("");
 
 const showModal = (comic) => {
   closeOrOpen.value = !closeOrOpen.value;

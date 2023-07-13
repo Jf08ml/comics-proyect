@@ -3,7 +3,13 @@
     <div class="content-secondary">
       <div class="content-subtitle">
         <LineDivider style="margin: 0" />
-        <h2>Animated Comics</h2>
+        <h2 @click="$router.push('/animatedcomics')" style="cursor: pointer">
+          Animated Comics<v-icon
+            name="bi-box-arrow-in-right"
+            scale="1.6"
+            color="white"
+          ></v-icon>
+        </h2>
         <LineDivider style="margin: 0" />
       </div>
       <div class="content-slider">
@@ -14,23 +20,20 @@
           :transition="500"
           class="content-carousel"
         >
-          <Slide v-for="(comic, index) in azarComics" :key="index">
-            <div class="carousel__item">
+          <Slide v-for="(serie, index) in animatedSeriesMV" :key="index">
+            <div class="carousel__item" @click="openSerie(serie._id)">
               <div class="comic-title">
-                <h5>{{ comic.title }}</h5>
+                <h5>{{ serie.nameSerie }}</h5>
               </div>
               <div class="comic-photo">
                 <img
                   class="img-frontpage"
-                  :src="comic.imagesPost[0]"
-                  :alt="`Cover of ${comic.title}`"
+                  :src="serie.frontPage"
+                  :alt="`Cover of ${serie.title}`"
                 />
               </div>
               <div class="comic-hot">
-                <img
-                  class="img-hot"
-                  src="../../public/hot.png"
-                />
+                <img class="img-hot" src="../../public/hot.png" />
               </div>
             </div>
           </Slide>
@@ -40,7 +43,13 @@
     <div class="content-secondary" style="margin-top: 10px">
       <div class="content-subtitle">
         <LineDivider style="margin: 0" />
-        <h2>Real Comics</h2>
+        <h2 @click="$router.push('/realcomics')" style="cursor: pointer">
+          Real Comics<v-icon
+            name="bi-box-arrow-in-right"
+            scale="1.6"
+            color="white"
+          ></v-icon>
+        </h2>
         <LineDivider style="margin: 0" />
       </div>
       <div class="content-slider">
@@ -51,16 +60,20 @@
           :transition="500"
           class="content-carousel"
         >
-          <Slide v-for="(comic, index) in azarComics" :key="index">
-            <div class="carousel__item">
+          <Slide v-for="(serie, index) in realSeriesMV" :key="index">
+            <div class="carousel__item" @click="openSerie(serie._id)">
               <div class="comic-title">
-                <h5>{{ comic.title }}</h5>
+                <h5>{{ serie.nameSerie }}</h5>
               </div>
               <div class="comic-photo">
                 <img
-                  :src="comic.imagesPost[0]"
-                  :alt="`Cover of ${comic.title}`"
+                  class="img-frontpage"
+                  :src="serie.frontPage"
+                  :alt="`Cover of ${serie.title}`"
                 />
+              </div>
+              <div class="comic-hot">
+                <img class="img-hot" src="../../public/hot.png" />
               </div>
             </div>
           </Slide>
@@ -76,9 +89,11 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
 import { useComicStore } from "@/store/comic";
 import LineDivider from "@/components/LineDivider.vue";
+import router from "@/router";
 
 const comicStore = useComicStore();
-const azarComics = ref({});
+const animatedSeriesMV = ref({});
+const realSeriesMV = ref({});
 const carouselSize = ref(6);
 
 const updateCarouselSize = () => {
@@ -91,8 +106,15 @@ const updateCarouselSize = () => {
 
 onBeforeMount(async () => {
   try {
-    const response = await comicStore.getAzarComics();
-    azarComics.value = response;
+    const response = await comicStore.getAnimatedSeriesMostViews();
+    animatedSeriesMV.value = response.animatedSeries;
+  } catch (error) {
+    console.error(error);
+  }
+
+  try {
+    const response = await comicStore.getRealSeriesMostViews();
+    realSeriesMV.value = response.realSeries;
   } catch (error) {
     console.error(error);
   }
@@ -106,6 +128,10 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", updateCarouselSize);
 });
+
+const openSerie = (serieId) => {
+  router.push(`/viewserie/${serieId}`);
+};
 </script>
 
 <style scoped>
@@ -143,6 +169,7 @@ h2 {
   width: 100%;
 }
 .carousel__item {
+  cursor: pointer;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -151,6 +178,7 @@ h2 {
   width: 100%;
   height: 92%;
   border-radius: 10px;
+  background-color: #b81f59;
   box-shadow: 0 0 5px #000000;
 }
 
@@ -160,7 +188,6 @@ h2 {
   justify-content: center;
   height: 10%;
   width: 100%;
-  color: aliceblue;
   text-shadow: 0 0 5px #f5669c;
 }
 
@@ -176,16 +203,14 @@ h2 {
 }
 
 .img-hot {
-    object-fit: cover;
-    width: 35px;
-    height: 35px;
+  width: 40px;
+  height: 35px;
 }
-
 
 .comic-hot {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: 3px;
+  left: -20px;
 }
 
 @media screen and (max-width: 700px) {

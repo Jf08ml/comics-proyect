@@ -1,12 +1,8 @@
 <template>
   <div class="container" v-if="comics != ''">
     <div style="overflow-y: auto">
-      <div
-        class="row"
-        v-for="comicsChunk in paginatedItems"
-        :key="comicsChunk[0]._id"
-      >
-        <div class="comics" v-for="comic in comicsChunk" :key="comic._id">
+      <div class="row">
+        <div class="comics" v-for="comic in comics" :key="comic._id">
           <cardDefault
             class="card-styles"
             :title="comic.nameSerie"
@@ -30,20 +26,16 @@
       </div>
     </div>
     <div style="margin: 15px">
-      <button
-        class="button-next"
-        @click="prevPage"
-        :disabled="currentPage === 1"
-      >
+      <button class="button-next" @click="prevPage" :disabled="page === 1">
         «
       </button>
       <span style="margin-inline: 5px"
-        >Página {{ currentPage }} de {{ totalPages }}</span
+        >Página {{ page }} de {{ totalPages }}</span
       >
       <button
         class="button-next"
         @click="nextPage"
-        :disabled="currentPage === totalPages"
+        :disabled="page === totalPages"
       >
         »
       </button>
@@ -55,7 +47,7 @@
   </div>
 </template>
 <script setup>
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { onBeforeMount, ref } from "vue";
 import cardDefault from "@/components/Cards/cardsDefault.vue";
 import { useComicStore } from "@/store/comic";
 import router from "@/router";
@@ -64,11 +56,15 @@ const comicStore = useComicStore();
 
 const comics = ref();
 
-const isMobile = ref(window.innerWidth < 500);
+const page = ref(1);
+const limit = ref(10);
+const totalPages = ref(0);
+
 onBeforeMount(async () => {
   try {
-    const response = await comicStore.getUserSeries();
-    comics.value = response;
+    const response = await comicStore.getUserSeries(page.value, limit.value);
+    comics.value = response.series;
+    totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
   }
@@ -78,53 +74,35 @@ const openComic = (comic) => {
   router.push(`/viewserie/${comic}`);
 };
 
-const refreshComics = async () => {
+const getNextComics = async () => {
   try {
-    const response = await comicStore.getUserSeries();
-    comics.value = response;
+    const response = await comicStore.getUserSeries(page.value, limit.value);
+    comics.value = response.series;
+    totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
   }
 };
 
-const comicsChunks = ref([]);
-
-// Chunk the comics array into blocks of 4
-function chunkComics() {
-  const chunkSize = isMobile.value ? 2 : 5;
-  for (let i = 0; i < comics.value.length; i += chunkSize) {
-    comicsChunks.value.push(comics.value.slice(i, i + chunkSize));
-  }
-}
-
-// Call chunkComics() when comics array is updated
-watch(comics, () => {
-  comicsChunks.value = [];
-  chunkComics();
-});
-
-const itemsPerPage = ref(isMobile.value ? 3 : 2);
-const currentPage = ref(1);
-const totalPages = computed(() =>
-  Math.ceil(comicsChunks.value.length / itemsPerPage.value)
-);
-
 function nextPage() {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
+  if (page.value < totalPages.value) {
+    page.value += 1;
+    getNextComics();
   }
 }
 
 function prevPage() {
-  if (currentPage.value > 1) {
-    currentPage.value--;
+  if (page.value > 1) {
+    page.value -= 1;
+    getNextComics();
   }
 }
 
-const paginatedItems = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage.value;
-  return comicsChunks.value.slice(startIndex, startIndex + itemsPerPage.value);
-});
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+if (isMobile) {
+  limit.value = 4;
+  getNextComics()
+}
 </script>
 
 <style scoped>
@@ -165,8 +143,9 @@ const paginatedItems = computed(() => {
 
 .row {
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .comics {
@@ -174,8 +153,10 @@ const paginatedItems = computed(() => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 15px;
+  margin: 10px;
   position: relative;
+  width: calc(18% - 5px);
+  box-sizing: border-box;
 }
 
 .show-options {
@@ -231,6 +212,16 @@ const paginatedItems = computed(() => {
     border: 1px solid black;
   }
 
+  .comics {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px;
+    position: relative;
+    width: calc(40% - 5px);
+    box-sizing: border-box;
+  }
   .show-options {
     position: absolute;
     display: block;

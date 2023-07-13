@@ -37,8 +37,28 @@ async function getUserSeries(req, res) {
     const token = req.headers["authorization"];
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const userId = decodedToken.id;
-    const userSeries = await Serie.find({ user: userId });
-    return res.status(200).json(userSeries);
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skipIndex = (page - 1) * limit;
+
+    // Obtener las series del usuario
+    const userSeriesQuery = Serie.find({ user: userId })
+      .sort({ _id: 1 })
+      .limit(limit)
+      .skip(skipIndex);
+    const userSeries = await userSeriesQuery.exec();
+
+    // Obtener el total de registros
+    const totalCountQuery = Serie.countDocuments({ user: userId });
+    const totalCount = await totalCountQuery.exec();
+    const total = Math.ceil(totalCount/limit);
+
+    return res.status(200).json({
+      series: userSeries,
+      totalCount: total,
+    });
   } catch (error) {
     return res.status(500).json({ result: "error", message: error });
   }
@@ -260,7 +280,6 @@ async function countViewsSerie(req, res) {
     const views = comics.reduce((accumulator, comic) => {
       return accumulator + comic.views;
     }, 0);
-    
 
     serie.views = views;
 
@@ -274,12 +293,25 @@ async function countViewsSerie(req, res) {
   }
 }
 
-async function getAnimatedSeries(req, res) {
+async function getAnimatedSeriesMostViews(req, res) {
   try {
-    const animatedComics = await Serie.find({typeContent: "Animated"})
-    
+    const animatedSeries = await Serie.find({ typeContent: "Animated" }).limit(
+      30
+    );
+    animatedSeries.sort((a, b) => b.views - a.views);
+    return res.status(200).json({ result: "success", animatedSeries });
   } catch (error) {
-    
+    return res.status(500).json({ result: "error", message: error });
+  }
+}
+
+async function getRealSeriesMostViews(req, res) {
+  try {
+    const realSeries = await Serie.find({ typeContent: "Real" }).limit(30);
+    realSeries.sort((a, b) => b.views - a.views);
+    return res.status(200).json({ result: "success", realSeries });
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error });
   }
 }
 
@@ -297,4 +329,6 @@ module.exports = {
   assignScoreSerie,
   countViews,
   countViewsSerie,
+  getAnimatedSeriesMostViews,
+  getRealSeriesMostViews,
 };

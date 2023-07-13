@@ -1,11 +1,11 @@
-import axios from 'axios';
+import api from "axios";
 
 const BASE_URL = 'http://localhost:3000/api/auth';
 // const BASE_URL = 'http://192.168.101.13:3000/api/auth'
 
 export async function login(identifier, password) {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${BASE_URL}/login`,
       {
         identifier, password
@@ -25,7 +25,7 @@ export async function login(identifier, password) {
 
 export async function signup(nickname, email, password) {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${BASE_URL}/signup`,
       {
         nickname, email, password
@@ -45,7 +45,7 @@ export async function signup(nickname, email, password) {
 
 export async function refreshToken(refreshToken) {
   try {
-    const response = await axios.post(`${BASE_URL}/refreshtokens`, { refreshToken });
+    const response = await api.post(`${BASE_URL}/refreshtokens`, { refreshToken });
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);
@@ -54,7 +54,7 @@ export async function refreshToken(refreshToken) {
 
 export async function getUser(token) {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       `${BASE_URL}/getuser`,
       {
         headers: {
@@ -71,7 +71,7 @@ export async function getUser(token) {
 
 export async function searchNickname(nickname) {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       `${BASE_URL}/searchnickname/${nickname}`,
       {
         headers: {
@@ -88,7 +88,7 @@ export async function searchNickname(nickname) {
 
 export async function updateUser(userData, token) {
   try {
-    const response = await axios.put(
+    const response = await api.put(
       `${BASE_URL}/updateuser`, userData,
       {
         headers: {
@@ -99,13 +99,13 @@ export async function updateUser(userData, token) {
     );
     return response.data;
   } catch (error) {
-    throw new Error('Error al actualizar los datos del usuario');
+    return await Promise.reject(error.response.data);
   }
 }
 
 export async function updatePassword(passwords, token) {
   try {
-    const response = await axios.put(
+    const response = await api.put(
       `${BASE_URL}/updatepassword`,
       passwords,
       {
@@ -124,7 +124,7 @@ export async function updatePassword(passwords, token) {
 
 export async function updateProfilePhoto(userPhotoUrl, token) {
   try {
-    const response = await axios.put(
+    const response = await api.put(
       `${BASE_URL}/updateprofilephoto`, userPhotoUrl,
       {
         headers: {

@@ -16,4 +16,6 @@ router.put('/assignScore', comicController.assignScore);
 router.put('/assignScoreSerie', comicController.assignScoreSerie);
 router.put('/sumView', comicController.countViews);
 router.put('/sumViewSerie', comicController.countViewsSerie);
+router.get('/mostViewsAnimated', comicController.getAnimatedSeriesMostViews)
+router.get('/mostViewsReal', comicController.getRealSeriesMostViews)
 module.exports = router;

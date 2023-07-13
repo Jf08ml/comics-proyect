@@ -23,9 +23,9 @@ export async function seriePost(serie, token) {
   }
 }
 
-export async function getUserSeries(token) {
+export async function getUserSeries(page, limit, token) {
   try {
-    const response = await axios.get(`${BASE_URL}/userseries`, {
+    const response = await axios.get(`${BASE_URL}/userseries?page=${page}&limit=${limit}`, {
       headers: {
         "Cache-Control": "no-cache",
         Authorization: `${token}`,
@@ -227,6 +227,32 @@ export async function countViewsSerie(serieId, token) {
         },
       }
     );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function getAnimatedSeriesMostViews() {
+  try {
+    const response = await axios.get(`${BASE_URL}/mostViewsAnimated`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function getRealSeriesMostViews() {
+  try {
+    const response = await axios.get(`${BASE_URL}/mostViewsReal`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);

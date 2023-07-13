@@ -33,9 +33,6 @@ async function signup(req, res) {
     res.status(500).json({ result: 'error', message: 'Server error' });
   }
 }
-
-
-
 async function login(req, res) {
   try {
     const { identifier, password } = req.body;
@@ -50,7 +47,7 @@ async function login(req, res) {
       return res.status(401).json({ result: 'errorPassword', message: 'Invalid password. Please check your password.' });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '10s' });
     const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
 
     const tokenDuration = 60; // duración del token en segundos
