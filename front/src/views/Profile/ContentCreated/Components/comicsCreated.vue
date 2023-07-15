@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div style="margin: 15px">
+    <div style="margin: 5px">
       <button class="button-next" @click="prevPage" :disabled="page === 1">
         «
       </button>

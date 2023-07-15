@@ -1,4 +1,4 @@
-import api from "axios";
+import api from "./api.js";
 
 const BASE_URL = 'http://localhost:3000/api/auth';
 // const BASE_URL = 'http://192.168.101.13:3000/api/auth'
@@ -37,15 +37,6 @@ export async function signup(nickname, email, password) {
       }
     );
 
-    return response.data;
-  } catch (error) {
-    return await Promise.reject(error.response.data);
-  }
-}
-
-export async function refreshToken(refreshToken) {
-  try {
-    const response = await api.post(`${BASE_URL}/refreshtokens`, { refreshToken });
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);

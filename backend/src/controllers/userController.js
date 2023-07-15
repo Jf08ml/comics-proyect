@@ -47,7 +47,7 @@ async function login(req, res) {
       return res.status(401).json({ result: 'errorPassword', message: 'Invalid password. Please check your password.' });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '10s' });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
 
     const tokenDuration = 60; // duración del token en segundos
@@ -75,12 +75,11 @@ async function login(req, res) {
 
 async function refreshTokens(req, res) {
   try {
-    const { refreshToken } = req.body;
-
-    jwt.verify(refreshToken, JWT_REFRESH_SECRET, async (err, decoded) => {
+    const { refreshTokenUser } = req.body;
+    jwt.verify(refreshTokenUser, JWT_REFRESH_SECRET, async (err, decoded) => {
       if (err) {
         console.log(err)
-        return res.status(401).json({ message: err.name });
+        return res.status(401).json({error: "RefreshTokenError", message: err.name });
       }
 
       const user = await User.findById(decoded.id);

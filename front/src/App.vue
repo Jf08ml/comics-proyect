@@ -12,6 +12,17 @@
 
 <script setup>
 import NavigationBar from './layouts/Navbar/NavigationBar.vue';
+import {onMounted} from "vue"; 
+import EventBus from './utils/eventBus';
+import { useAuthStore } from './store/auth';
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+  EventBus.on('logout', () => {
+    authStore.logout();
+  })
+});
 
 </script>
 
