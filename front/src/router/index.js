@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/animatedcomics',
     name: 'animatedcomics',
-    component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/AnimatedComicsView.vue')
+    component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/AnimatedComics/AnimatedComicsView.vue')
   },
   {
     path: '/allthemostviewd',

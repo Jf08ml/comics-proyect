@@ -23,18 +23,14 @@ import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
 
-
 const userUrlPhoto = computed(() => authStore.$state.userImgProfile)
 const colorIcone = computed(() => userUrlPhoto.value ? 'transparent' : 'white')
-
-
 
 const profilePicStyle = computed(() => ({
     backgroundImage: userUrlPhoto.value ? `url(${userUrlPhoto.value})` : '',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    boxShadow: ' 0 0 2px black',
-
+    boxShadow: '0 0 2px black',
 }));
 
 const logOut = () => {
@@ -54,7 +50,4 @@ const logOut = () => {
     cursor: pointer;
 }
 
-.profile-pic img {
-    object-fit: cover;
-}
 </style>

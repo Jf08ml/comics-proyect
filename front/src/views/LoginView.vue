@@ -49,7 +49,6 @@
 </template>
 
 <script setup>
-import "@/assets/scss/login/login.scss";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/auth";
@@ -75,3 +74,7 @@ const onSubmit = async () => {
   }
 };
 </script>
+
+<style lang="scss">
+@import "@/assets/scss/login/login.scss";
+</style>
