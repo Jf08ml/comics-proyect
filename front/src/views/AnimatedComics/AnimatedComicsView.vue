@@ -30,6 +30,22 @@
         />
       </div>
     </div>
+    <div style="margin: 5px">
+      <button class="button-next" @click="prevPage" :disabled="page === 1">
+        «
+      </button>
+      <span style="margin-inline: 5px"
+        >Página {{ page }} de {{ totalPages }}</span
+      >
+      <button
+        class="button-next"
+        @click="nextPage"
+        :disabled="page === totalPages"
+      >
+        »
+      </button>
+      <button class="button-refresh" @click="refreshComics">⟳</button>
+    </div>
   </div>
 </template>
 
