@@ -40,7 +40,7 @@
         </Carousel>
       </div>
     </div>
-    <div class="content-secondary" style="margin-top: 10px">
+    <div class="content-secondary">
       <div class="content-subtitle">
         <LineDivider style="margin: 0" />
         <h2 @click="$router.push('/realcomics')" style="cursor: pointer">
@@ -101,7 +101,7 @@ const updateCarouselSize = () => {
   if (window.innerWidth <= 600) {
     carouselSize.value = 2.5;
   } else {
-    carouselSize.value = 6;
+    carouselSize.value = 7;
   }
 };
 
