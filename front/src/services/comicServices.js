@@ -236,9 +236,9 @@ export async function countViewsSerie(serieId, token) {
   }
 }
 
-export async function getAnimatedSeriesMostViews() {
+export async function getAnimatedSeriesMostViews(page, limit) {
   try {
-    const response = await axios.get(`${BASE_URL}/mostViewsAnimated`, {
+    const response = await axios.get(`${BASE_URL}/mostViewsAnimated?page=${page}&limit=${limit}`, {
       headers: {
         "Cache-Control": "no-cache",
       },
@@ -262,9 +262,9 @@ export async function getRealSeriesMostViews() {
   }
 }
 
-export async function getNewerSeries(type) {
+export async function getNewerSeries(type, page, limit) {
   try {
-    const response = await axios.get(`${BASE_URL}/newerSeries/${type}`, {
+    const response = await axios.get(`${BASE_URL}/newerSeries/${type}?page=${page}&limit=${limit}`, {
       headers: {
         "Cache-Control": "no-cache",
       },

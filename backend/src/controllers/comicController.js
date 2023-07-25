@@ -39,7 +39,7 @@ async function getUserSeries(req, res) {
     const userId = decodedToken.id;
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 3;
 
     const skipIndex = (page - 1) * limit;
 
@@ -295,11 +295,26 @@ async function countViewsSerie(req, res) {
 
 async function getAnimatedSeriesMostViews(req, res) {
   try {
-    const animatedSeries = await Serie.find({ typeContent: "Animated" }).limit(
-      30
-    );
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 30;
+
+    const skipIndex = (page - 1) * limit;
+
+    const animatedSeries = await Serie.find({ typeContent: "Animated" })
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCountQuery = Serie.countDocuments({ typeContent: "Animated" });
+    const totalCount = await totalCountQuery.exec();
+    const total = Math.ceil(totalCount / limit);
+
     animatedSeries.sort((a, b) => b.views - a.views);
-    return res.status(200).json({ result: "success", animatedSeries });
+    
+    return res.status(200).json({
+      result: "success",
+      series: animatedSeries,
+      totalCount: total,
+    });
   } catch (error) {
     return res.status(500).json({ result: "error", message: error });
   }
@@ -326,11 +341,8 @@ async function getNewerSeries(req, res) {
     if (type === "Animated") {
       const animatedSeries = await Serie.find({ typeContent: "Animated" })
         .sort({ uploadData: -1 })
-        .limit(30)
         .limit(limit)
         .skip(skipIndex);
-
-      const series = await animatedSeriesQuery.exec();
 
       // Obtener el total de registros
       const totalCountQuery = Serie.countDocuments({ typeContent: "Animated" });
@@ -339,15 +351,25 @@ async function getNewerSeries(req, res) {
 
       return res.status(200).json({
         result: "success",
-        series: series,
+        series: animatedSeries,
         totalCount: total,
       });
     } else if (type === "Real") {
       const realSeries = await Serie.find({ typeContent: "Real" })
         .sort({ uploadData: -1 })
-        .limit(30);
+        .limit(limit)
+        .skip(skipIndex);
 
-      return res.status(200).json({ result: "success", realSeries });
+      // Obtener el total de registros
+      const totalCountQuery = Serie.countDocuments({ typeContent: "Real" });
+      const totalCount = await totalCountQuery.exec();
+      const total = Math.ceil(totalCount / limit);
+
+      return res.status(200).json({
+        result: "success",
+        series: realSeries,
+        totalCount: total,
+      });
     } else {
       return res
         .status(400)

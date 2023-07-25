@@ -108,7 +108,7 @@ const updateCarouselSize = () => {
 onBeforeMount(async () => {
   try {
     const response = await comicStore.getAnimatedSeriesMostViews();
-    animatedSeriesMV.value = response.animatedSeries;
+    animatedSeriesMV.value = response.series;
   } catch (error) {
     console.error(error);
   }
