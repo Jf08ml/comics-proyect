@@ -27,7 +27,13 @@
         </button>
       </div>
       <div>
-        <button class="button-options">Popular series</button>
+        <button
+          class="button-options"
+          :class="{ 'button-options-active': activeBtn === 'popularSeries' }"
+          @click="popularSeries"
+        >
+          Popular series
+        </button>
       </div>
     </div>
     <LineDivider />
@@ -81,6 +87,7 @@ import cardDefault from "@/components/Cards/cardsDefault.vue";
 import {
   getNewerSeries,
   getAnimatedSeriesMostViews,
+  getPopularSeries,
 } from "@/services/comicServices.js";
 import router from "@/router";
 
@@ -116,6 +123,21 @@ const mostViews = async () => {
     console.error(error);
   }
   activeBtn.value = "mostViews";
+};
+
+const popularSeries = async () => {
+  try {
+    const response = await getPopularSeries(
+      type.value,
+      page.value,
+      limit.value
+    );
+    seriesAnimated.value = response.series;
+    totalPages.value = response.totalCount;
+  } catch (error) {
+    console.error(error);
+  }
+  activeBtn.value = "popularSeries";
 };
 
 const getNextComics = async () => {
@@ -257,7 +279,7 @@ h4 {
 }
 
 .card-styles:hover {
-    box-shadow: 0 0 40px #b81f59;
+  box-shadow: 0 0 40px #b81f59;
 }
 
 @media screen and (max-width: 700px) {

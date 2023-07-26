@@ -19,4 +19,5 @@ router.put("/sumViewSerie", comicController.countViewsSerie);
 router.get("/mostViewsAnimated", comicController.getAnimatedSeriesMostViews);
 router.get("/mostViewsReal", comicController.getRealSeriesMostViews);
 router.get("/newerSeries/:type", comicController.getNewerSeries);
+router.get("/popularSeries/:type", comicController.getPopularSeries);
 module.exports = router;

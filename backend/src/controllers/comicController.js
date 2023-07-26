@@ -309,7 +309,7 @@ async function getAnimatedSeriesMostViews(req, res) {
     const total = Math.ceil(totalCount / limit);
 
     animatedSeries.sort((a, b) => b.views - a.views);
-    
+
     return res.status(200).json({
       result: "success",
       series: animatedSeries,
@@ -380,6 +380,65 @@ async function getNewerSeries(req, res) {
   }
 }
 
+async function getPopularSeries(req, res) {
+  const { type } = req.params;
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skipIndex = (page - 1) * limit;
+
+    if (type === "Animated") {
+      const animatedSeries = await Serie.find({ typeContent: "Animated" })
+        .sort({ uploadData: -1 })
+        .limit(limit)
+        .skip(skipIndex);
+
+      // Obtener el total de registros
+      const totalCountQuery = Serie.countDocuments({ typeContent: "Animated" });
+      const totalCount = await totalCountQuery.exec();
+      const total = Math.ceil(totalCount / limit);
+
+      animatedSeries.sort((a, b) => b.score - a.score);
+
+      return res.status(200).json({
+        result: "success",
+        series: animatedSeries,
+        totalCount: total,
+      });
+    } else if (type === "Real") {
+      const realSeries = await Serie.find({ typeContent: "Real" })
+        .sort({ uploadData: -1 })
+        .limit(limit)
+        .skip(skipIndex);
+
+      // Obtener el total de registros
+      const totalCountQuery = Serie.countDocuments({ typeContent: "Real" });
+      const totalCount = await totalCountQuery.exec();
+      const total = Math.ceil(totalCount / limit);
+
+      realSeries.sort((a, b) => b.score - a.score);
+
+      return res.status(200).json({
+        result: "success",
+        series: realSeries,
+        totalCount: total,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ result: "error", message: "Invalid series type" });
+    }
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error });
+  }
+}
+
+async function getFeaturedArtists(req, res) {
+  
+}
+
+
 module.exports = {
   postComic,
   getUserComics,
@@ -397,4 +456,5 @@ module.exports = {
   getAnimatedSeriesMostViews,
   getRealSeriesMostViews,
   getNewerSeries,
+  getPopularSeries,
 };

@@ -274,3 +274,16 @@ export async function getNewerSeries(type, page, limit) {
     return await Promise.reject(error.response.data);
   }
 }
+
+export async function getPopularSeries(type, page, limit) {
+  try {
+    const response = await axios.get(`${BASE_URL}/popularSeries/${type}?page=${page}&limit=${limit}`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
