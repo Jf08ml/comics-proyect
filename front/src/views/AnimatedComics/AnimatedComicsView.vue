@@ -3,10 +3,18 @@
     <div>
       <h1 class="title">Animated Comics</h1>
     </div>
+
     <LineDivider />
+
     <div class="container-artists">
       <div>
-        <button class="button-options">Featured artists</button>
+        <button
+          class="button-options"
+          :class="{ 'button-options-active': activeBtn === 'featureArtists' }"
+          @click="FeatureArtists"
+        >
+          Featured artists
+        </button>
       </div>
       <div>
         <button
@@ -36,46 +44,78 @@
         </button>
       </div>
     </div>
+
     <LineDivider />
-    <div class="row">
-      <div class="comics" v-for="serie in seriesAnimated" :key="serie._id">
-        <cardDefault
-          class="card-styles"
-          :title="serie.nameSerie"
-          :description="serie.description"
-          :image="serie.frontPage"
-          :views="serie.views"
-          @click="openSerie(serie._id)"
-        />
-      </div>
+    <div v-if="nameArtist != ''" style="display: flex; justify-content: center;">
+      <h3 style="text-shadow: 0 0 5px #b81f59;"> Series of {{ nameArtist }}</h3>
     </div>
-    <div
-      style="
-        margin: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      "
-    >
-      <button
-        class="btn-navigation"
-        @click="prevPage"
-        :disabled="page === 1"
-        :class="{ 'btn-navigation-blocked': page === 1 }"
+
+    <ListSeries
+      v-if="showSeries"
+      :serie="seriesAnimated"
+      :page="page"
+      :totalPages="totalPages"
+      @prev-page="prevPage"
+      @next-page="nextPage"
+      @open-serie="openSerie"
+    />
+
+    <!-- <div v-if="showSeries">
+      <div class="row">
+        <div class="comics" v-for="serie in seriesAnimated" :key="serie._id">
+          <cardDefault
+            class="card-styles"
+            :title="serie.nameSerie"
+            :description="serie.description"
+            :image="serie.frontPage"
+            :views="serie.views"
+            @click="openSerie(serie._id)"
+          />
+        </div>
+      </div>
+      <div
+        style="
+          margin: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
       >
-        «
-      </button>
-      <span style="margin-inline: 5px; color: whitesmoke"
-        >Página {{ page }} de {{ totalPages }}</span
-      >
-      <button
-        class="btn-navigation"
-        @click="nextPage"
-        :disabled="page === totalPages"
-        :class="{ 'btn-navigation-blocked': page === totalPages }"
-      >
-        »
-      </button>
+        <button
+          class="btn-navigation"
+          @click="prevPage"
+          :disabled="page === 1"
+          :class="{ 'btn-navigation-blocked': page === 1 }"
+        >
+          «
+        </button>
+        <span style="margin-inline: 5px; color: whitesmoke"
+          >Página {{ page }} de {{ totalPages }}</span
+        >
+        <button
+          class="btn-navigation"
+          @click="nextPage"
+          :disabled="page === totalPages"
+          :class="{ 'btn-navigation-blocked': page === totalPages }"
+        >
+          »
+        </button>
+      </div>
+    </div> -->
+
+    <div v-if="!showSeries" class="container-primary-artists">
+      <div class="container-list-artists">
+        <h3>These are the most popular artists</h3>
+        <div
+          v-for="(artist, index) in artists"
+          :key="index"
+          class="list-artists"
+        >
+          <button class="btn-artist" @click="artistSeries(artist.name)">
+            {{ index + 1 }}. {{ artist.name }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -83,11 +123,13 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import LineDivider from "@/components/LineDivider.vue";
-import cardDefault from "@/components/Cards/cardsDefault.vue";
+import ListSeries from "./components/ListSeries.vue";
 import {
   getNewerSeries,
   getAnimatedSeriesMostViews,
   getPopularSeries,
+  getFeaturedArtists,
+  getArtistSeries
 } from "@/services/comicServices.js";
 import router from "@/router";
 
@@ -97,13 +139,18 @@ const page = ref(1);
 const limit = ref(10);
 const totalPages = ref(0);
 const disabledNext = ref(false);
+const artists = ref();
 const activeBtn = ref("newerSeries");
+const showSeries = ref(true);
+const nameArtist = ref("");
 
 onBeforeMount(async () => {
   newerSeries();
 });
 
 const newerSeries = async () => {
+  nameArtist.value = "";
+  showSeries.value = true;
   try {
     const response = await getNewerSeries(type.value, page.value, limit.value);
     seriesAnimated.value = response.series;
@@ -115,6 +162,8 @@ const newerSeries = async () => {
 };
 
 const mostViews = async () => {
+  nameArtist.value = "";
+  showSeries.value = true;
   try {
     const response = await getAnimatedSeriesMostViews(page.value, limit.value);
     seriesAnimated.value = response.series;
@@ -126,6 +175,8 @@ const mostViews = async () => {
 };
 
 const popularSeries = async () => {
+  nameArtist.value = "";
+  showSeries.value = true;
   try {
     const response = await getPopularSeries(
       type.value,
@@ -138,6 +189,30 @@ const popularSeries = async () => {
     console.error(error);
   }
   activeBtn.value = "popularSeries";
+};
+
+const FeatureArtists = async () => {
+  nameArtist.value = "";
+  showSeries.value = false;
+  try {
+    const response = await getFeaturedArtists(type.value);
+    artists.value = response.artists;
+  } catch (error) {
+    console.error(error);
+  }
+  activeBtn.value = "featureArtists";
+};
+
+const artistSeries = async (artist) => {
+  showSeries.value = true;
+  try {
+    const response = await getArtistSeries(artist, page.value, limit.value);
+    seriesAnimated.value = response.series;
+    totalPages.value = response.totalCount;
+  } catch (error) {
+    console.error(error);
+  }
+  nameArtist.value = seriesAnimated.value[0].artist;
 };
 
 const getNextComics = async () => {
@@ -177,6 +252,44 @@ const openSerie = (serieId) => {
 .title {
   color: white;
   text-align: center;
+}
+
+.container-primary-artists {
+  width: 80%;
+  height: 65vh;
+  margin: auto;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-list-artists {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-artists {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.btn-artist {
+  background-color: #ffffff;
+  color: rgb(78, 62, 62);
+  border: none;
+  margin: 5px;
+  text-align: justify;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 70%;
 }
 
 .btn-navigation {
@@ -229,7 +342,7 @@ const openSerie = (serieId) => {
   text-shadow: 0 0 5px wheat;
   font-size: 1rem;
   cursor: pointer;
-  width: 15vw;
+  width: 16vw;
   height: 100%;
 }
 
@@ -252,55 +365,13 @@ h4 {
   margin: 0 auto;
 }
 
-.row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.comics {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 10px;
-  position: relative;
-  width: calc(18% - 5px);
-  box-sizing: border-box;
-}
-
-.card-styles {
-  width: 90%;
-  height: 300px;
-  border: 1px solid black;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.card-styles:hover {
-  box-shadow: 0 0 40px #b81f59;
-}
-
 @media screen and (max-width: 700px) {
-  .btn-navigation {
-    width: 10%;
-  }
-  .card-styles {
-    width: 100%;
-    height: 220px;
-    border: 1px solid black;
+  .button-options {
+    font-size: 0.8rem;
   }
 
-  .comics {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 10px;
-    position: relative;
-    width: calc(40% - 5px);
-    box-sizing: border-box;
+  .button-options-active {
+    font-size: 0.8rem;
   }
 }
 </style>

@@ -238,11 +238,14 @@ export async function countViewsSerie(serieId, token) {
 
 export async function getAnimatedSeriesMostViews(page, limit) {
   try {
-    const response = await axios.get(`${BASE_URL}/mostViewsAnimated?page=${page}&limit=${limit}`, {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URL}/mostViewsAnimated?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);
@@ -264,7 +267,39 @@ export async function getRealSeriesMostViews() {
 
 export async function getNewerSeries(type, page, limit) {
   try {
-    const response = await axios.get(`${BASE_URL}/newerSeries/${type}?page=${page}&limit=${limit}`, {
+    const response = await axios.get(
+      `${BASE_URL}/newerSeries/${type}?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function getPopularSeries(type, page, limit) {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/popularSeries/${type}?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function getFeaturedArtists(type) {
+  try {
+    const response = await axios.get(`${BASE_URL}/featureArtist/${type}`, {
       headers: {
         "Cache-Control": "no-cache",
       },
@@ -275,13 +310,16 @@ export async function getNewerSeries(type, page, limit) {
   }
 }
 
-export async function getPopularSeries(type, page, limit) {
+export async function getArtistSeries(artist, page, limit) {
   try {
-    const response = await axios.get(`${BASE_URL}/popularSeries/${type}?page=${page}&limit=${limit}`, {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URL}/artistSeries/${artist}?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);

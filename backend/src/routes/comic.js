@@ -20,4 +20,6 @@ router.get("/mostViewsAnimated", comicController.getAnimatedSeriesMostViews);
 router.get("/mostViewsReal", comicController.getRealSeriesMostViews);
 router.get("/newerSeries/:type", comicController.getNewerSeries);
 router.get("/popularSeries/:type", comicController.getPopularSeries);
+router.get("/featureArtist/:type", comicController.getFeaturedArtists);
+router.get("/artistSeries/:artist", comicController.getArtistSeries);
 module.exports = router;

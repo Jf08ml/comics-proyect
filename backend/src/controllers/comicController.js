@@ -332,112 +332,129 @@ async function getRealSeriesMostViews(req, res) {
 
 async function getNewerSeries(req, res) {
   const { type } = req.params;
+  const validTypes = ["Animated", "Real"];
+
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-
     const skipIndex = (page - 1) * limit;
 
-    if (type === "Animated") {
-      const animatedSeries = await Serie.find({ typeContent: "Animated" })
-        .sort({ uploadData: -1 })
-        .limit(limit)
-        .skip(skipIndex);
-
-      // Obtener el total de registros
-      const totalCountQuery = Serie.countDocuments({ typeContent: "Animated" });
-      const totalCount = await totalCountQuery.exec();
-      const total = Math.ceil(totalCount / limit);
-
-      return res.status(200).json({
-        result: "success",
-        series: animatedSeries,
-        totalCount: total,
-      });
-    } else if (type === "Real") {
-      const realSeries = await Serie.find({ typeContent: "Real" })
-        .sort({ uploadData: -1 })
-        .limit(limit)
-        .skip(skipIndex);
-
-      // Obtener el total de registros
-      const totalCountQuery = Serie.countDocuments({ typeContent: "Real" });
-      const totalCount = await totalCountQuery.exec();
-      const total = Math.ceil(totalCount / limit);
-
-      return res.status(200).json({
-        result: "success",
-        series: realSeries,
-        totalCount: total,
-      });
-    } else {
+    if (!validTypes.includes(type)) {
       return res
         .status(400)
         .json({ result: "error", message: "Invalid series type" });
     }
+
+    const series = await Serie.find({ typeContent: type })
+      .sort({ uploadData: -1 })
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCount = await Serie.countDocuments({ typeContent: type });
+    const total = Math.ceil(totalCount / limit);
+
+    return res.status(200).json({
+      result: "success",
+      series,
+      totalCount: total,
+    });
   } catch (error) {
-    return res.status(500).json({ result: "error", message: error });
+    return res.status(500).json({ result: "error", message: error.message });
   }
 }
 
 async function getPopularSeries(req, res) {
   const { type } = req.params;
+  const validTypes = ["Animated", "Real"];
+
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-
     const skipIndex = (page - 1) * limit;
 
-    if (type === "Animated") {
-      const animatedSeries = await Serie.find({ typeContent: "Animated" })
-        .sort({ uploadData: -1 })
-        .limit(limit)
-        .skip(skipIndex);
-
-      // Obtener el total de registros
-      const totalCountQuery = Serie.countDocuments({ typeContent: "Animated" });
-      const totalCount = await totalCountQuery.exec();
-      const total = Math.ceil(totalCount / limit);
-
-      animatedSeries.sort((a, b) => b.score - a.score);
-
-      return res.status(200).json({
-        result: "success",
-        series: animatedSeries,
-        totalCount: total,
-      });
-    } else if (type === "Real") {
-      const realSeries = await Serie.find({ typeContent: "Real" })
-        .sort({ uploadData: -1 })
-        .limit(limit)
-        .skip(skipIndex);
-
-      // Obtener el total de registros
-      const totalCountQuery = Serie.countDocuments({ typeContent: "Real" });
-      const totalCount = await totalCountQuery.exec();
-      const total = Math.ceil(totalCount / limit);
-
-      realSeries.sort((a, b) => b.score - a.score);
-
-      return res.status(200).json({
-        result: "success",
-        series: realSeries,
-        totalCount: total,
-      });
-    } else {
+    if (!validTypes.includes(type)) {
       return res
         .status(400)
         .json({ result: "error", message: "Invalid series type" });
     }
+
+    const series = await Serie.find({ typeContent: type })
+      .sort({ uploadData: -1, score: -1 }) // Sorting by uploadData and then score
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCount = await Serie.countDocuments({ typeContent: type });
+    const total = Math.ceil(totalCount / limit);
+
+    return res.status(200).json({
+      result: "success",
+      series,
+      totalCount: total,
+    });
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error.message });
+  }
+}
+
+async function getFeaturedArtists(req, res) {
+  const { type } = req.params;
+  try {
+    const series = await Serie.find({ typeContent: type });
+    const artists = [];
+
+    series.forEach((serie) => {
+      const existingArtist = artists.find(
+        (artist) => artist.name === serie.artist
+      );
+
+      if (!existingArtist) {
+        artists.push({
+          name: serie.artist,
+          views: serie.views,
+          score: serie.score,
+        });
+      } else {
+        existingArtist.views += serie.views;
+        existingArtist.score += serie.score;
+      }
+    });
+
+    // Calcular el promedio (popularity) para cada artista
+    artists.forEach((artist) => {
+      artist.popularity = (artist.views + artist.score) / 2;
+    });
+
+    // Ordenar los artistas por popularidad (en orden descendente)
+    artists.sort((a, b) => b.popularity - a.popularity);
+
+    return res.status(200).json({ result: "success", artists });
   } catch (error) {
     return res.status(500).json({ result: "error", message: error });
   }
 }
 
-async function getFeaturedArtists(req, res) {
-  
-}
+async function getArtistSeries(req, res) {
+  const { artist } = req.params;
 
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skipIndex = (page - 1) * limit;
+
+    const series = await Serie.find({ artist: artist })
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCount = await Serie.countDocuments({ artist: artist });
+    const total = Math.ceil(totalCount / limit);
+
+    return res
+      .status(200)
+      .json({ result: "success", series: series, totalCount: total });
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error });
+  }
+}
 
 module.exports = {
   postComic,
@@ -457,4 +474,6 @@ module.exports = {
   getRealSeriesMostViews,
   getNewerSeries,
   getPopularSeries,
+  getFeaturedArtists,
+  getArtistSeries,
 };
