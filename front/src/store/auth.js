@@ -89,7 +89,6 @@ export const useAuthStore = defineStore("auth", {
         const response = await updateUser(userData, this.token);
         return response;
       } catch (error) {
-        console.log(error);
         return error;
       }
     },

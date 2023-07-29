@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="comics" v-for="serie in serie" :key="serie._id">
+      <div class="comics" v-for="serie in series" :key="serie._id">
         <cardDefault
           class="card-styles"
           :title="serie.nameSerie"
@@ -48,7 +48,7 @@ import { defineProps, defineEmits } from "vue";
 import cardDefault from "@/components/Cards/cardsDefault.vue";
 
 defineProps({
-  serie: Object,
+  series: Object,
   page: Number,
   totalPages: Number,
 });
@@ -57,7 +57,7 @@ const emit = defineEmits(["prev-page", "next-page", "open-serie"]);
 
 const emitNextPage = () => emit("next-page");
 const emitPrevPage = () => emit("prev-page");
-const emitOpenSerie = () => emit("open-serie");
+const emitOpenSerie = (id) => emit("open-serie", id);
 </script>
 
 <style scoped>
@@ -89,6 +89,30 @@ const emitOpenSerie = () => emit("open-serie");
 
 .card-styles:hover {
   box-shadow: 0 0 40px #b81f59;
+}
+
+.btn-navigation {
+  background-color: #b81f59;
+  color: white;
+  border: none;
+  margin: 2px;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 5%;
+  height: 10%;
+}
+
+.btn-navigation-blocked {
+  background-color: #7e7e7e;
+  color: rgb(252, 252, 252);
+  border: none;
+  margin: 2px;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 5%;
+  height: 10%;
 }
 
 @media screen and (max-width: 700px) {

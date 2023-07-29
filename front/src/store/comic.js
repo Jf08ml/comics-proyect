@@ -37,16 +37,6 @@ export const useComicStore = defineStore("comic", {
         const response = await getUserSeries(page, limit, authStore.token);
         return response;
       } catch (error) {
-        if (error.result == "TokenExpiredError") {
-          try {
-            const response = await useAuthStore.refreshToken();
-            if (response.result == "success") {
-              getUserSeries(page, limit);
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }
         return error;
       }
     },
@@ -56,16 +46,6 @@ export const useComicStore = defineStore("comic", {
         const response = await getUserSerie(id, authStore.token);
         return response;
       } catch (error) {
-        if (error.result == "TokenExpiredError") {
-          try {
-            const response = await useAuthStore.refreshToken();
-            if (response.result == "success") {
-              getUserSerie(id);
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }
         return error;
       }
     },

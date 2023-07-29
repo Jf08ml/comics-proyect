@@ -1,9 +1,5 @@
 <template>
   <div style="justify-content: center">
-    <div>
-      <h1 class="title">Animated Comics</h1>
-    </div>
-
     <LineDivider />
 
     <div class="container-artists">
@@ -47,12 +43,12 @@
 
     <LineDivider />
     <div v-if="nameArtist != ''" style="display: flex; justify-content: center;">
-      <h3 style="text-shadow: 0 0 5px #b81f59;"> Series of {{ nameArtist }}</h3>
+      <h2 style="text-shadow: 0 0 5px #b81f59; text-decoration: underline;"> Series of {{ nameArtist }}</h2>
     </div>
 
     <ListSeries
       v-if="showSeries"
-      :serie="seriesAnimated"
+      :series="seriesAnimated"
       :page="page"
       :totalPages="totalPages"
       @prev-page="prevPage"
@@ -282,9 +278,10 @@ const openSerie = (serieId) => {
 
 .btn-artist {
   background-color: #ffffff;
-  color: rgb(78, 62, 62);
+  color: rgb(0, 0, 0);
   border: none;
   margin: 5px;
+  padding: 5px;
   text-align: justify;
   font-size: 20px;
   border-radius: 5px;
@@ -292,30 +289,10 @@ const openSerie = (serieId) => {
   width: 70%;
 }
 
-.btn-navigation {
+.btn-artist:hover {
   background-color: #b81f59;
   color: white;
-  border: none;
-  margin: 2px;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 5%;
-  height: 10%;
 }
-
-.btn-navigation-blocked {
-  background-color: #7e7e7e;
-  color: rgb(252, 252, 252);
-  border: none;
-  margin: 2px;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 5%;
-  height: 10%;
-}
-
 .button-options {
   background-color: transparent;
   border: none;

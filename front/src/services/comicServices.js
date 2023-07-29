@@ -1,12 +1,12 @@
-import axios from "axios";
+import { apiComics } from "./api.js";
 
-const BASE_URL = "http://localhost:3000/api/comic";
+// const BASE_URL = "http://localhost:3000/api/comic";
 // const BASE_URL = 'http://192.168.101.13:3000/api/comic'
 
 export async function seriePost(serie, token) {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/postserie`,
+    const response = await apiComics.post(
+      `/postserie`,
       {
         serie,
       },
@@ -25,8 +25,8 @@ export async function seriePost(serie, token) {
 
 export async function getUserSeries(page, limit, token) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/userseries?page=${page}&limit=${limit}`,
+    const response = await apiComics.get(
+      `/userseries?page=${page}&limit=${limit}`,
       {
         headers: {
           "Cache-Control": "no-cache",
@@ -42,7 +42,7 @@ export async function getUserSeries(page, limit, token) {
 
 export async function getUserSerie(id, token) {
   try {
-    const response = await axios.get(`${BASE_URL}/userserie/${id}`, {
+    const response = await apiComics.get(`/userserie/${id}`, {
       headers: {
         "Cache-Control": "no-cache",
         Authorization: `${token}`,
@@ -56,8 +56,8 @@ export async function getUserSerie(id, token) {
 
 export async function putComic(comicLoaded, token) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/putcomic`,
+    const response = await apiComics.put(
+      `/putcomic`,
       {
         comicLoaded,
       },
@@ -76,8 +76,8 @@ export async function putComic(comicLoaded, token) {
 
 export async function comicPost(postComplete, token) {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/postcomic`,
+    const response = await apiComics.post(
+      `/postcomic`,
       {
         postComplete,
       },
@@ -96,7 +96,7 @@ export async function comicPost(postComplete, token) {
 
 export async function getUserComics(token) {
   try {
-    const response = await axios.get(`${BASE_URL}/usercomics`, {
+    const response = await apiComics.get(`/usercomics`, {
       headers: {
         "Cache-Control": "no-cache",
         Authorization: `${token}`,
@@ -110,7 +110,7 @@ export async function getUserComics(token) {
 
 export async function getUserComic(id, token) {
   try {
-    const response = await axios.get(`${BASE_URL}/usercomic/${id}`, {
+    const response = await apiComics.get(`/usercomic/${id}`, {
       headers: {
         "Cache-Control": "no-cache",
         Authorization: `${token}`,
@@ -124,7 +124,7 @@ export async function getUserComic(id, token) {
 
 export async function getAzarComics() {
   try {
-    const response = await axios.get(`${BASE_URL}/azarcomics`, {
+    const response = await apiComics.get(`/azarcomics`, {
       headers: {
         "Cache-Control": "no-cache",
       },
@@ -137,8 +137,8 @@ export async function getAzarComics() {
 
 export async function postRateComic(comicId, rate, token) {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/rateComic`,
+    const response = await apiComics.post(
+      `/rateComic`,
       {
         rate,
         comicId,
@@ -158,8 +158,8 @@ export async function postRateComic(comicId, rate, token) {
 
 export async function assignScore(comicId, token) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/assignScore`,
+    const response = await apiComics.put(
+      `/assignScore`,
       {
         comicId,
       },
@@ -178,8 +178,8 @@ export async function assignScore(comicId, token) {
 
 export async function assignScoreSerie(serieId, token) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/assignScoreSerie`,
+    const response = await apiComics.put(
+      `/assignScoreSerie`,
       {
         serieId,
       },
@@ -198,8 +198,8 @@ export async function assignScoreSerie(serieId, token) {
 
 export async function countViews(comicId, token) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/sumView`,
+    const response = await apiComics.put(
+      `/sumView`,
       {
         comicId,
       },
@@ -218,8 +218,8 @@ export async function countViews(comicId, token) {
 
 export async function countViewsSerie(serieId, token) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/sumViewSerie`,
+    const response = await apiComics.put(
+      `/sumViewSerie`,
       {
         serieId,
       },
@@ -238,8 +238,8 @@ export async function countViewsSerie(serieId, token) {
 
 export async function getAnimatedSeriesMostViews(page, limit) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/mostViewsAnimated?page=${page}&limit=${limit}`,
+    const response = await apiComics.get(
+      `/mostViewsAnimated?page=${page}&limit=${limit}`,
       {
         headers: {
           "Cache-Control": "no-cache",
@@ -254,7 +254,7 @@ export async function getAnimatedSeriesMostViews(page, limit) {
 
 export async function getRealSeriesMostViews() {
   try {
-    const response = await axios.get(`${BASE_URL}/mostViewsReal`, {
+    const response = await apiComics.get(`/mostViewsReal`, {
       headers: {
         "Cache-Control": "no-cache",
       },
@@ -267,8 +267,8 @@ export async function getRealSeriesMostViews() {
 
 export async function getNewerSeries(type, page, limit) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/newerSeries/${type}?page=${page}&limit=${limit}`,
+    const response = await apiComics.get(
+      `/newerSeries/${type}?page=${page}&limit=${limit}`,
       {
         headers: {
           "Cache-Control": "no-cache",
@@ -283,8 +283,8 @@ export async function getNewerSeries(type, page, limit) {
 
 export async function getPopularSeries(type, page, limit) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/popularSeries/${type}?page=${page}&limit=${limit}`,
+    const response = await apiComics.get(
+      `/popularSeries/${type}?page=${page}&limit=${limit}`,
       {
         headers: {
           "Cache-Control": "no-cache",
@@ -299,7 +299,7 @@ export async function getPopularSeries(type, page, limit) {
 
 export async function getFeaturedArtists(type) {
   try {
-    const response = await axios.get(`${BASE_URL}/featureArtist/${type}`, {
+    const response = await apiComics.get(`/featureArtist/${type}`, {
       headers: {
         "Cache-Control": "no-cache",
       },
@@ -312,8 +312,8 @@ export async function getFeaturedArtists(type) {
 
 export async function getArtistSeries(artist, page, limit) {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/artistSeries/${artist}?page=${page}&limit=${limit}`,
+    const response = await apiComics.get(
+      `/artistSeries/${artist}?page=${page}&limit=${limit}`,
       {
         headers: {
           "Cache-Control": "no-cache",
