@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, watch, ref } from "vue";
 import { useComicStore } from "@/store/comic";
 import { useRoute } from "vue-router";
 import StarRating from "vue-star-rating";
@@ -57,7 +57,7 @@ const starSize = ref(25);
 
 const serie = ref({});
 const orderComics = ref([]);
-const idComic = route.params;
+const idSerie = route.params;
 const rating = ref(0);
 
 const updateStarSize = () => {
@@ -70,7 +70,7 @@ const updateStarSize = () => {
 
 onBeforeMount(async () => {
   try {
-    const response = await comicStore.getUserSerie(idComic.id);
+    const response = await comicStore.getUserSerie(idSerie.id);
     serie.value = response;
     rating.value = serie.value.score;
     orderComics.value.push(serie.value._id);
@@ -87,6 +87,21 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", updateStarSize);
 });
+
+watch(
+  () => route.params.id,
+  async (newIdSerie) => {
+    idSerie.value = newIdSerie;
+    try {
+      const response = await comicStore.getUserSerie(idSerie.value);
+      serie.value = response;
+      rating.value = serie.value.score;
+      orderComics.value.push(serie.value._id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 </script>
 
 <style scoped>

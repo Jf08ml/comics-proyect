@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
 
-    <div>
+    <div class="navbar-icone">
       <NavbarIcone />
     </div>
 

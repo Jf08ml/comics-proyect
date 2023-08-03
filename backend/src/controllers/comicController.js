@@ -456,6 +456,37 @@ async function getArtistSeries(req, res) {
   }
 }
 
+async function searchSerie(req, res) {
+  const { nameSerie } = req.params;
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skipIndex = (page - 1) * limit;
+
+    const SeriesFound = await Serie.find({
+      nameSerie: { $regex: nameSerie, $options: "i" },
+    })
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCount = await Serie.countDocuments({
+      nameSerie: { $regex: nameSerie, $options: "i" },
+    });
+    const total = Math.ceil(totalCount / limit);
+
+    if (SeriesFound.length > 0) {
+      return res
+        .status(200)
+        .json({ result: "success", series: SeriesFound, totalCount: total });
+    } else {
+      return res.status(200).json({ value: false, message: "Serie not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error searching serie" });
+  }
+}
+
 module.exports = {
   postComic,
   getUserComics,
@@ -476,4 +507,5 @@ module.exports = {
   getPopularSeries,
   getFeaturedArtists,
   getArtistSeries,
+  searchSerie,
 };

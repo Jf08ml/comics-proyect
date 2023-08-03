@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y: auto">
     <div class="row">
       <div class="comics" v-for="serie in series" :key="serie._id">
         <cardDefault
@@ -28,9 +28,16 @@
       >
         «
       </button>
-      <span style="margin-inline: 5px; color: whitesmoke"
+      <span
+        style="
+          margin-inline: 5px;
+          color: whitesmoke;
+          text-shadow: 0 0 5px black;
+          -webkit-text-stroke: 1px rgb(129, 114, 114); /* Para navegadores basados en Webkit como Chrome y Safari */
+        "
         >Página {{ page }} de {{ totalPages }}</span
       >
+
       <button
         class="btn-navigation"
         @click="emitNextPage"

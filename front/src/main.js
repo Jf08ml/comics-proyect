@@ -30,7 +30,9 @@ import {
   HiInformationCircle,
   BiCheckCircleFill,
   BiXCircleFill,
-  BiBoxArrowInRight 
+  BiBoxArrowInRight,
+  IoSearchCircleSharp,
+  HiSolidSearch
 } from "oh-vue-icons/icons";
 addIcons(
   BiStar,
@@ -58,7 +60,9 @@ addIcons(
   HiInformationCircle,
   BiCheckCircleFill,
   BiXCircleFill,
-  BiBoxArrowInRight 
+  BiBoxArrowInRight,
+  IoSearchCircleSharp,
+  HiSolidSearch
 );
 
 const app = createApp(App);
