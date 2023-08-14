@@ -18,7 +18,9 @@
       />
     </div>
     <div class="results" v-if="searchQuery.length > 0">
-      <div v-if="isLoading" class="loading">Loading series... write 2 letters minimum</div>
+      <div v-if="isLoading" class="loading">
+        Loading series... write 2 letters minimum
+      </div>
       <div v-if="!isLoading && searchResults.length === 0" class="notFound">
         Serie not found
       </div>
@@ -53,7 +55,7 @@ const searchResults = ref([]);
 const isLoading = ref(false);
 const page = ref(1);
 const totalPages = ref(0);
-const limit = ref(10);
+const limit = ref(6);
 
 const close = () => {
   searchQuery.value = "";
@@ -195,10 +197,10 @@ const openSerie = async (serieId) => {
     right: 0;
   }
   .iconSearch {
-  position: absolute;
-  top: 33%;
-  left: 82%;
-  cursor: pointer;
-}
+    position: absolute;
+    top: 33%;
+    left: 82%;
+    cursor: pointer;
+  }
 }
 </style>

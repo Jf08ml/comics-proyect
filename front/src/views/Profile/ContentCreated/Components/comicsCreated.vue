@@ -25,11 +25,11 @@
         </div>
       </div>
     </div>
-    <div style="margin: 5px">
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; tex">
       <button class="button-next" @click="prevPage" :disabled="page === 1">
         «
       </button>
-      <span style="margin-inline: 5px"
+      <span style="margin-inline: 2px"
         >Página {{ page }} de {{ totalPages }}</span
       >
       <button
@@ -101,7 +101,7 @@ function prevPage() {
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 if (isMobile) {
   limit.value = 4;
-  getNextComics()
+  getNextComics();
 }
 </script>
 
@@ -176,6 +176,9 @@ if (isMobile) {
 }
 
 .btn-options {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
   background-color: #ffffff;
   border: none;
   width: 30px;

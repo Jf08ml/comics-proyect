@@ -17,6 +17,11 @@ $primary-color: #b81f59;
     &:hover {
         background-color: darken($primary-color, 10%);
     }
+
+    @media screen and (max-width:500px) {
+        font-size: $small-font-size;
+        transition: all 0.2s ease-in-out;
+    }
 }
 
 .nav-button-menu {

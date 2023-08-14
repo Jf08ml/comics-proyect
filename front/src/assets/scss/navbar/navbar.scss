@@ -24,7 +24,6 @@ $font-color: #ffffff;
 
     @media screen and (max-width:900px) {
       transition: all 0.2s ease-in-out;
-      ;
       display: none;
     }
 
@@ -64,15 +63,13 @@ $font-color: #ffffff;
     @media screen and (max-width:600px) {
       transition: all 0.2s ease-in-out;
       font-size: cal(#{$small-font-size} - 5px);
-      margin-inline-start: 0px;
-      width: 60vw;
     }
 
   }
 
   .search-mobile {
     position: absolute;
-    top: 7%;
+    top: 8%;
     /* Ajusta este valor según la altura de tu barra de navegación */
     background-image: radial-gradient(circle at 50% -20.71%, #505467 0, #191e29 50%, #020e2e 100%);
     width: 100%;
