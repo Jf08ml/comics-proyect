@@ -1,22 +1,59 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const serieSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        default: mongoose.Types.ObjectId // Esto generará un nuevo ObjectId único por defecto
-      },
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      },
-    name: {
-        type: String,
-        required: true
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: mongoose.Types.ObjectId, // Esto generará un nuevo ObjectId único por defecto
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  nameSerie: {
+    type: String,
+    required: true,
+  },
+  frontPage: {
+    type: String,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  typeContent: {
+    type: String,
+    required: true,
+  },
+  artist: {
+    type: String,
+    required: true
+  },
+  keywords: {
+    type: Array,
+    required: true,
+  },
+  partsSerie: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
     },
-    parts: {
-        type: Array
-    }
+  ],
+  views: {
+    type: Number,
+    default: 0,
+  },
+  score: {
+    type: Number,
+    default: 0,
+  },
+  uploadData: {
+    type: Date,
+    default: Date.now,
+  },
+  score: {
+    type: Number,
+    default: 0
+  }
 });
 
-module.exports = mongoose.model('Serie', serieSchema);
+module.exports = mongoose.model("Serie", serieSchema);

@@ -10,18 +10,6 @@ const comicSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    description: {
-      type: String,
-      required: true
-    },
-    typeContent: {
-        type: String,
-        required: true
-    },
-    keywords: {
-        type: Array,
-        required: true
-    },
     imagesPost : {
         type: Array,
         required: true
@@ -29,6 +17,14 @@ const comicSchema = new mongoose.Schema({
     views: {
       type: Number,
       default: 0
+    },
+    score: {
+      type: Number,
+      default: 0
+    },
+    serie: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Serie'
     },
     uploadData: {
       type: Date,

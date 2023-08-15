@@ -33,9 +33,6 @@ async function signup(req, res) {
     res.status(500).json({ result: 'error', message: 'Server error' });
   }
 }
-
-
-
 async function login(req, res) {
   try {
     const { identifier, password } = req.body;
@@ -78,12 +75,11 @@ async function login(req, res) {
 
 async function refreshTokens(req, res) {
   try {
-    const { refreshToken } = req.body;
-
-    jwt.verify(refreshToken, JWT_REFRESH_SECRET, async (err, decoded) => {
+    const { refreshTokenUser } = req.body;
+    jwt.verify(refreshTokenUser, JWT_REFRESH_SECRET, async (err, decoded) => {
       if (err) {
         console.log(err)
-        return res.status(401).json({ message: err.name });
+        return res.status(401).json({error: "RefreshTokenError", message: err.name });
       }
 
       const user = await User.findById(decoded.id);

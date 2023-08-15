@@ -1,0 +1,83 @@
+.content-images {
+    width: 100%;
+    margin-block: 10px;
+}
+
+.img-styles {
+    box-shadow: 0 0 5px #b81f59;
+}
+
+.content-comics-azar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 80%;
+}
+
+.content-comics-styles {
+    flex-basis: 25%;
+    height: 220px;
+    margin: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.containter-text-rate span {
+    position: relative;
+    display: inline-block;
+    font-size: 20px;
+    color: white;
+    text-shadow: 2px 2px 4px #ffd055;
+}
+
+.custom-star-rating-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18%;
+    margin-bottom: 20px;
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+}
+
+.custom-text {
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 5px;
+    color: #ffffff;
+    text-shadow: 0 0 5px #ffd055;
+}
+
+img {
+    width: 50%;
+    height: 70%;
+    box-shadow: 0 0 5px gainsboro;
+}
+
+@media screen and (max-width: 700px) {
+    img {
+        width: 90%;
+        height: 100%;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .content-comics-azar {
+        width: 100%;
+    }
+
+    .custom-star-rating-container {
+        width: 50%;
+    }
+
+    .custom-text {
+        font-size: 1em;
+    }
+
+    .btn-navigation {
+        width: 10%;
+    }
+
+    .btn-navigation-blocked {
+        width: 10%;
+    }
+}

@@ -14,7 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Rutas
-app.use('/api', authRoutes, payoutRoutes, comicRoutes);
+// Rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/payout', payoutRoutes);
+app.use('/api/comic', comicRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -23,6 +26,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
+// const HOST = "192.168.101.10";
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
   // console.log(`Network listening at http://${HOST}:${PORT}/`);
