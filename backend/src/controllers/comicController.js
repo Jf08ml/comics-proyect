@@ -44,14 +44,14 @@ async function getUserSeries(req, res) {
     const skipIndex = (page - 1) * limit;
 
     // Obtener las series del usuario
-    const userSeriesQuery = Serie.find({ user: userId })
+    const userSeriesQuery = Serie.find({ userId: userId })
       .sort({ _id: 1 })
       .limit(limit)
       .skip(skipIndex);
     const userSeries = await userSeriesQuery.exec();
 
     // Obtener el total de registros
-    const totalCountQuery = Serie.countDocuments({ user: userId });
+    const totalCountQuery = Serie.countDocuments({ userId: userId });
     const totalCount = await totalCountQuery.exec();
     const total = Math.ceil(totalCount / limit);
 
@@ -322,9 +322,26 @@ async function getAnimatedSeriesMostViews(req, res) {
 
 async function getRealSeriesMostViews(req, res) {
   try {
-    const realSeries = await Serie.find({ typeContent: "Real" }).limit(30);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 30;
+
+    const skipIndex = (page - 1) * limit;
+
+    const realSeries = await Serie.find({ typeContent: "Real" })
+      .limit(limit)
+      .skip(skipIndex);
+
+    const totalCountQuery = Serie.countDocuments({ typeContent: "Real" });
+    const totalCount = await totalCountQuery.exec();
+    const total = Math.ceil(totalCount / limit);
+
     realSeries.sort((a, b) => b.views - a.views);
-    return res.status(200).json({ result: "success", realSeries });
+
+    return res.status(200).json({
+      result: "success",
+      series: realSeries,
+      totalCount: total,
+    });
   } catch (error) {
     return res.status(500).json({ result: "error", message: error });
   }
@@ -379,16 +396,23 @@ async function getPopularSeries(req, res) {
     }
 
     const series = await Serie.find({ typeContent: type })
-      .sort({ uploadData: -1, score: -1 }) // Sorting by uploadData and then score
       .limit(limit)
       .skip(skipIndex);
 
     const totalCount = await Serie.countDocuments({ typeContent: type });
     const total = Math.ceil(totalCount / limit);
 
+    let seriesPopular = series.map((serie) => {
+      const clonedSerie = serie.toObject(); // Convertir el documento Mongoose a un objeto JavaScript
+      clonedSerie.popularity = (clonedSerie.views + clonedSerie.score) / 2;
+      return clonedSerie;
+    });
+
+    seriesPopular.sort((a, b) => b.popularity - a.popularity);
+
     return res.status(200).json({
       result: "success",
-      series,
+      series: seriesPopular,
       totalCount: total,
     });
   } catch (error) {
@@ -406,7 +430,6 @@ async function getFeaturedArtists(req, res) {
       const existingArtist = artists.find(
         (artist) => artist.name === serie.artist
       );
-
       if (!existingArtist) {
         artists.push({
           name: serie.artist,
@@ -427,7 +450,9 @@ async function getFeaturedArtists(req, res) {
     // Ordenar los artistas por popularidad (en orden descendente)
     artists.sort((a, b) => b.popularity - a.popularity);
 
-    return res.status(200).json({ result: "success", artists });
+    const top10Artists = artists.slice(0, 10);
+
+    return res.status(200).json({ result: "success", top10Artists });
   } catch (error) {
     return res.status(500).json({ result: "error", message: error });
   }

@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/realcomics',
     name: 'realcomics',
-    component: () => import(/* webpackChunkName: "realcomics" */ '../views/RealComicsView.vue')
+    component: () => import(/* webpackChunkName: "realcomics" */ '../views/RealComics/RealComicsView.vue')
   },
   {
     path: '/animatedcomics',
@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/allthemostviewd',
     name:'allthemostviewed',
-    component: () => import( /* webpackChunkName: "allthemostviewd"*/ '../views/AllMostView/AllMostView.vue')
+    component: () => import( /* webpackChunkName: "allthemostviewd"*/ '../views/AllMost/AllMostView.vue')
   },
   {
     path: '/profile',
@@ -41,12 +41,17 @@ const routes = [
   {
     path: '/viewcomic/:id',
     name: 'viewcomic',
-    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/viewComic/ComicView.vue')
+    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/ViewComic/ComicView.vue')
   },
   {
     path: '/viewserie/:id',
     name: 'viewserie',
-    component: () => import(/* webpackChunkName: "viewserie"*/ '../views/SerieView/SerieView.vue')
+    component: () => import(/* webpackChunkName: "viewserie"*/ '../views/ViewSeries/SerieView.vue')
+  },
+  {
+    path: '/comicvip/:type',
+    name: 'comicvip',
+    component: () => import(/*webpackChunkName: "comicvip"*/ '../views/ZoneVIP/ZoneVipView.vue')
   }
 ]
 

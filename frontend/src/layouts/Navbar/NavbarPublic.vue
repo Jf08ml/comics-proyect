@@ -43,9 +43,8 @@ const menuItems = ref([
     route: "realcomics",
     showMenu: showMenuReal,
     subMenus: [
-      { name: "Mas vistos", route: "mostview1" },
-      { name: "Mas nuevos", route: "mostview2" },
-      { name: "VIP", route: "mostview3" },
+      { name: "Earn money", route: "mostview1" },
+      { name: "VIP", route: "comicvip/real" },
     ],
   },
   {
@@ -53,10 +52,8 @@ const menuItems = ref([
     route: "animatedcomics",
     showMenu: showMenuAnimated,
     subMenus: [
-      { name: "Mas vistos", route: "mostview4" },
-      { name: "Mas nuevos", route: "mostview5" },
-      { name: "VIP", route: "mostview6" },
-      { name: "Artistas", route: "mostview7" },
+      { name: "Earn money", route: "mostview4" },
+      { name: "VIP", route: "comicvip/animated" },
     ],
   },
 ]);

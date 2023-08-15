@@ -41,7 +41,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, nextTick } from "vue";
 import { searchSerie } from "@/services/comicServices";
-import ListSeries from "@/views/AnimatedComics/components/ListSeries.vue";
+import ListSeries from "@/components/ListSeries.vue";
 import router from "@/router";
 
 defineProps({

@@ -7,16 +7,8 @@
       </button>
     </div>
     <div class="post-content">
-      <div class="search-content">
-        <input
-          class="input-search"
-          type="text"
-          placeholder="Search..."
-          v-model="searchTerm"
-        />
-      </div>
       <div class="post-created">
-        <comicsCreated @show-modal="showModal" :searchTerm="searchTerm"/>
+        <comicsCreated ref="refComicsCreated" @show-modal="showModal" />
       </div>
     </div>
     <Transition>
@@ -49,19 +41,10 @@ import comicsCreated from "./Components/comicsCreated.vue";
 const comicStore = useComicStore();
 
 const closeOrOpen = ref(false);
-
 const isFunctionRunning = ref(false);
-
 const addComicPart = ref(null);
-
-const searchTerm = ref("");
-
-const showModal = (comic) => {
-  closeOrOpen.value = !closeOrOpen.value;
-  addComicPart.value = comic;
-};
-
 const currentStep = ref(0);
+const refComicsCreated = ref(null);
 const steps = [
   {
     title: "Upload photos",
@@ -70,6 +53,15 @@ const steps = [
   { title: "Post Information", description: "Add details and tags." },
   { title: "Preview", description: "This is what your post will look like." },
 ];
+
+const reloadSeries = () => {
+  refComicsCreated.value.fetchSeries();
+};
+
+const showModal = (comic) => {
+  closeOrOpen.value = !closeOrOpen.value;
+  addComicPart.value = comic;
+};
 
 const nextStep = () => {
   if (currentStep.value < steps.length - 1) {
@@ -141,6 +133,7 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
           }
           showModal();
           isFunctionRunning.value = false;
+          reloadSeries();
         } catch (error) {
           console.error(error);
         }
@@ -307,31 +300,11 @@ const sendPost = async (uploadedImages, postInfoSaved) => {
   }
 }
 
-.search-content {
-  height: 9%;
-  width: 60%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.input-search {
-  width: 95%;
-}
-
-@media screen and (max-width: 700px) {
-  .input-search {
-    width: 100%;
-  }
-}
-
 .post-created {
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 95%;
-  height: 80%;
+  height: 90%;
 }
 </style>

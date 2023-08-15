@@ -48,7 +48,7 @@
 
     <ListSeries
       v-if="showSeries"
-      :series="seriesAnimated"
+      :series="seriesReal"
       :page="page"
       :totalPages="totalPages"
       @prev-page="prevPage"
@@ -58,7 +58,7 @@
 
     <!-- <div v-if="showSeries">
       <div class="row">
-        <div class="comics" v-for="serie in seriesAnimated" :key="serie._id">
+        <div class="comics" v-for="serie in seriesReal" :key="serie._id">
           <cardDefault
             class="card-styles"
             :title="serie.nameSerie"
@@ -119,18 +119,18 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import LineDivider from "@/components/LineDivider.vue";
-import ListSeries from "./components/ListSeries.vue";
+import ListSeries from "@/components/ListSeries.vue";
 import {
   getNewerSeries,
-  getAnimatedSeriesMostViews,
+  getRealSeriesMostViews,
   getPopularSeries,
   getFeaturedArtists,
   getArtistSeries
 } from "@/services/comicServices.js";
 import router from "@/router";
 
-const seriesAnimated = ref({});
-const type = ref("Animated");
+const seriesReal = ref({});
+const type = ref("Real");
 const page = ref(1);
 const limit = ref(10);
 const totalPages = ref(0);
@@ -149,7 +149,7 @@ const newerSeries = async () => {
   showSeries.value = true;
   try {
     const response = await getNewerSeries(type.value, page.value, limit.value);
-    seriesAnimated.value = response.series;
+    seriesReal.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
@@ -161,8 +161,8 @@ const mostViews = async () => {
   nameArtist.value = "";
   showSeries.value = true;
   try {
-    const response = await getAnimatedSeriesMostViews(page.value, limit.value);
-    seriesAnimated.value = response.series;
+    const response = await getRealSeriesMostViews(page.value, limit.value);
+    seriesReal.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
@@ -179,7 +179,8 @@ const popularSeries = async () => {
       page.value,
       limit.value
     );
-    seriesAnimated.value = response.series;
+    console.log(response)
+    seriesReal.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
@@ -192,7 +193,7 @@ const FeatureArtists = async () => {
   showSeries.value = false;
   try {
     const response = await getFeaturedArtists(type.value);
-    artists.value = response.artists;
+    artists.value = response.top10Artists;
   } catch (error) {
     console.error(error);
   }
@@ -203,18 +204,18 @@ const artistSeries = async (artist) => {
   showSeries.value = true;
   try {
     const response = await getArtistSeries(artist, page.value, limit.value);
-    seriesAnimated.value = response.series;
+    seriesReal.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
   }
-  nameArtist.value = seriesAnimated.value[0].artist;
+  nameArtist.value = seriesReal.value[0].artist;
 };
 
 const getNextComics = async () => {
   try {
     const response = await getNewerSeries(type.value, page.value, limit.value);
-    seriesAnimated.value = response.series;
+    seriesReal.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);

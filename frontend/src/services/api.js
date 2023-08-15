@@ -31,9 +31,12 @@ const createAxiosInstance = (baseURL) => {
   return api;
 };
 
-const apiAuth = createAxiosInstance("http://192.168.101.10:3000/api/auth");
-const apiComics = createAxiosInstance("http://192.168.101.10:3000/api/comic");
-const apiPayout = createAxiosInstance("http://192.168.101.10:3000/api/payout");
-// ... y así sucesivamente para cada servicio
+// const apiAuth = createAxiosInstance("http://192.168.101.10:3000/api/auth");
+// const apiComics = createAxiosInstance("http://192.168.101.10:3000/api/comic");
+// const apiPayout = createAxiosInstance("http://192.168.101.10:3000/api/payout");
+const apiAuth = createAxiosInstance("http://localhost:3000/api/auth");
+const apiComics = createAxiosInstance("http://localhost:3000/api/comic");
+const apiPayout = createAxiosInstance("http://localhost:3000/api/payout");
+
 
 export { apiAuth, apiComics, apiPayout };

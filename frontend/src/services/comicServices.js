@@ -252,13 +252,16 @@ export async function getAnimatedSeriesMostViews(page, limit) {
   }
 }
 
-export async function getRealSeriesMostViews() {
+export async function getRealSeriesMostViews(page, limit) {
   try {
-    const response = await apiComics.get(`/mostViewsReal`, {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    });
+    const response = await apiComics.get(
+      `/mostViewsReal?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     return await Promise.reject(error.response.data);

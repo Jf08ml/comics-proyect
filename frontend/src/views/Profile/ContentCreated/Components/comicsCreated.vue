@@ -1,23 +1,27 @@
 <template>
-  <div class="container" v-if="comics != ''">
+  <div class="container" v-if="series != ''">
     <div style="overflow-y: auto">
       <div class="row">
-        <div class="comics" v-for="comic in comics" :key="comic._id">
+        <div
+          :class="series.length > 2 ? 'comics' : 'comic-one-row'"
+          v-for="serie in series"
+          :key="serie._id"
+        >
           <cardDefault
             class="card-styles"
-            :title="comic.nameSerie"
-            :description="comic.description"
-            :image="comic.frontPage"
-            :views="comic.views"
+            :title="serie.nameSerie"
+            :description="serie.description"
+            :image="serie.frontPage"
+            :views="serie.views"
           />
           <div class="show-options">
             <div style="margin: 5px">
-              <button @click="$emit('show-modal', comic)" class="btn-options">
+              <button @click="$emit('show-modal', serie)" class="btn-options">
                 <v-icon name="ri-file-edit-fill" color="grey" scale="0.9" />
               </button>
             </div>
             <div style="margin: 5px">
-              <button @click="openComic(comic._id)" class="btn-options">
+              <button @click="openComic(serie._id)" class="btn-options">
                 <v-icon name="hi-eye" color="grey" scale="0.9" />
               </button>
             </div>
@@ -25,7 +29,9 @@
         </div>
       </div>
     </div>
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; tex">
+    <div
+      style="display: flex; flex-direction: row; justify-content: center; align-items: center; tex"
+    >
       <button class="button-next" @click="prevPage" :disabled="page === 1">
         «
       </button>
@@ -39,37 +45,39 @@
       >
         »
       </button>
-      <button class="button-refresh" @click="refreshComics">⟳</button>
     </div>
   </div>
-  <div v-else style="margin: auto">
-    <h4>You have not created content, cheer up!</h4>
+  <div v-else class="content-no-series">
+    <span class="text-no-series">You have not created content, cheer up!</span>
   </div>
 </template>
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, defineExpose } from "vue";
 import cardDefault from "@/components/Cards/cardsDefault.vue";
 import { useComicStore } from "@/store/comic";
 import router from "@/router";
 
 const comicStore = useComicStore();
 
-const comics = ref();
+const series = ref();
 
 const page = ref(1);
 const limit = ref(10);
 const totalPages = ref(0);
 
 onBeforeMount(async () => {
+  fetchSeries();
+});
+
+const fetchSeries = async () => {
   try {
     const response = await comicStore.getUserSeries(page.value, limit.value);
-    comics.value = response.series;
+    series.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
   }
-});
-
+};
 const openComic = (comic) => {
   router.push(`/viewserie/${comic}`);
 };
@@ -77,7 +85,7 @@ const openComic = (comic) => {
 const getNextComics = async () => {
   try {
     const response = await comicStore.getUserSeries(page.value, limit.value);
-    comics.value = response.series;
+    series.value = response.series;
     totalPages.value = response.totalCount;
   } catch (error) {
     console.error(error);
@@ -103,6 +111,8 @@ if (isMobile) {
   limit.value = 4;
   getNextComics();
 }
+
+defineExpose({fetchSeries});
 </script>
 
 <style scoped>
@@ -152,10 +162,18 @@ if (isMobile) {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   margin: 10px;
   position: relative;
   width: calc(18% - 5px);
+  box-sizing: border-box;
+}
+
+.comic-one-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  position: relative;
   box-sizing: border-box;
 }
 
@@ -206,6 +224,45 @@ if (isMobile) {
   height: 220px;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+.content-no-series {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+}
+.text-no-series {
+  color: rgb(3, 103, 190);
+  font-size: 3vh;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.15em solid aliceblue;
+  width: 35ch; /* Ajusta este valor según el largo de tu texto */
+  animation: typing 2s steps(40, end) forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 35ch;
+  } /* Ajusta este valor según el largo de tu texto */
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: aliceblue;
+  }
 }
 
 @media screen and (max-width: 700px) {

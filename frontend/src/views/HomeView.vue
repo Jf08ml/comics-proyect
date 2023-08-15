@@ -115,7 +115,7 @@ onBeforeMount(async () => {
 
   try {
     const response = await comicStore.getRealSeriesMostViews();
-    realSeriesMV.value = response.realSeries;
+    realSeriesMV.value = response.series;
   } catch (error) {
     console.error(error);
   }
