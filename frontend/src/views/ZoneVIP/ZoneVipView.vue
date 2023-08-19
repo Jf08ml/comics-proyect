@@ -93,4 +93,15 @@ span {
     border-color: aliceblue;
   }
 }
+
+@media screen and (max-width: 700px) {
+  span {
+    font-size: 2vh;
+  }
+
+  .box-content{
+    height: 30%;
+    width: 80%;
+  }
+}
 </style>

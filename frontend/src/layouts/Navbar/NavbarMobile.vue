@@ -37,6 +37,22 @@
                     </button>
                 </template>
             </router-link>
+            <button class="nav-link-mobile">
+                <v-icon name="fc-vip" scale="1.5" title="VIP comics" color="#b81f59" />: <router-link to="/comicvip/animated">Animated</router-link> or <router-link to="/comicvip/real">Real</router-link>
+            </button>
+            <router-link custom to="/earnmoney">
+                <template v-slot="{ navigate }">
+                    <button @click="
+                        () => {
+                            navigate();
+                            isOpen = false;
+                        }
+                    " class="nav-link-mobile">
+                        <v-icon name="gi-take-my-money" scale="1.5" title="Earn money" color="#b81f59" />
+                        Earn money
+                    </button>
+                </template>
+            </router-link>
             <router-link custom to="/login" v-if="!authStore.token">
                 <template v-slot="{ navigate }">
                     <button @click="
