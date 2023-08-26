@@ -512,6 +512,69 @@ async function searchSerie(req, res) {
   }
 }
 
+async function getSeriesToInscribe(req, res) {
+  try {
+    const token = req.headers["authorization"];
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userId = decodedToken.id;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+
+    const skipIndex = (page - 1) * limit;
+
+    const userSeriesQuery = Serie.find({
+      userId: userId,
+      $or: [{ inscribed: false }, { inscribed: { $exists: false } }],
+    })
+      .sort({ _id: 1 })
+      .limit(limit)
+      .skip(skipIndex);
+    const userSeries = await userSeriesQuery.exec();
+
+    const totalCountQuery = Serie.countDocuments({
+      userId: userId,
+      $or: [{ inscribed: false }, { inscribed: { $exists: false } }],
+    });
+    const totalCount = await totalCountQuery.exec();
+    const total = Math.ceil(totalCount / limit);
+
+    return res.status(200).json({
+      series: userSeries,
+      totalCount: total,
+    });
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error });
+  }
+}
+
+async function enteredSeries(req, res) {
+  const { serie } = req.params;
+  try {
+    const serieFound = await Serie.findById(serie);
+    if (!serieFound) {
+      return res
+        .status(404)
+        .json({ result: "error", message: "Serie not found" });
+    }
+
+    for (const comic of serieFound.partsSerie) {
+      const comicFound = await Comic.findById(comic);
+      comicFound.inscribed = true;
+      await comicFound.save();
+    }
+
+    serieFound.inscribed = true;
+    await serieFound.save();
+
+    return res
+      .status(200)
+      .json({ result: "success", message: "Inscribed success" });
+  } catch (error) {
+    return res.status(500).json({ result: "error", message: error.message });
+  }
+}
+
 module.exports = {
   postComic,
   getUserComics,
@@ -533,4 +596,6 @@ module.exports = {
   getFeaturedArtists,
   getArtistSeries,
   searchSerie,
+  getSeriesToInscribe,
+  enteredSeries,
 };

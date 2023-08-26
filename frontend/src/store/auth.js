@@ -43,24 +43,6 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    // async refreshToken() {
-    //   try {
-    //     const response = await refreshToken(this.refreshTokenUser);
-    //     this.token = response.token;
-    //     this.refreshTokenUser = response.refreshToken;
-    //     Cookies.set("accessToken", this.token, { sameSite: "strict" });
-    //     Cookies.set("refreshToken", this.refreshTokenUser, {
-    //       sameSite: "strict",
-    //     });
-    //     return response;
-    //   } catch (error) {
-    //     if (error.message == "TokenExpiredError") {
-    //       this.logout();
-    //     }
-    //     console.error(error);
-    //   }
-    // },
-
     async getUser() {
       try {
         const response = await getUser(this.token);

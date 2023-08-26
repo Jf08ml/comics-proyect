@@ -42,8 +42,10 @@
     </div>
 
     <LineDivider />
-    <div v-if="nameArtist != ''" style="display: flex; justify-content: center;">
-      <h2 style="text-shadow: 0 0 5px #b81f59; text-decoration: underline;"> Series of {{ nameArtist }}</h2>
+    <div v-if="nameArtist != ''" style="display: flex; justify-content: center">
+      <h2 style="text-shadow: 0 0 5px #b81f59; text-decoration: underline">
+        Series of {{ nameArtist }}
+      </h2>
     </div>
 
     <ListSeries
@@ -51,53 +53,11 @@
       :series="seriesAnimated"
       :page="page"
       :totalPages="totalPages"
+      actionType="view"
       @prev-page="prevPage"
       @next-page="nextPage"
       @open-serie="openSerie"
     />
-
-    <!-- <div v-if="showSeries">
-      <div class="row">
-        <div class="comics" v-for="serie in seriesAnimated" :key="serie._id">
-          <cardDefault
-            class="card-styles"
-            :title="serie.nameSerie"
-            :description="serie.description"
-            :image="serie.frontPage"
-            :views="serie.views"
-            @click="openSerie(serie._id)"
-          />
-        </div>
-      </div>
-      <div
-        style="
-          margin: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        "
-      >
-        <button
-          class="btn-navigation"
-          @click="prevPage"
-          :disabled="page === 1"
-          :class="{ 'btn-navigation-blocked': page === 1 }"
-        >
-          «
-        </button>
-        <span style="margin-inline: 5px; color: whitesmoke"
-          >Página {{ page }} de {{ totalPages }}</span
-        >
-        <button
-          class="btn-navigation"
-          @click="nextPage"
-          :disabled="page === totalPages"
-          :class="{ 'btn-navigation-blocked': page === totalPages }"
-        >
-          »
-        </button>
-      </div>
-    </div> -->
 
     <div v-if="!showSeries" class="container-primary-artists">
       <div class="container-list-artists">
@@ -125,7 +85,7 @@ import {
   getAnimatedSeriesMostViews,
   getPopularSeries,
   getFeaturedArtists,
-  getArtistSeries
+  getArtistSeries,
 } from "@/services/comicServices.js";
 import router from "@/router";
 
@@ -239,8 +199,8 @@ const prevPage = () => {
   }
 };
 
-const openSerie = (serieId) => {
-  router.push(`/viewserie/${serieId}`);
+const openSerie = (serie) => {
+  router.push(`/viewserie/${serie._id}`);
 };
 </script>
 

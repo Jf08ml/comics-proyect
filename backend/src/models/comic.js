@@ -22,6 +22,10 @@ const comicSchema = new mongoose.Schema({
       type: Number,
       default: 0
     },
+    inscribed: {
+      type: Boolean,
+      default: false,
+    },
     serie: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Serie'

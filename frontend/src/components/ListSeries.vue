@@ -8,7 +8,7 @@
           :description="serie.description"
           :image="serie.frontPage"
           :views="serie.views"
-          @click="emitOpenSerie(serie._id)"
+          @click="actionCard(serie)"
         />
       </div>
     </div>
@@ -54,17 +54,32 @@
 import { defineProps, defineEmits } from "vue";
 import cardDefault from "@/components/Cards/cardsDefault.vue";
 
-defineProps({
+const props = defineProps({
   series: Object,
   page: Number,
   totalPages: Number,
+  actionType: String,
 });
 
-const emit = defineEmits(["prev-page", "next-page", "open-serie"]);
+const emit = defineEmits([
+  "prev-page",
+  "next-page",
+  "open-serie",
+  "selected-serie",
+]);
 
 const emitNextPage = () => emit("next-page");
 const emitPrevPage = () => emit("prev-page");
 const emitOpenSerie = (id) => emit("open-serie", id);
+const emitSelectedSerie = (id) => emit("selected-serie", id);
+
+const actionCard = (serie) => {
+  if (props.actionType === "view") {
+    emitOpenSerie(serie);
+  } else if (props.actionType === "select") {
+    emitSelectedSerie(serie);
+  }
+};
 </script>
 
 <style scoped>
