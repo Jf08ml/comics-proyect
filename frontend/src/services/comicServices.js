@@ -331,9 +331,43 @@ export async function getArtistSeries(artist, page, limit) {
 
 export async function searchSerie(nameSerie, page, limit) {
   try {
-    const response = await apiComics.get(`/searchSeries/${nameSerie}?page=${page}&limit=${limit}`, {
+    const response = await apiComics.get(
+      `/searchSeries/${nameSerie}?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function getSeriesToInscribe(page, limit, token) {
+  try {
+    const response = await apiComics.get(
+      `/seriestoinscribe?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+          Authorization: `${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return await Promise.reject(error.response.data);
+  }
+}
+
+export async function enteredSeries(serie, token) {
+  try {
+    const response = await apiComics.put(`/enteredseries/${serie}`, {}, {
       headers: {
-        "Cache-Control": "no-cache",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
       },
     });
     return response.data;

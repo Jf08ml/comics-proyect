@@ -32,7 +32,9 @@ import {
   BiXCircleFill,
   BiBoxArrowInRight,
   IoSearchCircleSharp,
-  HiSolidSearch
+  HiSolidSearch,
+  FcVip,
+  GiTakeMyMoney 
 } from "oh-vue-icons/icons";
 addIcons(
   BiStar,
@@ -62,7 +64,9 @@ addIcons(
   BiXCircleFill,
   BiBoxArrowInRight,
   IoSearchCircleSharp,
-  HiSolidSearch
+  HiSolidSearch,
+  FcVip,
+  GiTakeMyMoney 
 );
 
 const app = createApp(App);

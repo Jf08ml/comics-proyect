@@ -27,7 +27,7 @@ const serieSchema = new mongoose.Schema({
   },
   artist: {
     type: String,
-    required: true
+    required: true,
   },
   keywords: {
     type: Array,
@@ -46,14 +46,14 @@ const serieSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  inscribed: {
+    type: Boolean,
+    default: false,
+  },
   uploadData: {
     type: Date,
     default: Date.now,
   },
-  score: {
-    type: Number,
-    default: 0
-  }
 });
 
 module.exports = mongoose.model("Serie", serieSchema);

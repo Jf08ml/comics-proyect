@@ -51,6 +51,7 @@
       :series="seriesReal"
       :page="page"
       :totalPages="totalPages"
+      actionType="view"
       @prev-page="prevPage"
       @next-page="nextPage"
       @open-serie="openSerie"
@@ -240,8 +241,8 @@ const prevPage = () => {
   }
 };
 
-const openSerie = (serieId) => {
-  router.push(`/viewserie/${serieId}`);
+const openSerie = (serie) => {
+  router.push(`/viewserie/${serie._id}`);
 };
 </script>
 

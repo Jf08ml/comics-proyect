@@ -23,4 +23,6 @@ router.get("/popularSeries/:type", comicController.getPopularSeries);
 router.get("/featureArtist/:type", comicController.getFeaturedArtists);
 router.get("/artistSeries/:artist", comicController.getArtistSeries);
 router.get("/searchSeries/:nameSerie", comicController.searchSerie);
+router.get("/seriestoinscribe", authMiddleware, comicController.getSeriesToInscribe);
+router.put("/enteredseries/:serie", authMiddleware, comicController.enteredSeries);
 module.exports = router;

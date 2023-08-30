@@ -30,6 +30,7 @@
         :series="searchResults"
         :page="page"
         :totalPages="totalPages"
+        actionType="view"
         @prev-page="prevPage"
         @next-page="nextPage"
         @open-serie="openSerie"
@@ -103,8 +104,8 @@ const prevPage = async () => {
   }
 };
 
-const openSerie = async (serieId) => {
-  router.push(`/viewserie/${serieId}`);
+const openSerie = async (serie) => {
+  router.push(`/viewserie/${serie._id}`);
   await nextTick();
   close();
 };
@@ -117,14 +118,14 @@ const openSerie = async (serieId) => {
   align-items: flex-end;
   position: relative;
   width: 100%;
-  z-index: 2;
+  z-index: 3;
 }
 
 .modal-content {
   position: relative;
   width: 100%;
   background: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .results {
@@ -132,7 +133,7 @@ const openSerie = async (serieId) => {
   top: 100%;
   left: 10px;
   right: 0;
-  z-index: 1;
+  z-index: 3;
   background: white;
   width: 70vw;
   border: 1px solid #ccc;

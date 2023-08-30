@@ -52,6 +52,11 @@ const routes = [
     path: '/comicvip/:type',
     name: 'comicvip',
     component: () => import(/*webpackChunkName: "comicvip"*/ '../views/ZoneVIP/ZoneVipView.vue')
+  },
+  {
+    path: '/earnmoney/',
+    name: 'earnmoney',
+    component: () => import(/*webpackChunkName*/ '../views/EarnMoney/EarnMoneyView.vue')
   }
 ]
 

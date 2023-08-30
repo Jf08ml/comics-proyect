@@ -43,7 +43,7 @@ const menuItems = ref([
     route: "realcomics",
     showMenu: showMenuReal,
     subMenus: [
-      { name: "Earn money", route: "mostview1" },
+      { name: "Earn money", route: "earnmoney" },
       { name: "VIP", route: "comicvip/real" },
     ],
   },
@@ -52,7 +52,7 @@ const menuItems = ref([
     route: "animatedcomics",
     showMenu: showMenuAnimated,
     subMenus: [
-      { name: "Earn money", route: "mostview4" },
+      { name: "Earn money", route: "earnmoney" },
       { name: "VIP", route: "comicvip/animated" },
     ],
   },
