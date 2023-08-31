@@ -34,9 +34,9 @@ const createAxiosInstance = (baseURL) => {
 // const apiAuth = createAxiosInstance("http://192.168.101.10:3000/api/auth");
 // const apiComics = createAxiosInstance("http://192.168.101.10:3000/api/comic");
 // const apiPayout = createAxiosInstance("http://192.168.101.10:3000/api/payout");
-const apiAuth = createAxiosInstance("https://backend-comics-mwrfm8chj-jf08ml.vercel.app/api/auth");
-const apiComics = createAxiosInstance("https://backend-comics-mwrfm8chj-jf08ml.vercel.app/api/comic");
-const apiPayout = createAxiosInstance("https://backend-comics-mwrfm8chj-jf08ml.vercel.app/api/payout");
+const apiAuth = createAxiosInstance("https://backend-comics-p7lzisqbs-jf08ml.vercel.app/api/auth");
+const apiComics = createAxiosInstance("https://backend-comics-p7lzisqbs-jf08ml.vercel.app/api/comic");
+const apiPayout = createAxiosInstance("https://backend-comics-p7lzisqbs-jf08ml.vercel.app/api/payout");
 
 
 export { apiAuth, apiComics, apiPayout };
