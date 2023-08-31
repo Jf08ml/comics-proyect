@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION } = process.env;
+const { JWT_SECRET, JWT_REFRESH_SECRET } = process.env;
 const User = require('../models/users');
 
 async function signup(req, res) {
