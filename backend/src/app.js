@@ -7,13 +7,18 @@ const authRoutes = require('./routes/auth');
 const payoutRoutes = require('./routes/payout')
 const comicRoutes = require('./routes/comic')
 
+const peticiones = 'https://frontend-comics-3jxsgni4p-jf08ml.vercel.app'
+
 // Configuración de middlewares
-app.use(cors());
+app.use(cors(
+  {
+    origin: peticiones
+  }
+));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-// Rutas
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/payout', payoutRoutes);
