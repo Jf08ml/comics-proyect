@@ -8,7 +8,7 @@ const payoutRoutes = require("./routes/payout");
 const comicRoutes = require("./routes/comic");
 
 // Configuración de middlewares
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "http://localhost:8081/" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
