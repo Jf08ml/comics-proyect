@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="nav-link-usersession" v-if="authStore.isAuthenticated">
-            <NavbarUserSession />
+            <UserSession />
         </div>
     </div>
 </template>
@@ -29,7 +29,7 @@
 <script setup>
 import { useAuthStore } from "@/store/auth";
 
-import NavbarUserSession from "./NavbarUserSession.vue";
+import UserSession from "./UserSession.vue";
 
 const authStore = useAuthStore();
 

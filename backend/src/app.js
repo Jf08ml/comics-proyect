@@ -24,6 +24,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server error" });
 });
 
+app.get("/", (req, res) => {
+  res.send("API Comics");
+});
+
 const PORT = process.env.PORT || 3000;
 // const HOST = "192.168.101.10";
 app.listen(PORT, () => {

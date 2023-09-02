@@ -76,5 +76,5 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/login/login.scss";
+@import "@/assets/scss/Auth/Login&Register.scss";
 </style>

@@ -65,7 +65,7 @@ watch(() => props.allPayments, (newValue) => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;

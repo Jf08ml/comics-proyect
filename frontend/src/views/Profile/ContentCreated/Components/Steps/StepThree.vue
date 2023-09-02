@@ -21,7 +21,7 @@ const infoPost = ref(props.postInfoSaved);
 const imagesPost = ref(props.uploadedImages);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .show-images {
     display: flex;
     flex-direction: column;

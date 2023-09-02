@@ -1,16 +1,22 @@
 // main.scss
+@import './home/home.scss';
 @import 'button.scss';
+@import './navbar/navbar.scss';
+@import './profile/profile.scss';
+@import './profile/paymentmethods/paymentmethods.scss';
+@import './profile/personaldata/personaldata.scss';
+@import './Components/SeeComic.scss';
 
-
+// Variables
 $primary-color: #b81f59;
 $primary-font: Arial;
 $font-size: 15px;
-
 $scrollbar-width: 5px;
 $scrollbar-track-background: #f5f5f5;
 $scrollbar-thumb-background: #888;
 $scrollbar-thumb-hover-background: #555;
 
+// Estilos base
 body {
   font-family: $primary-font;
   font-size: $font-size;
@@ -20,33 +26,21 @@ body {
   margin: 0px;
 }
 
+// Estilos de encabezados
+h1, h2, h3, h5 {
+  color: #f5f5f5;
 
+  &:hover {
+    text-shadow: 2px 2px 2px #f5669c;
+  }
+}
 
 h1 {
   color: $primary-color;
-  
-  &:hover {
-    text-shadow: 2px 2px 2px #f5669c;
-}
 }
 
-h2 {
-  color:#f5f5f5;
-  
-  &:hover {
-    text-shadow: 2px 2px 2px #f5669c;
-}
-}
-
-h3 {
-  color:#f5f5f5;
-}
-h5 {
-  color:#f5f5f5;
-}
-
-
-input {
+// Estilos de input
+input, select {
   display: flex; 
   align-items: center; 
   align-content: center;
@@ -56,91 +50,55 @@ input {
   margin: 15px;
   padding: 10px;
   width: 100%;
-  @media screen and (max-width:900px) {
-    width: 100%;
-    transition: all 0.2s ease-in-out;
-}
-}
 
-input:focus {
-  border: 1px solid $primary-color;
-  box-shadow: 0px 0px 4px darken($primary-color, 10%);
-  outline: none;
-}
-
-select {
-  display: flex; 
-  align-items: center; 
-  align-content: center;
-  border: 2px solid darken($primary-color, 2%);
-  border-radius: 20px;
-  font-size: $font-size;
-  margin: 15px;
-  padding: 10px;
-  width: 100%;
   @media screen and (max-width:900px) {
-    width: 100%;
     transition: all 0.2s ease-in-out;
   }
-  /* Estilos específicos para el botón desplegable */
+
+  &:focus {
+    border: 1px solid $primary-color;
+    box-shadow: 0px 0px 4px darken($primary-color, 10%);
+    outline: none;
+  }
+}
+
+// Estilos específicos para select
+select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-position: right 10px center;
   background-repeat: no-repeat;
-}
 
-select:focus {
-  border: 1px solid $primary-color;
-  box-shadow: 0px 0px 4px darken($primary-color, 10%);
-  outline: none;
-}
+  option {
+    background-color: #fff;
+    color: #333;
 
-/* Estilos específicos para las opciones */
-select option {
-  background-color: #fff;
-  color: #333;
-}
-
-select option:hover {
-  background-color: $primary-color;
-  color: #fff;
-}
-
-/* Estilos globales de la scrollbar */
-::-webkit-scrollbar {
-  width: $scrollbar-width;
-  height: $scrollbar-width;
-}
-
-::-webkit-scrollbar-track {
-  background-color: $scrollbar-track-background;
-  cursor: pointer;
-}
-
-/* Agrega las reglas para la scrollbar horizontal */
-::-webkit-scrollbar-track-piece:end {
-  background-color: $scrollbar-track-background;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background-color: $scrollbar-thumb-background;
-
-  &:hover {
-    border-radius: 10px;
-    background-color: $scrollbar-thumb-hover-background;
+    &:hover {
+      background-color: $primary-color;
+      color: #fff;
+    }
   }
 }
 
-/* Agrega las reglas para la scrollbar horizontal */
-::-webkit-scrollbar-thumb:horizontal {
-  border-radius: 5px;
-  background-color: $scrollbar-thumb-background;
+// Estilos globales de la scrollbar
+::-webkit-scrollbar {
+  width: $scrollbar-width;
+  height: $scrollbar-width;
 
-  &:hover {
-    border-radius: 10px;
-    background-color: $scrollbar-thumb-hover-background;
+  track {
+    background-color: $scrollbar-track-background;
+    cursor: pointer;
+  }
+
+  thumb {
+    border-radius: 5px;
+    background-color: $scrollbar-thumb-background;
+
+    &:hover {
+      border-radius: 10px;
+      background-color: $scrollbar-thumb-hover-background;
+    }
   }
 }

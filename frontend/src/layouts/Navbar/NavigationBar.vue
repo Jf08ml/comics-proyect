@@ -2,17 +2,17 @@
   <nav class="navbar">
 
     <div class="navbar-icone">
-      <NavbarIcone />
+      <SiteLogo />
     </div>
 
     <div class="navbar-sections">
 
       <div class="navbar-sections-public">
-        <NavbarPublic />
+        <PublicSection />
       </div>
 
       <div class="navbar-sections-user">
-        <NavbarUser />
+        <AuthOptions />
       </div>
 
     </div>
@@ -25,12 +25,9 @@
 </template>
   
 <script setup>
-import "@/assets/scss/navbar/navbar.scss";
-
-
-import NavbarIcone from "./NavbarIcone.vue"
-import NavbarPublic from "./NavbarPublic.vue"
-import NavbarUser from './NavbarUser.vue'
+import SiteLogo from "./SiteLogo.vue"
+import PublicSection from "./PublicSection.vue"
+import AuthOptions from './AuthOptions.vue'
 import NavbarMobile from './NavbarMobile.vue'
 
 </script>

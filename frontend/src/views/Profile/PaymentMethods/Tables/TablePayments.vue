@@ -42,7 +42,7 @@ const formatDate = (date) => {
 </script>
 
   
-<style scoped>
+<style lang="scss" scoped>
 .table-container {
     padding: 10px;
     max-height: 400px;

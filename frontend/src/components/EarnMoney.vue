@@ -49,7 +49,7 @@ import { notify } from "@kyvg/vue3-notification";
 import {
   getSeriesToInscribe,
   enteredSeries,
-} from "../../services/comicServices";
+} from "@/services/comicServices";
 import ModalConfirmation from "@/components/Modals/ModalConfirmation.vue";
 import ModalLoading from "@/components/Modals/ModalLoading.vue";
 

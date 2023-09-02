@@ -115,7 +115,7 @@ if (isMobile) {
 defineExpose({fetchSeries});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .button-next {
   border-radius: 50%;
   background: transparent;

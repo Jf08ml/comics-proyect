@@ -1,6 +1,7 @@
 .container-personal-data {
     height: 100%;
     width: 100%;
+
     p {
         color: #b81f59;
         font-size: 16px;
@@ -134,7 +135,7 @@
     height: 140px;
     border-radius: 26%;
     box-shadow: 0 0 1px black;
-    background-image: url('../../../../../public/no-profile-photo.png');
+    background-image: '../../../images/no-profile-photo.png';
     margin: 10px;
     overflow: hidden;
     position: relative;
@@ -154,6 +155,21 @@
     object-fit: cover;
 }
 
+.default-pic {
+    width: 140px;
+    height: 140px;
+    border-radius: 26%;
+    box-shadow: 0 0 1px black;
+    background-image: '../../../images/no-profile-photo.png';
+    margin: 10px;
+    overflow: hidden;
+    position: relative;
+    border: 0.5px solid grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .upload-btn {
     position: absolute;
     border-radius: 50%;
@@ -166,11 +182,13 @@
     z-index: 1;
     cursor: pointer;
     box-shadow: 0px 0px 3px black;
+
     &:hover {
         background-color: rgba(255, 255, 255, 0.9);
         box-shadow: 0px 0px 5px black;
     }
 }
+
 .view-photo {
     position: absolute;
     background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));

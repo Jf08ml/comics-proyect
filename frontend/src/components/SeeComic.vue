@@ -90,7 +90,7 @@ import router from "@/router";
 import StarRating from "vue-star-rating";
 import { notify } from "@kyvg/vue3-notification";
 import LineDivider from "@/components/LineDivider.vue";
-import NavigationButtons from "./Components/NavigationButtons.vue";
+import NavigationButtons from "@/components/Buttons/NavigationButtons.vue";
 
 const comicStore = useComicStore();
 const authStore = useAuthStore();
@@ -334,5 +334,5 @@ watch(
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/ComicView/ComicView.scss";
+@import "@/assets/scss/Components/SeeComic.scss"
 </style>

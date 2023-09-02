@@ -1,7 +1,7 @@
 <template>
     <div class="menu-hamburger">
         <div class="nav-link-usersession" v-if="authStore.isAuthenticated">
-            <NavbarUserSession />
+            <UserSession />
         </div>
         <div class="hamburger-icon" @click="toggleMenu">
             <v-icon v-if="!isOpen" name="ri-menu-fill" scale="2" title="Menu" color="white" />
@@ -86,7 +86,7 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/store/auth";
-import NavbarUserSession from "./NavbarUserSession.vue";
+import UserSession from "./UserSession.vue";
 
 
 const authStore = useAuthStore();

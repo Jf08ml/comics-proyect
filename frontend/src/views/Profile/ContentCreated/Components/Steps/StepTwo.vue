@@ -85,7 +85,7 @@ const submitData = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .chips {
   display: flex;
   flex-wrap: wrap;

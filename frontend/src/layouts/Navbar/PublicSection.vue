@@ -13,7 +13,7 @@
                                     <template v-slot="{ navigate }">
                                         <button @click="navigate" class="nav-button-submenu">
                                             {{ submenu.name }}
-                                            <p>▶</p>
+                                            <p>▸</p>
                                         </button>
                                     </template>
                                 </router-link>

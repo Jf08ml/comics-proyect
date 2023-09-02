@@ -96,7 +96,7 @@ const onSubmit = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .selected-images {
   display: grid;
   grid-template-columns: repeat(20, 1fr);

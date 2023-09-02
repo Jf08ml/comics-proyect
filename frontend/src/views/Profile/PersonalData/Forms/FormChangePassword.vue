@@ -47,7 +47,7 @@ const onSubmitPassword = async () => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container-form-change-password {
     background-color: white;
     border-radius: 20px;

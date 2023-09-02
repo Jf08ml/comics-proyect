@@ -246,7 +246,7 @@ const openSerie = (serie) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .title {
   color: white;
   text-align: center;

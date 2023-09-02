@@ -14,6 +14,6 @@ const userUrlPhoto = computed(() => authStore.$state.userImgProfile)
 
 </script>
 
-<style scoped>
+<style lang="scss">
 
 </style>

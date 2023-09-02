@@ -10,27 +10,22 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
+    component: () => import(/* webpackChunkName: "login" */ '../views/Auth/LoginView.vue')
   },
   {
     path: '/signup',
     name: 'signup',
-    component: () => import(/* webpackChunkName: "signup" */ '../views/RegisterView.vue')
+    component: () => import(/* webpackChunkName: "signup" */ '../views/Auth/RegisterView.vue')
   },
   {
     path: '/realcomics',
     name: 'realcomics',
-    component: () => import(/* webpackChunkName: "realcomics" */ '../views/RealComics/RealComicsView.vue')
+    component: () => import(/* webpackChunkName: "realcomics" */ '../views/SectionReal/RealComicsView.vue')
   },
   {
     path: '/animatedcomics',
     name: 'animatedcomics',
-    component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/AnimatedComics/AnimatedComicsView.vue')
-  },
-  {
-    path: '/allthemostviewd',
-    name:'allthemostviewed',
-    component: () => import( /* webpackChunkName: "allthemostviewd"*/ '../views/AllMost/AllMostView.vue')
+    component: () => import(/* webpackChunkName: "aminatedcomics" */ '../views/SectionAnimated/AnimatedComicsView.vue')
   },
   {
     path: '/profile',
@@ -41,22 +36,22 @@ const routes = [
   {
     path: '/viewcomic/:id',
     name: 'viewcomic',
-    component: () => import(/* webpackChunkName: "viewcomic" */ '../views/ViewComic/ComicView.vue')
+    component: () => import(/* webpackChunkName: "viewcomic" */ '../components/SeeComic.vue')
   },
   {
     path: '/viewserie/:id',
     name: 'viewserie',
-    component: () => import(/* webpackChunkName: "viewserie"*/ '../views/ViewSeries/SerieView.vue')
+    component: () => import(/* webpackChunkName: "viewserie"*/ '../components/SeeSerie.vue')
   },
   {
     path: '/comicvip/:type',
     name: 'comicvip',
-    component: () => import(/*webpackChunkName: "comicvip"*/ '../views/ZoneVIP/ZoneVipView.vue')
+    component: () => import(/*webpackChunkName: "comicvip"*/ '../components/ZoneVip.vue')
   },
   {
     path: '/earnmoney/',
     name: 'earnmoney',
-    component: () => import(/*webpackChunkName*/ '../views/EarnMoney/EarnMoneyView.vue')
+    component: () => import(/*webpackChunkName*/ '../components/EarnMoney.vue')
   }
 ]
 

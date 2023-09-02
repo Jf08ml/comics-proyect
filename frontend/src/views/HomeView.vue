@@ -33,7 +33,7 @@
                 />
               </div>
               <div class="comic-hot">
-                <img class="img-hot" src="../../public/hot.png" />
+                <img class="img-hot" src="../assets//images/hot.png" />
               </div>
             </div>
           </Slide>
@@ -73,7 +73,7 @@
                 />
               </div>
               <div class="comic-hot">
-                <img class="img-hot" src="../../public/hot.png" />
+                <img class="img-hot" src="../assets//images/hot.png" />
               </div>
             </div>
           </Slide>
@@ -136,5 +136,5 @@ const openSerie = (serieId) => {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/home/home.scss";
+@import '../assets/scss/home/home.scss';
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="profile-pic-profile" :class="props.profilePicClass" :style="props.profilePicStyle">
+    <div class="profile-pic-profile" :class="props.profilePicStyle" :style="props.profilePicStyle">
         <div @click="authStore.$state.userImgProfile ? props.onShowModal('viewphoto') : none" class="view-photo">
             <button v-if="authStore.$state.userImgProfile" class="nav-button-icone">View photo</button>
         </div>
@@ -23,4 +23,4 @@ const props = defineProps({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss"></style>

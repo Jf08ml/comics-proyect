@@ -50,7 +50,7 @@ const submitData = async () => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container-form-user-data {
     background-color: white;
     border-radius: 20px;
